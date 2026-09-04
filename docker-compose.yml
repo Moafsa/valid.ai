@@ -1,0 +1,151 @@
+version: '3.9'
+
+# ============================================================
+# FunnelAI — Docker Compose (Desenvolvimento Local Completo)
+# ============================================================
+
+services:
+
+  # --- PostgreSQL --------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: funnelai_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: funnelai
+    ports:
+      - '5435:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- Redis -------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: funnelai_redis
+    command: redis-server --appendonly yes
+    ports:
+      - '6385:6379'
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- Screenshot-to-Code (self-hosted, internal only) -------------------------
+  screenshot-to-code:
+    build:
+      context: ./services/screenshot-to-code
+      dockerfile: Dockerfile
+    container_name: funnelai_s2c
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GOOGLE_GENERATIVE_AI_API_KEY: ${GEMINI_API_KEY:-}
+      REPLICATE_API_KEY: ${REPLICATE_API_KEY:-}
+      IS_PROD: "false"
+    ports:
+      - '7001:7001'
+    restart: unless-stopped
+
+  # --- Scanner Service (Python/FastAPI) ----------------------------------------
+  scanner:
+    build:
+      context: ./apps/scanner
+      dockerfile: Dockerfile
+    container_name: funnelai_scanner
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/funnelai
+      REDIS_URL: redis://redis:6379
+      SCREENSHOT_TO_CODE_URL: http://screenshot-to-code:7001
+      WEB_APP_URL: http://web:3000
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-change-this-in-production}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME:-funnelai-assets}
+      CDN_URL: ${CDN_URL:-https://cdn.funnelai.com}
+      PROXY_URL: ${PROXY_URL:-}
+    ports:
+      - '8001:8001'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      screenshot-to-code:
+        condition: service_started
+    volumes:
+      - ./apps/scanner:/app
+    restart: unless-stopped
+
+  # --- Web App (Next.js 15) ----------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: funnelai_web
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/funnelai
+      DIRECT_URL: postgresql://postgres:password@postgres:5432/funnelai
+      REDIS_URL: redis://redis:6379
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_dummy}
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:-sk_test_dummy}
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+      NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /dashboard
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /dashboard
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_dummy}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-whsec_dummy}
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-pk_test_dummy}
+      RESEND_API_KEY: ${RESEND_API_KEY:-re_dummy}
+      SCANNER_SERVICE_URL: http://scanner:8001
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-change-this-in-production}
+      CONFIG_ENCRYPTION_KEY: ${CONFIG_ENCRYPTION_KEY:-change-this-32-char-encryption-key}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3005}
+    ports:
+      - '3005:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      scanner:
+        condition: service_started
+    restart: unless-stopped
+
+  # --- MinIO (S3 self-hosted local container) ----------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: funnelai_minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    ports:
+      - '9090:9000' # S3 API endpoint
+      - '9091:9001' # MinIO Web Dashboard
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  default:
+    name: funnelai_network

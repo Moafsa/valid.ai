@@ -1,0 +1,316 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Workspace (multi-tenant) ────────────────────────────
+model Workspace {
+  id        String   @id @default(cuid())
+  clerkOrgId String  @unique
+  name      String
+  slug      String   @unique
+  plan      Plan     @default(FREE)
+  aiCredits Int      @default(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects  Project[]
+  members   WorkspaceMember[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  workspaceId String
+  clerkUserId String
+  role        MemberRole @default(MEMBER)
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, clerkUserId])
+  @@map("workspace_members")
+}
+
+// ─── Project ─────────────────────────────────────────────
+model Project {
+  id          String        @id @default(cuid())
+  workspaceId String
+  name        String
+  sourceUrl   String
+  type        ProjectType   @default(LP)
+  status      ProjectStatus @default(PENDING)
+  thumbnail   String?
+  scanJobId   String?       @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  pages       Page[]
+  scanJob     ScanJob?  @relation(fields: [scanJobId], references: [id])
+  trackings   ProjectTracking[]
+
+  @@map("projects")
+}
+
+// ─── Page ────────────────────────────────────────────────
+model Page {
+  id          String   @id @default(cuid())
+  projectId   String
+  name        String
+  slug        String
+  order       Int      @default(0)
+  blocks      Json     @default("[]")
+  publishedUrl String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, slug])
+  @@map("pages")
+}
+
+// ─── Scan Job ────────────────────────────────────────────
+model ScanJob {
+  id          String     @id @default(cuid())
+  url         String
+  status      ScanStatus @default(QUEUED)
+  progress    Int        @default(0)
+  currentStep String     @default("Aguardando...")
+  resultJson  Json?
+  errorMsg    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  project     Project?
+
+  @@map("scan_jobs")
+}
+
+// ─── Tracking ────────────────────────────────────────────
+model ProjectTracking {
+  id          String       @id @default(cuid())
+  projectId   String
+  type        TrackingType
+  pixelId     String?
+  config      Json         @default("{}")
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_trackings")
+}
+
+// ─── Lead ────────────────────────────────────────────────
+model Lead {
+  id          String   @id @default(cuid())
+  projectId   String
+  email       String?
+  phone       String?
+  name        String?
+  quizAnswers Json     @default("{}")
+  utmParams   Json     @default("{}")
+  timeline    Json     @default("[]")
+  device      String?
+  country     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([email])
+  @@map("leads")
+}
+
+// ─── System Config (SuperAdmin — plataforma SaaS) ────────────────────────────
+// Cada chave é uma row com key/value encriptado.
+// O superadmin configura via painel — usuários nunca veem as chaves.
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique  // ex: "openai_api_key", "anthropic_api_key"
+  value       String            // valor encriptado com AES-256
+  category    ConfigCategory    // AI | STORAGE | EMAIL | PROXY | PAYMENT | GENERAL
+  label       String            // label legível: "OpenAI API Key"
+  description String?           // descrição do campo
+  isSecret    Boolean  @default(true)   // se true, mascarado no frontend
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?           // clerkUserId do superadmin que atualizou
+
+  @@map("system_configs")
+}
+
+// ─── AI Usage Log (custo por operação) ────────────────────────────────────────
+model AiUsageLog {
+  id            String   @id @default(cuid())
+  workspaceId   String
+  projectId     String?
+  operation     String            // "scan_lp", "quiz_import", "translate", "cloaker"
+  model         String            // "gpt-4o", "claude-opus", "gemini-1.5-pro"
+  provider      String            // "openai", "anthropic", "google"
+  inputTokens   Int       @default(0)
+  outputTokens  Int       @default(0)
+  costUsd       Float     @default(0)  // custo real em USD
+  creditsUsed   Int       @default(0)  // créditos debitados do usuário
+  durationMs    Int       @default(0)
+  createdAt     DateTime  @default(now())
+
+  @@index([workspaceId])
+  @@index([createdAt])
+  @@map("ai_usage_logs")
+}
+
+// ─── Credit Transaction ─────────────────────────────────────────────────────
+model CreditTransaction {
+  id            String              @id @default(cuid())
+  workspaceId   String
+  type          CreditTxType        // GRANT | CONSUME | PURCHASE | REFUND
+  amount        Int                 // positivo = adicionou, negativo = consumiu
+  balanceAfter  Int
+  description   String              // "Scan LP: minha-pagina.com"
+  operation     String?             // "scan_lp", "translate", etc.
+  stripePaymentId String?
+  createdAt     DateTime            @default(now())
+
+  @@index([workspaceId])
+  @@map("credit_transactions")
+}
+
+// ─── SuperAdmin Session (apenas superadmins) ────────────────────────────────
+model SuperAdmin {
+  id          String   @id @default(cuid())
+  clerkUserId String   @unique
+  email       String   @unique
+  name        String
+  createdAt   DateTime @default(now())
+
+  @@map("super_admins")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+enum Plan {
+  FREE
+  BASIC
+  PRO
+  SCALE
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum ProjectType {
+  LP
+  QUIZ
+  VSL
+  CHECKOUT
+  FUNNEL
+}
+
+enum ProjectStatus {
+  PENDING
+  SCANNING
+  CLONING
+  READY
+  PUBLISHED
+  ERROR
+}
+
+enum ScanStatus {
+  QUEUED
+  SCANNING
+  PROCESSING
+  DONE
+  ERROR
+}
+
+enum TrackingType {
+  META_PIXEL
+  TIKTOK_PIXEL
+  GOOGLE_TAG
+  GOOGLE_ANALYTICS
+  GTM
+  CUSTOM
+}
+
+// ─── Gamificação & Conquistas ───────────────────────────────────────────────
+model UserGamification {
+  id              String   @id @default(cuid())
+  workspaceId     String   @unique
+  level           Int      @default(1)       // Nível 1 ao 10 (Iniciante → Black)
+  xpPoints        Int      @default(0)       // Pontos de experiência
+  streakDays      Int      @default(1)       // Dias seguidos de uso
+  lastActiveAt    DateTime @default(now())
+  unlockedBadges  Json     @default("[]")    // BadgeID[] desbloqueados
+
+  @@map("user_gamification")
+}
+
+model Achievement {
+  id          String   @id // "first_clone", "100_leads", "first_publish", etc.
+  title       String
+  description String
+  badgeIcon   String   // Emoji ou ícone
+  xpReward    Int      @default(100)
+  creditReward Int     @default(25)     // Créditos de IA grátis ao desbloquear
+  category    String   // "cloning", "leads", "analytics", "scale"
+
+  @@map("achievements")
+}
+
+// ─── Asaas Subscriptions & Charges ──────────────────────────────────────────
+model AsaasCustomer {
+  id              String   @id @default(cuid())
+  workspaceId     String   @unique
+  asaasCustomerId String   @unique // ID "cus_xxx" no Asaas
+  cpfCnpj         String?
+  name            String
+  email           String
+  phone           String?
+  createdAt       DateTime @default(now())
+
+  @@map("asaas_customers")
+}
+
+model AsaasPayment {
+  id              String   @id @default(cuid())
+  workspaceId     String
+  asaasPaymentId  String   @unique // ID "pay_xxx" no Asaas
+  billingType     String   // "PIX" | "BOLETO" | "CREDIT_CARD"
+  value           Float
+  status          String   // "PENDING" | "RECEIVED" | "CONFIRMED" | "OVERDUE"
+  pixQrCode       String?  // Copia e cola PIX
+  pixExpiration   DateTime?
+  invoiceUrl      String?  // Link de pagamento/fatura
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([workspaceId])
+  @@map("asaas_payments")
+}
+
+enum ConfigCategory {
+  AI
+  STORAGE
+  EMAIL
+  PROXY
+  PAYMENT
+  GENERAL
+}
+
+enum CreditTxType {
+  GRANT
+  CONSUME
+  PURCHASE
+  REFUND
+}

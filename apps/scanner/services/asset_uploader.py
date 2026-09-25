@@ -13,12 +13,18 @@ class AssetUploader:
     """
 
     def __init__(self):
-        self.s3 = boto3.client(
-            's3',
+        client_kwargs = dict(
             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
             region_name=settings.AWS_REGION,
-        ) if settings.AWS_ACCESS_KEY_ID else None
+        )
+        if settings.AWS_ENDPOINT_URL:
+            client_kwargs['endpoint_url'] = settings.AWS_ENDPOINT_URL
+        if settings.S3_FORCE_PATH_STYLE:
+            from botocore.config import Config as BotoConfig
+            client_kwargs['config'] = BotoConfig(s3={'addressing_style': 'path'})
+
+        self.s3 = boto3.client('s3', **client_kwargs) if settings.AWS_ACCESS_KEY_ID else None
 
     async def upload_base64(
         self,

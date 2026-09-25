@@ -11,6 +11,24 @@ export default async function AnalyticsPage() {
     select: { id: true, name: true, type: true, status: true, createdAt: true },
   })
 
+  const leads = await db.lead.findMany({
+    where: { projectId: { in: projects.map(p => p.id) } },
+    select: { projectId: true, email: true, phone: true, timeline: true },
+  })
+
+  const byProject = new Map<string, { sessions: number; leads: number; ctaClicks: number }>()
+  for (const lead of leads) {
+    const bucket = byProject.get(lead.projectId) ?? { sessions: 0, leads: 0, ctaClicks: 0 }
+    bucket.sessions += 1
+    if (lead.email || lead.phone) bucket.leads += 1
+    const timeline = Array.isArray(lead.timeline) ? (lead.timeline as any[]) : []
+    if (timeline.some(e => e.event === 'cta_click')) bucket.ctaClicks += 1
+    byProject.set(lead.projectId, bucket)
+  }
+
+  const totalSessions = leads.length
+  const totalCtaClicks = [...byProject.values()].reduce((sum, b) => sum + b.ctaClicks, 0)
+
   return (
     <div className="space-y-6">
       <div>
@@ -21,9 +39,16 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
           { label: 'Projetos ativos', value: projects.length, icon: BarChart3, color: 'text-brand-600 bg-brand-50' },
-          { label: 'Sessões totais', value: '—', icon: Users, color: 'text-green-600 bg-green-50' },
-          { label: 'Taxa de conversão', value: '—', icon: TrendingUp, color: 'text-purple-600 bg-purple-50' },
-          { label: 'Cliques em CTA', value: '—', icon: MousePointer, color: 'text-orange-600 bg-orange-50' },
+          { label: 'Sessões totais', value: totalSessions, icon: Users, color: 'text-green-600 bg-green-50' },
+          {
+            label: 'Taxa de conversão',
+            value: totalSessions > 0
+              ? `${(([...byProject.values()].reduce((s, b) => s + b.leads, 0) / totalSessions) * 100).toFixed(1)}%`
+              : '—',
+            icon: TrendingUp,
+            color: 'text-purple-600 bg-purple-50',
+          },
+          { label: 'Cliques em CTA', value: totalCtaClicks, icon: MousePointer, color: 'text-orange-600 bg-orange-50' },
         ].map(stat => {
           const Icon = stat.icon
           return (
@@ -50,21 +75,25 @@ export default async function AnalyticsPage() {
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {projects.map(project => (
-              <Link key={project.id} href={`/analytics/${project.id}`}
-                className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900">{project.name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{project.type}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-mono text-gray-500">0 sessões</p>
-                  <p className="text-xs text-gray-400">0% conversão</p>
-                </div>
-                <div className="text-brand-500 text-sm">→</div>
-              </Link>
-            ))}
+            {projects.map(project => {
+              const bucket = byProject.get(project.id) ?? { sessions: 0, leads: 0, ctaClicks: 0 }
+              const conversion = bucket.sessions > 0 ? (bucket.leads / bucket.sessions) * 100 : 0
+              return (
+                <Link key={project.id} href={`/analytics/${project.id}`}
+                  className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{project.name}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{project.type}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-mono text-gray-500">{bucket.sessions} sessões</p>
+                    <p className="text-xs text-gray-400">{conversion.toFixed(1)}% conversão</p>
+                  </div>
+                  <div className="text-brand-500 text-sm">→</div>
+                </Link>
+              )
+            })}
           </div>
         )}
       </div>

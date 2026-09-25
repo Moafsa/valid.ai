@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Quiz de Emagrecimento</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f3f0ff; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+  .card { background: white; border-radius: 16px; padding: 32px; max-width: 420px; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .progress { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 24px; overflow: hidden; }
+  .progress-bar { height: 100%; background: #7c3aed; transition: width 0.3s; }
+  h1 { font-size: 20px; text-align: center; margin-bottom: 20px; }
+  .option { display: block; width: 100%; padding: 14px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 10px; background: white; font-size: 15px; cursor: pointer; text-align: left; }
+  .option:hover { border-color: #7c3aed; background: #faf5ff; }
+  .step { display: none; }
+  .step.active { display: block; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="progress"><div class="progress-bar" id="bar" style="width: 33%"></div></div>
+
+  <div class="step active" id="step-1">
+    <h1>Qual é o seu maior objetivo?</h1>
+    <button class="option" onclick="next(66)">Emagrecer rápido</button>
+    <button class="option" onclick="next(66)">Ganhar massa muscular</button>
+    <button class="option" onclick="next(66)">Manter o peso</button>
+  </div>
+
+  <div class="step" id="step-2">
+    <h1>Com que frequência você pratica exercícios?</h1>
+    <button class="option" onclick="next(100)">Nunca</button>
+    <button class="option" onclick="next(100)">1-2 vezes por semana</button>
+    <button class="option" onclick="next(100)">3 ou mais vezes por semana</button>
+  </div>
+
+  <div class="step" id="step-3">
+    <h1>Parabéns! Seu plano está pronto.</h1>
+    <p style="text-align:center;color:#666">Preencha seu e-mail para receber o resultado.</p>
+  </div>
+</div>
+
+<script>
+  let current = 1;
+  function next(pct) {
+    document.getElementById('step-' + current).classList.remove('active');
+    current++;
+    document.getElementById('step-' + current).classList.add('active');
+    document.getElementById('bar').style.width = pct + '%';
+  }
+</script>
+</body>
+</html>

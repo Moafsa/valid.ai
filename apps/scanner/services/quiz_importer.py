@@ -7,13 +7,18 @@ from loguru import logger
 from openai import AsyncOpenAI
 import json
 import base64
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
-from config import settings
 from services.playwright_scraper import PlaywrightScraper
-from services.screenshot_to_code_client import ScreenshotToCodeClient
+from services.screenshot_to_code_client import ScreenshotToCodeClient, CredentialProvider
+from services.html_utils import extract_body_html
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None
+
+async def _get_client() -> Optional[AsyncOpenAI]:
+    """Reads the superadmin-configured key instead of the static .env one."""
+    creds = await CredentialProvider.get()
+    api_key = creds.get("openai")
+    return AsyncOpenAI(api_key=api_key) if api_key else None
 
 
 class QuizImporter:
@@ -67,24 +72,39 @@ Respond ONLY with valid JSON:
                 step_data = await self._analyze_step_vision(shot_b64)
                 step_data["id"] = f"step_{step_idx + 1}"
                 step_data["order"] = step_idx
+                step_data["screenshot_b64"] = shot_b64  # uploaded to S3 by the caller
 
-                # Generate React component for step visual via screenshot-to-code
+                # Generate the step's visual background via screenshot-to-code.
+                # This is only decorative (the actual question/answers are
+                # rendered by the quiz player from step_data, not from this
+                # HTML) — it gives the step a matching background/styling.
                 try:
-                    step_code = await s2c.screenshot_to_react(shot_b64, stack="react_tailwind")
-                    step_data["generatedCode"] = step_code
+                    step_code = await s2c.screenshot_to_react(shot_b64, stack="html_tailwind")
+                    step_data["generatedCode"] = extract_body_html(step_code)
                 except Exception as e:
                     logger.warning(f"S2C failed for quiz step {step_idx + 1}: {e}")
                     step_data["generatedCode"] = ""
 
                 steps.append(step_data)
 
-                # Try to click the first option to advance to next step
+                # Try to click an option to advance to the next step. A click
+                # "succeeding" isn't proof the quiz actually moved on — e.g. a
+                # generic container div can match one of the selectors below
+                # and absorb the click with no effect — so we additionally
+                # compare the DOM before/after and only count it as real
+                # progress if something actually changed.
+                html_before = await page.content()
                 advanced = await self._click_next_option(page)
+                if advanced:
+                    await page.wait_for_timeout(1500)
+                    html_after = await page.content()
+                    if html_after == html_before:
+                        logger.info(f"Click on step {step_idx + 1} had no effect — treating as final step")
+                        advanced = False
+
                 if not advanced:
                     logger.info(f"Quiz reached final step at step {step_idx + 1}")
                     break
-
-                await page.wait_for_timeout(1500)
 
         logger.info(f"Quiz import complete: {len(steps)} steps extracted")
         return {
@@ -94,6 +114,7 @@ Respond ONLY with valid JSON:
         }
 
     async def _analyze_step_vision(self, shot_b64: str) -> Dict[str, Any]:
+        client = await _get_client()
         if not client:
             return {
                 "question": "Pergunta do Quiz",
@@ -135,10 +156,14 @@ Respond ONLY with valid JSON:
         selectors = [
             'button:not([disabled])',
             '[class*="option"]',
-            '[class*="card"]',
             '[class*="answer"]',
             '[class*="btn"]',
             'input[type="radio"]',
+            # Deliberately no generic [class*="card"] — a step's own outer
+            # wrapper is very often named *-card and stays in the DOM across
+            # every step, so it used to "absorb" clicks that never actually
+            # advanced anything (see the html_before/after check above,
+            # which catches this class of bug regardless of selector choice).
         ]
         for sel in selectors:
             try:

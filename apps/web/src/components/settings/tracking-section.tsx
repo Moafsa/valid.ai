@@ -4,14 +4,11 @@ import { Copy, CheckCheck } from 'lucide-react'
 
 export function TrackingSection() {
   const [copied, setCopied] = useState(false)
-  const snippet = `<script>
-!function(w,d,p,i){
-  var s=d.createElement('script');
-  s.async=true; s.src=p+'/sdk.js';
-  s.onload=function(){w.vai=window.ValidAI.createTracker({projectId:i,endpoint:p})};
-  d.head.appendChild(s);
-}(window,document,'https://t.valid.ai','SEU_PROJECT_ID');
-vai.page('home');
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://be-vallid.com'
+  const snippet = `<script src="${appUrl}/sdk.js"></script>
+<script>
+  window.vai = window.ValidAI.createTracker({ projectId: 'SEU_PROJECT_ID' });
+  vai.page('home');
 </script>`
 
   const copy = () => {
@@ -24,7 +21,10 @@ vai.page('home');
     <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-100">
         <h2 className="font-semibold text-gray-900">Tracking SDK</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Cole este snippet no &lt;head&gt; do seu funil publicado</p>
+        <p className="text-sm text-gray-500 mt-0.5">
+          Funis publicados pela plataforma (botão "Publicar" no projeto) já incluem este tracking automaticamente.
+          Use este snippet só se for embutir o funil em outro domínio/hospedagem.
+        </p>
       </div>
       <div className="p-6">
         <div className="relative rounded-lg bg-gray-900 p-4">
@@ -39,6 +39,7 @@ vai.page('home');
         </div>
         <p className="text-xs text-gray-400 mt-3">
           Substitua <code className="bg-gray-100 px-1 rounded">SEU_PROJECT_ID</code> pelo ID do projeto (encontrado na URL do projeto no dashboard).
+          Os eventos aparecem na seção <strong>Leads</strong> como a jornada de cada visitante.
         </p>
       </div>
     </div>

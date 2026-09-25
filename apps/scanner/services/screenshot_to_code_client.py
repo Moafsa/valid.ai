@@ -70,10 +70,20 @@ class ScreenshotToCodeClient:
         self.ws_url = f"{self.ws_url}/generate-code"
 
     async def _build_params(self, stack: Stack) -> dict:
-        """Build WebSocket params with platform-managed AI credentials."""
+        """
+        Build WebSocket params with platform-managed AI credentials.
+
+        The field is "generatedCodeConfig", not "stack" — the vendored
+        screenshot-to-code service (apps/scanner's git-cloned fork, see
+        backend/routes/generate_code.py::extract_and_validate) reads
+        params["generatedCodeConfig"] and rejects anything else with
+        "Invalid generated code config: ", which is exactly the error this
+        integration threw on every single call before this fix — regardless
+        of how valid the AI key was.
+        """
         creds = await CredentialProvider.get()
         params: dict = {
-            "stack": stack,
+            "generatedCodeConfig": stack,
             "isImageGenerationEnabled": False,
         }
         if creds.get("openai"):
@@ -81,30 +91,28 @@ class ScreenshotToCodeClient:
         if creds.get("anthropic"):
             params["anthropicApiKey"] = creds["anthropic"]
         if creds.get("gemini"):
-            params["googleGenerativeAiApiKey"] = creds["gemini"]
+            params["geminiApiKey"] = creds["gemini"]
         if creds.get("replicate"):
             params["replicateApiKey"] = creds["replicate"]
         return params
 
-    async def screenshot_to_react(
-        self,
-        screenshot_b64: str,
-        stack: Stack = "react_tailwind",
-        prompt_hint: Optional[str] = None,
-    ) -> str:
-        image_url = f"data:image/png;base64,{screenshot_b64}"
-        params = await self._build_params(stack)
-        params.update({
-            "generationType": "create",
-            "inputMode": "image",
-            "image": image_url,
-        })
-
+    async def _run(self, params: dict, max_retries: int = 1) -> str:
+        """
+        Sends one generation request and collects variant 0's final code.
+        "setCode" is NOT a one-shot final message here — the agent streams
+        the whole file again on every internal step (grows-then-settles,
+        not a token delta like "chunk"), so the value keeps getting
+        overwritten as more messages arrive; only "variantComplete" (or the
+        socket closing) means it's truly done. A top-level "error" (invalid
+        params, no API key, etc.) has no variantIndex and always aborts
+        immediately; a lone "variantError" for variant 0 does too — the
+        other variants running concurrently server-side are ignored either way.
+        """
         logger.info(f"Connecting to screenshot-to-code: {self.ws_url}")
-        generated_code = ""
-        max_retries = 3
+        last_error: Optional[Exception] = None
 
         for attempt in range(max_retries):
+            generated_code = ""
             try:
                 async with websockets.connect(
                     self.ws_url,
@@ -116,55 +124,73 @@ class ScreenshotToCodeClient:
                     async for message in ws:
                         data = json.loads(message)
                         msg_type = data.get("type", "")
+                        variant_index = data.get("variantIndex")
+
+                        if msg_type == "error":
+                            raise RuntimeError(f"screenshot-to-code error: {data.get('value')}")
+
+                        if variant_index not in (0, None):
+                            continue  # another variant — not the one we keep
+
                         if msg_type == "chunk":
                             generated_code += data.get("value", "")
                         elif msg_type == "setCode":
                             generated_code = data.get("value", generated_code)
+                        elif msg_type == "variantError":
+                            raise RuntimeError(f"screenshot-to-code variant failed: {data.get('value')}")
+                        elif msg_type == "variantComplete":
+                            break  # variant 0 finished — its last setCode is the final code
                         elif msg_type == "status":
                             logger.debug(f"S2C status: {data.get('value')}")
-                        elif msg_type == "error":
-                            raise RuntimeError(f"screenshot-to-code error: {data.get('value')}")
 
-                logger.info(f"Code generated: {len(generated_code)} chars")
-                return generated_code
+                if generated_code:
+                    logger.info(f"Code generated: {len(generated_code)} chars")
+                    return generated_code
+                raise RuntimeError("screenshot-to-code closed the connection without returning code")
 
             except (ConnectionRefusedError, OSError) as e:
+                last_error = e
                 logger.warning(f"Attempt {attempt+1}/{max_retries} failed: {e}")
                 if attempt < max_retries - 1:
                     await asyncio.sleep(2 ** attempt)
-                else:
-                    raise RuntimeError(
-                        f"screenshot-to-code service unavailable after {max_retries} attempts: {e}"
-                    )
+
+        raise RuntimeError(f"screenshot-to-code service unavailable after {max_retries} attempts: {last_error}")
+
+    async def screenshot_to_react(
+        self,
+        screenshot_b64: str,
+        stack: Stack = "html_tailwind",
+        prompt_hint: Optional[str] = None,
+    ) -> str:
+        image_url = f"data:image/png;base64,{screenshot_b64}"
+        params = await self._build_params(stack)
+        params.update({
+            "generationType": "create",
+            "inputMode": "image",
+            "prompt": {
+                "text": prompt_hint or "",
+                "images": [image_url],
+                "videos": [],
+            },
+        })
+        return await self._run(params, max_retries=3)
 
     async def update_with_prompt(
         self,
         existing_code: str,
         update_instructions: str,
         screenshot_b64: Optional[str] = None,
-        stack: Stack = "react_tailwind",
+        stack: Stack = "html_tailwind",
     ) -> str:
         params = await self._build_params(stack)
         params.update({
             "generationType": "update",
             "inputMode": "image" if screenshot_b64 else "text",
-            "code": existing_code,
-            "updateInstruction": update_instructions,
+            "prompt": {
+                "text": update_instructions,
+                "images": [f"data:image/png;base64,{screenshot_b64}"] if screenshot_b64 else [],
+                "videos": [],
+            },
+            "fileState": {"path": "index.html", "content": existing_code},
         })
-        if screenshot_b64:
-            params["image"] = f"data:image/png;base64,{screenshot_b64}"
-
-        updated_code = ""
-        async with websockets.connect(self.ws_url, ping_interval=30) as ws:
-            await ws.send(json.dumps(params))
-            async for message in ws:
-                data = json.loads(message)
-                msg_type = data.get("type", "")
-                if msg_type == "chunk":
-                    updated_code += data.get("value", "")
-                elif msg_type == "setCode":
-                    updated_code = data.get("value", updated_code)
-                elif msg_type == "error":
-                    raise RuntimeError(f"Update failed: {data.get('value')}")
-
-        return updated_code
+        return await self._run(params)

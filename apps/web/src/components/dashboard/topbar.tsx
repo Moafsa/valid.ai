@@ -1,17 +1,30 @@
+'use client'
+
 import { UserButton } from '@clerk/nextjs'
-import { Bell } from 'lucide-react'
+import { Bell, Menu } from 'lucide-react'
 
 const isClerkValid = () => {
   const key = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
   return key.length > 30 && !key.endsWith('xxx') && !key.endsWith('dummy')
 }
 
-export function TopBar() {
+interface TopBarProps {
+  onMenuClick?: () => void
+}
+
+export function TopBar({ onMenuClick }: TopBarProps) {
   const hasValidClerk = isClerkValid()
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
-      <div />
+    <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 sm:px-6">
+      <button
+        onClick={onMenuClick}
+        className="rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 md:hidden"
+        aria-label="Abrir menu"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+      <div className="hidden md:block" />
       <div className="flex items-center gap-4">
         <button className="relative rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
           <Bell className="h-5 w-5" />

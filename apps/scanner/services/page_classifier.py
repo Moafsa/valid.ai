@@ -3,9 +3,19 @@ from loguru import logger
 import json
 from typing import Optional
 
-from config import settings
+from services.screenshot_to_code_client import CredentialProvider
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+async def _get_client() -> Optional[AsyncOpenAI]:
+    """
+    Builds an OpenAI client from the superadmin-configured key (the same
+    source screenshot-to-code already reads via CredentialProvider), instead
+    of the single static settings.OPENAI_API_KEY read once at import time —
+    that meant a key saved in /superadmin/config was silently ignored here.
+    """
+    creds = await CredentialProvider.get()
+    api_key = creds.get("openai")
+    return AsyncOpenAI(api_key=api_key) if api_key else None
 
 
 class PageClassifier:
@@ -40,47 +50,72 @@ Respond ONLY with valid JSON in this exact format:
         """
         logger.info("Classifying page type...")
 
-        try:
-            response = await client.chat.completions.create(
-                model="gpt-4o",
-                max_tokens=500,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": self.CLASSIFY_PROMPT},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/png;base64,{screenshot_b64}",
-                                    "detail": "low"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            )
-
-            raw = response.choices[0].message.content.strip()
-            # Clean markdown code blocks if present
-            if raw.startswith("```"):
-                raw = raw.split("\n", 1)[1].rsplit("```", 1)[0]
-
-            result = json.loads(raw)
-            logger.info(f"Page classified as: {result.get('page_type')} (confidence: {result.get('confidence')})")
-            return result
-
-        except Exception as e:
-            logger.error(f"Classification failed: {e}")
+        client = await _get_client()
+        if not client:
             return {
                 "page_type": "LP",
-                "confidence": 0.5,
+                "confidence": 0.0,
                 "sections": ["hero", "cta", "footer"],
                 "has_video": False,
                 "has_form": False,
                 "has_quiz": False,
-                "notes": f"Classification failed: {e}"
+                "notes": "No AI key configured",
             }
+
+        # response_format=json_object makes the API itself guarantee valid,
+        # complete JSON (no prose, no markdown fences, no truncation mid-
+        # object) instead of us parsing whatever the model felt like
+        # returning — which intermittently came back empty (content
+        # filtering, or the model answering with nothing on a low-signal
+        # screenshot) and blew up json.loads with "Expecting value: line 1
+        # column 1 (char 0)". One retry covers the rare case an individual
+        # call still comes back empty despite that.
+        last_error: Optional[Exception] = None
+        for attempt in range(2):
+            try:
+                response = await client.chat.completions.create(
+                    model="gpt-4o",
+                    max_tokens=500,
+                    response_format={"type": "json_object"},
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": self.CLASSIFY_PROMPT},
+                                {
+                                    "type": "image_url",
+                                    "image_url": {
+                                        "url": f"data:image/png;base64,{screenshot_b64}",
+                                        "detail": "low"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                )
+
+                raw = (response.choices[0].message.content or "").strip()
+                if not raw:
+                    raise ValueError("Empty response from model")
+
+                result = json.loads(raw)
+                logger.info(f"Page classified as: {result.get('page_type')} (confidence: {result.get('confidence')})")
+                return result
+
+            except Exception as e:
+                last_error = e
+                logger.warning(f"Classification attempt {attempt + 1}/2 failed: {e}")
+
+        logger.error(f"Classification failed after retry: {last_error}")
+        return {
+            "page_type": "LP",
+            "confidence": 0.5,
+            "sections": ["hero", "cta", "footer"],
+            "has_video": False,
+            "has_form": False,
+            "has_quiz": False,
+            "notes": f"Classification failed: {last_error}"
+        }
 
     async def classify_section(
         self,
@@ -102,6 +137,10 @@ hero, benefits, testimonials, vsl, offer, faq, cta, footer, text, image, lead-ca
 
 If you are not sure, return: text
 """
+        client = await _get_client()
+        if not client:
+            return "text"
+
         try:
             response = await client.chat.completions.create(
                 model="gpt-4o-mini",

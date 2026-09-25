@@ -107,6 +107,7 @@ class PlaywrightScraper:
             # Extract external scripts and pixels
             scripts = await self._extract_scripts(page)
             pixel_ids = await self._detect_pixels(page, html)
+            video = await self._detect_video(page)
 
             logger.info(f"Scrape complete: {len(section_screenshots)} sections found")
 
@@ -116,8 +117,71 @@ class PlaywrightScraper:
                 "section_screenshots": section_screenshots,
                 "scripts": scripts,
                 "pixel_ids": pixel_ids,
+                "video": video,
             }
 
+        finally:
+            await page.close()
+
+    async def quick_analyze(self, url: str) -> dict:
+        """
+        Fast, lightweight pass used for the pre-clone summary ("Encontramos
+        uma LP com X imagens, Y botões..."). Unlike scrape_url(), this never
+        takes a screenshot and never scrolls section by section — it only
+        loads the page once and counts elements, so it stays fast enough to
+        run before the user commits to a full clone.
+        """
+        from bs4 import BeautifulSoup
+
+        logger.info(f"Quick-analyzing URL: {url}")
+        page = await self.get_page()
+
+        try:
+            await page.goto(url, wait_until="networkidle", timeout=30000)
+            await page.wait_for_timeout(1000)
+
+            html = await page.content()
+            scripts = await self._extract_scripts(page)
+            pixel_ids = await self._detect_pixels(page, html)
+
+            soup = BeautifulSoup(html, "lxml")
+
+            images_count = len(soup.find_all("img"))
+            videos_count = len(soup.find_all("video")) + len(
+                [
+                    f for f in soup.find_all("iframe")
+                    if f.get("src") and any(
+                        host in f.get("src", "")
+                        for host in ("youtube", "vimeo", "wistia", "vturb", "player")
+                    )
+                ]
+            )
+            forms_count = len(soup.find_all("form"))
+            buttons_count = len(soup.find_all("button")) + len(
+                soup.find_all("input", attrs={"type": ["submit", "button"]})
+            )
+            links_count = len(soup.find_all("a", href=True))
+            choice_inputs = len(soup.find_all("input", attrs={"type": ["radio", "checkbox"]}))
+
+            text_lower = html.lower()
+            page_type = "LP"
+            if choice_inputs >= 4 or "quiz" in url.lower() or "step=" in url.lower():
+                page_type = "QUIZ"
+            elif videos_count >= 1 and images_count <= 5 and forms_count == 0:
+                page_type = "VSL"
+            elif any(k in text_lower for k in ("checkout", "cartão de crédito", "finalizar compra", "cpf")):
+                page_type = "CHECKOUT"
+
+            return {
+                "page_type": page_type,
+                "images_count": images_count,
+                "videos_count": videos_count,
+                "forms_count": forms_count,
+                "buttons_count": buttons_count,
+                "links_count": links_count,
+                "scripts_count": len(scripts),
+                "pixels": pixel_ids,
+            }
         finally:
             await page.close()
 
@@ -152,8 +216,8 @@ class PlaywrightScraper:
             () => {
                 const candidates = [
                     ...document.querySelectorAll(
-                        'section, [class*="section"], [class*="block"], [class*="hero"], '
-                        '[class*="benefit"], [class*="testimonial"], [class*="faq"], '
+                        'section, [class*="section"], [class*="block"], [class*="hero"], ' +
+                        '[class*="benefit"], [class*="testimonial"], [class*="faq"], ' +
                         '[class*="cta"], [class*="footer"], header, footer, main > div'
                     )
                 ];
@@ -207,15 +271,36 @@ class PlaywrightScraper:
                 if rect["height"] < 50:
                     continue
 
-                # Scroll section into view
+                # rect.y came from getBoundingClientRect() taken at scroll
+                # position 0, so it's a page-absolute offset. Scrolling
+                # there and then reusing that same number as the clip's y
+                # is wrong: page.screenshot(clip=...) — without
+                # full_page — clips against the CURRENT viewport, not the
+                # page, so it needs the element's position relative to
+                # wherever we actually land, not where it sits on the page.
+                # Near the bottom, the browser also can't scroll a full
+                # `rect.y - 20` if that overshoots the page's max scroll,
+                # so re-reading the real offset (rather than assuming the
+                # requested one applied) is what keeps this correct there
+                # too. Every section past the first viewport was silently
+                # dropped by this before — "Clipped area is either empty
+                # or outside the resulting image" — which is exactly why
+                # a long, multi-section landing page always came back as
+                # a single section.
                 await page.evaluate(f"window.scrollTo(0, {rect['y']} - 20)")
                 await page.wait_for_timeout(300)
+                scroll_y = await page.evaluate("window.scrollY")
+                relative_y = max(0, rect["y"] - scroll_y)
+
+                available_height = self.VIEWPORT["height"] - relative_y
+                if available_height < 50:
+                    continue
 
                 shot = await page.screenshot(clip={
                     "x": max(0, rect["x"]),
-                    "y": max(0, rect["y"]),
-                    "width": min(rect["width"], self.VIEWPORT["width"]),
-                    "height": min(rect["height"], 1200)
+                    "y": relative_y,
+                    "width": min(rect["width"], self.VIEWPORT["width"] - max(0, rect["x"])),
+                    "height": min(rect["height"], available_height)
                 })
 
                 screenshots.append({
@@ -235,6 +320,47 @@ class PlaywrightScraper:
                 .map(s => s.src)
                 .filter(s => s && s.startsWith('http'))
         """)
+
+    async def _detect_video(self, page: Page) -> Optional[dict]:
+        """
+        Finds the page's main video, whether it's a self-hosted <video> tag
+        (the common pattern for VTurb/Converteai-style VSL players) or an
+        embed from a known host (YouTube, Vimeo, Wistia). We re-embed the
+        original source on the published page rather than downloading and
+        re-hosting the file — the spec's "baixa o mesmo vídeo" goal, without
+        the copyright and storage weight of actually mirroring someone
+        else's video file.
+        """
+        try:
+            return await page.evaluate("""
+                () => {
+                    const video = document.querySelector('video');
+                    if (video && (video.currentSrc || video.src)) {
+                        return {
+                            type: 'native',
+                            url: video.currentSrc || video.src,
+                            poster: video.poster || null,
+                            duration: isFinite(video.duration) ? Math.round(video.duration) : null,
+                        };
+                    }
+                    const iframe = Array.from(document.querySelectorAll('iframe')).find(f => {
+                        const src = f.src || '';
+                        return /youtube|youtu\\.be|vimeo|wistia|vturb|panda|player\\./i.test(src);
+                    });
+                    if (iframe) {
+                        const src = iframe.src;
+                        let type = 'iframe';
+                        if (/youtube|youtu\\.be/i.test(src)) type = 'youtube';
+                        else if (/vimeo/i.test(src)) type = 'vimeo';
+                        else if (/wistia/i.test(src)) type = 'wistia';
+                        return { type, url: src, poster: null, duration: null };
+                    }
+                    return null;
+                }
+            """)
+        except Exception as e:
+            logger.warning(f"Video detection failed: {e}")
+            return None
 
     async def _detect_pixels(self, page: Page, html: str) -> List[dict]:
         """Detect common tracking pixels from HTML and window vars."""

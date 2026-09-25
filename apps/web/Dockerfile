@@ -20,6 +20,8 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN npx prisma generate --schema=packages/db/prisma/schema.prisma
+
 RUN npm run build -w apps/web
 
 # Production image

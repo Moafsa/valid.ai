@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { ScanProgress } from './scan-progress'
 import { BlockEditor } from './block-editor'
 import { ProjectHeader } from './project-header'
+import { TrackingPanel } from './tracking-panel'
 
 export function ProjectDetail({ project }: { project: any }) {
   const isScanning = ['SCANNING', 'CLONING', 'PENDING'].includes(project.status)
@@ -19,8 +20,11 @@ export function ProjectDetail({ project }: { project: any }) {
         />
       )}
 
-      {project.status === 'READY' && project.pages.length > 0 && (
-        <BlockEditor project={project} />
+      {['READY', 'PUBLISHED'].includes(project.status) && project.pages.length > 0 && (
+        <>
+          <BlockEditor project={project} />
+          <TrackingPanel projectId={project.id} initialTrackings={project.trackings ?? []} />
+        </>
       )}
 
       {project.status === 'ERROR' && (

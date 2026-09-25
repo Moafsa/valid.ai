@@ -22,16 +22,35 @@ export function ScanProgress({ jobId, projectId }: { jobId: string; projectId: s
 
     const evtSource = new EventSource(`/api/scan/progress/${jobId}`)
 
-    evtSource.onmessage = (e) => {
+    evtSource.onmessage = async (e) => {
       const data: ProgressEvent = JSON.parse(e.data)
       setEvent(data)
 
       if (data.status === 'done') {
         evtSource.close()
-        // Refresh the page to show the editor
-        setTimeout(() => router.refresh(), 1000)
+        try {
+          // The scanner only streams progress — it never writes to the DB.
+          // Persist the result here so the project flips to READY.
+          await fetch('/api/scan/finalize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jobId, projectId, result: data.result }),
+          })
+        } catch (err) {
+          console.error('Failed to save scan result', err)
+        }
+        setTimeout(() => router.refresh(), 500)
       } else if (data.status === 'error') {
         evtSource.close()
+        try {
+          await fetch('/api/scan/finalize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jobId, projectId, error: data.error || 'Erro desconhecido' }),
+          })
+        } catch (err) {
+          console.error('Failed to save scan error', err)
+        }
         router.refresh()
       }
     }
@@ -39,7 +58,7 @@ export function ScanProgress({ jobId, projectId }: { jobId: string; projectId: s
     evtSource.onerror = () => evtSource.close()
 
     return () => evtSource.close()
-  }, [jobId, router])
+  }, [jobId, projectId, router])
 
   const progress = event?.progress ?? 0
   const step = event?.currentStep ?? 'Iniciando scanner...'
@@ -70,7 +89,7 @@ export function ScanProgress({ jobId, projectId }: { jobId: string; projectId: s
         />
       </div>
 
-      <div className="mt-3 grid grid-cols-4 gap-2">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {[
           { label: '🔍 Scanner', pct: 20 },
           { label: '🎯 Classificar', pct: 30 },

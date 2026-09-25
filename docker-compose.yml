@@ -64,7 +64,7 @@ services:
       dockerfile: Dockerfile
     container_name: funnelai_scanner
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/funnelai
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL not set in .env}
       REDIS_URL: redis://redis:6379
       SCREENSHOT_TO_CODE_URL: http://screenshot-to-code:7001
       WEB_APP_URL: http://web:3000
@@ -77,6 +77,9 @@ services:
       AWS_REGION: ${AWS_REGION:-us-east-1}
       S3_BUCKET_NAME: ${S3_BUCKET_NAME:-funnelai-assets}
       CDN_URL: ${CDN_URL:-https://cdn.funnelai.com}
+      AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL:-}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-["http://localhost:3000"]}
       PROXY_URL: ${PROXY_URL:-}
     ports:
       - '8001:8001'
@@ -98,8 +101,8 @@ services:
       dockerfile: apps/web/Dockerfile
     container_name: funnelai_web
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/funnelai
-      DIRECT_URL: postgresql://postgres:password@postgres:5432/funnelai
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL not set in .env}
+      DIRECT_URL: ${DIRECT_URL:?DIRECT_URL not set in .env}
       REDIS_URL: redis://redis:6379
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_dummy}
       CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:-sk_test_dummy}

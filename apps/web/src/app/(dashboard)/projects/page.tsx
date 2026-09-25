@@ -4,6 +4,7 @@ import { getAuthUser } from '@/lib/auth-helper'
 import { db } from '@funnelai/db'
 import { ProjectCard } from '@/components/dashboard/project-card'
 import { NewProjectButton } from '@/components/dashboard/new-project-button'
+import { CloakerCheckButton } from '@/components/dashboard/cloaker-check-button'
 import { Filter, Search } from 'lucide-react'
 
 export default async function ProjectsPage({
@@ -31,12 +32,15 @@ export default async function ProjectsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Projetos</h1>
           <p className="text-sm text-gray-500 mt-1">{projects.length} projetos encontrados</p>
         </div>
-        <NewProjectButton />
+        <div className="flex items-center gap-3">
+          <CloakerCheckButton />
+          <NewProjectButton />
+        </div>
       </div>
 
       {/* Filters */}

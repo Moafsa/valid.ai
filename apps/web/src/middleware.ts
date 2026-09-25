@@ -7,6 +7,14 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/api/webhooks/(.*)',
   '/api/health',
+  // Server-to-server routes (scanner service) — authenticated by their own
+  // X-Internal-Token check, not a Clerk session, since the caller is never
+  // a signed-in browser user.
+  '/api/internal/(.*)',
+  // Published funnels and the sdk.js beacon they load — visited by anonymous
+  // end customers, never a logged-in Valid.ai user.
+  '/f/(.*)',
+  '/api/track',
 ])
 
 const isClerkKeyValid = () => {

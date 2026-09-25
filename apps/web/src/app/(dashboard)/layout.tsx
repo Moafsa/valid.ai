@@ -1,7 +1,9 @@
+export const dynamic = 'force-dynamic'
+
 import { getAuthUser } from '@/lib/auth-helper'
 import { redirect } from 'next/navigation'
-import { Sidebar } from '@/components/dashboard/sidebar'
-import { TopBar } from '@/components/dashboard/topbar'
+import { db } from '@funnelai/db'
+import { DashboardShell } from '@/components/dashboard/dashboard-shell'
 
 export default async function DashboardLayout({
   children,
@@ -12,15 +14,12 @@ export default async function DashboardLayout({
   const isClerkKeyValid = (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || '').length > 30
   if (!userId && isClerkKeyValid) redirect('/sign-in')
 
+  // TODO: scope by workspace (same as dashboard/projects pages)
+  const workspace = await db.workspace.findFirst({ select: { aiCredits: true, plan: true } })
+
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <TopBar />
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
-        </main>
-      </div>
-    </div>
+    <DashboardShell workspace={{ aiCredits: workspace?.aiCredits ?? 0, plan: workspace?.plan ?? 'FREE' }}>
+      {children}
+    </DashboardShell>
   )
 }

@@ -22,7 +22,7 @@ export function TranslationModal({
   isOpen: boolean
   onClose: () => void
   projectId: string
-  onTranslated?: () => void
+  onTranslated?: (newProjectId: string) => void
 }) {
   const [selectedCountry, setSelectedCountry] = useState('ES-MX')
   const [loading, setLoading] = useState(false)
@@ -38,13 +38,13 @@ export function TranslationModal({
         body: JSON.stringify({ projectId, targetCountry: selectedCountry }),
       })
 
+      const data = await res.json()
       if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Erro na tradução')
+        throw new Error(data.error || 'Erro na tradução')
       }
 
-      toast.success('Tradução cultural concluída com sucesso!')
-      onTranslated?.()
+      toast.success('Tradução cultural concluída! Abrindo o novo projeto...')
+      onTranslated?.(data.projectId)
       onClose()
     } catch (e: any) {
       toast.error(e.message)
@@ -62,7 +62,7 @@ export function TranslationModal({
           </div>
           <div>
             <h3 className="font-bold text-gray-900">Tradutor Cultural IA</h3>
-            <p className="text-xs text-gray-500">Adapta copy, moeda e gírias locais por país</p>
+            <p className="text-xs text-gray-500">Cria uma cópia do projeto adaptada a outro país — o original não é alterado</p>
           </div>
         </div>
 
@@ -99,7 +99,7 @@ export function TranslationModal({
             className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-brand-600 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
-            {loading ? 'Traduzindo...' : 'Traduzir Página'}
+            {loading ? 'Traduzindo...' : 'Criar Versão Traduzida'}
           </button>
         </div>
       </div>

@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     AWS_REGION: str = "us-east-1"
     S3_BUCKET_NAME: str = "funnelai-assets"
     CDN_URL: str = "https://cdn.funnelai.com"
+    # Custom S3-compatible endpoint (e.g. self-hosted MinIO). Leave empty for real AWS S3.
+    AWS_ENDPOINT_URL: str = ""
+    S3_FORCE_PATH_STYLE: bool = False
 
     # ─── Proxy ────────────────────────────────────────────────────────────────
     PROXY_URL: str = ""

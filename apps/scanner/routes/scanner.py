@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, HttpUrl
 from loguru import logger
+from typing import List, Optional, Any
 import json
 import asyncio
 
@@ -15,10 +16,42 @@ class ScanRequest(BaseModel):
     url: str
     project_id: str
     job_id: str
+    workspace_id: Optional[str] = None
 
 
 class CloakerRequest(BaseModel):
     url: str
+
+
+class QuickAnalyzeRequest(BaseModel):
+    url: str
+
+
+@router.post("/quick-analyze")
+async def quick_analyze(request: QuickAnalyzeRequest):
+    """
+    Pre-clone summary: loads the URL once, counts images/videos/forms/
+    buttons/links/scripts, guesses the funnel type, and — since we're
+    already asking the user to wait a few seconds here — also runs the
+    cloaker check, so "possível mecanismo de entrega diferenciada" shows up
+    in the same summary the product doc describes.
+    """
+    from services.playwright_scraper import PlaywrightScraper
+
+    async with PlaywrightScraper() as scraper:
+        counts = await scraper.quick_analyze(request.url)
+
+    cloaker_result = None
+    try:
+        cloaker_result = await CloakerDetector().analyze(request.url)
+    except Exception as e:
+        logger.error(f"Cloaker pre-check failed: {e}")
+
+    return {
+        **counts,
+        "possible_cloaking": bool(cloaker_result and cloaker_result.get("detected")),
+        "cloaking_similarity": cloaker_result.get("similarity_ratio") if cloaker_result else None,
+    }
 
 
 @router.post("/start")
@@ -36,6 +69,7 @@ async def start_scan(
         job_id=request.job_id,
         project_id=request.project_id,
         url=request.url,
+        workspace_id=request.workspace_id,
     )
 
     background_tasks.add_task(orchestrator.run)
@@ -97,28 +131,74 @@ async def update_prompt(request: UpdatePromptRequest):
     Updates an existing block code using screenshot-to-code update mode via prompt instruction.
     """
     from services.screenshot_to_code_client import ScreenshotToCodeClient
+    from services.html_utils import extract_body_html
     s2c = ScreenshotToCodeClient()
     updated_code = await s2c.update_with_prompt(
         existing_code=request.current_code,
         update_instructions=request.instruction,
+        stack="html_tailwind",
     )
-    return {"block_id": request.block_id, "code": updated_code}
+    return {"block_id": request.block_id, "code": extract_body_html(updated_code)}
+
+
+class BlockPayload(BaseModel):
+    id: str
+    type: str
+    order: int = 0
+    screenshot: Optional[str] = None
+    generatedHtml: Optional[str] = None
+
+
+class PagePayload(BaseModel):
+    name: str
+    slug: str
+    order: int = 0
+    blocks: List[BlockPayload] = []
 
 
 class TranslateProjectRequest(BaseModel):
-    project_id: str
     target_country: str
+    pages: List[PagePayload]
 
 
 @router.post("/translate-project")
 async def translate_project(request: TranslateProjectRequest):
     """
-    Translates all blocks in a project to the target country/language.
+    Translates the visible text of every block's generatedHtml to the target
+    country/language, in parallel. Blocks without generated code (e.g. still
+    only a raw screenshot because AI code-gen wasn't configured) pass through
+    unchanged — there is no text to translate yet.
+    The scanner is stateless: it receives the current pages/blocks and hands
+    back translated copies. Persisting them is the caller's job.
     """
     from services.translator import CulturalTranslator
     translator = CulturalTranslator()
-    # Mock block properties translation (reads from DB in production)
-    return {"project_id": request.project_id, "status": "translated", "target_country": request.target_country}
+
+    async def translate_block(block: BlockPayload) -> dict:
+        html = block.generatedHtml
+        translated_html = (
+            await translator.translate_html(html, request.target_country)
+            if html else html
+        )
+        return {
+            "id": block.id,
+            "type": block.type,
+            "order": block.order,
+            "screenshot": block.screenshot,
+            "generatedHtml": translated_html,
+        }
+
+    translated_pages = []
+    for page in request.pages:
+        translated_blocks = await asyncio.gather(*(translate_block(b) for b in page.blocks))
+        translated_pages.append({
+            "name": page.name,
+            "slug": page.slug,
+            "order": page.order,
+            "blocks": translated_blocks,
+        })
+
+    return {"target_country": request.target_country, "pages": translated_pages}
 
 
 @router.post("/invalidate-cache")

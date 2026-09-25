@@ -3,10 +3,15 @@ from loguru import logger
 from openai import AsyncOpenAI
 from typing import Optional
 
-from config import settings
 from services.playwright_scraper import PlaywrightScraper
+from services.screenshot_to_code_client import CredentialProvider
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None
+
+async def _get_client() -> Optional[AsyncOpenAI]:
+    """Reads the superadmin-configured key instead of the static .env one."""
+    creds = await CredentialProvider.get()
+    api_key = creds.get("openai")
+    return AsyncOpenAI(api_key=api_key) if api_key else None
 
 
 class CloakerDetector:
@@ -36,8 +41,8 @@ class CloakerDetector:
         diff_ratio = self._compare_html(html_a, html_b)
         cloaker_detected = diff_ratio < 0.85  # More than 15% difference
 
-        details = ""
-        if cloaker_detected and client:
+        details = None
+        if cloaker_detected:
             details = await self._analyze_diff_with_ai(html_a, html_b)
 
         result = {
@@ -88,9 +93,17 @@ Version B snippet (first 2000 chars):
 Describe in 2-3 sentences what differences you detect, and whether this looks like cloaking.
 Be specific: different content? Different redirect? Different product being promoted?
 """
-        response = await client.chat.completions.create(
-            model="gpt-4o-mini",
-            max_tokens=300,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return response.choices[0].message.content.strip()
+        client = await _get_client()
+        if not client:
+            return None
+
+        try:
+            response = await client.chat.completions.create(
+                model="gpt-4o-mini",
+                max_tokens=300,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            logger.error(f"Cloaker AI analysis failed: {e}")
+            return None

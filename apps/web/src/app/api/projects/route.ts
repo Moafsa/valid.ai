@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
         url,
         project_id: project.id,
         job_id: scanJob.id,
+        workspace_id: workspace.id,
       }),
     }).catch(() => null)
 

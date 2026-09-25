@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { db } from '@funnelai/db'
+import { PLAN_CREDIT_LIMITS } from '@/lib/credits'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
@@ -29,7 +30,6 @@ export async function POST(req: NextRequest) {
         [process.env.STRIPE_SCALE_PRICE_ID ?? '']: 'SCALE',
       }
       const plan = planMap[priceId ?? ''] ?? 'FREE'
-      const creditsByPlan: Record<string, number> = { FREE: 50, PRO: 500, SCALE: 3000 }
 
       // Find workspace by stripe customer id (stored in metadata)
       const workspaceId = sub.metadata?.workspaceId
@@ -38,15 +38,15 @@ export async function POST(req: NextRequest) {
           where: { id: workspaceId },
           data: {
             plan: plan as any,
-            aiCredits: creditsByPlan[plan] ?? 50,
+            aiCredits: PLAN_CREDIT_LIMITS[plan] ?? PLAN_CREDIT_LIMITS.FREE,
           },
         })
         await db.creditTransaction.create({
           data: {
             workspaceId,
             type: 'GRANT',
-            amount: creditsByPlan[plan] ?? 50,
-            balanceAfter: creditsByPlan[plan] ?? 50,
+            amount: PLAN_CREDIT_LIMITS[plan] ?? PLAN_CREDIT_LIMITS.FREE,
+            balanceAfter: PLAN_CREDIT_LIMITS[plan] ?? PLAN_CREDIT_LIMITS.FREE,
             description: `Renovação de plano ${plan}`,
             stripePaymentId: event.id,
           },

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
-import { ArrowLeft, Globe2, FileText, AlertTriangle, ExternalLink, Pencil } from 'lucide-react'
+import { ArrowLeft, Globe2, FileText, AlertTriangle, ExternalLink, Pencil, Eye, Users } from 'lucide-react'
 import { DeleteProjectButton } from '@/components/dashboard/delete-project-button'
 
 export const dynamic = 'force-dynamic'
@@ -20,6 +20,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
 
   const isBusy = ['PENDING', 'SCANNING', 'CLONING'].includes(project.status)
   const stats = project.crawlStats as { found?: number; completed?: number; failed?: { url: string; error: string }[] } | null
+
+  const [viewCount, leadCount, recentLeads] = isBusy
+    ? [0, 0, []]
+    : await Promise.all([
+        db.pageEvent.count({ where: { projectId: id, type: 'view' } }),
+        db.pageEvent.count({ where: { projectId: id, type: 'lead' } }),
+        db.lead.findMany({ where: { projectId: id }, orderBy: { createdAt: 'desc' }, take: 10 }),
+      ])
 
   return (
     <div>
@@ -53,6 +61,65 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
         </div>
       ) : (
         <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10">
+                <Eye className="h-4 w-4 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-white">{viewCount}</p>
+                <p className="text-xs text-gray-500">Visitantes</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10">
+                <Users className="h-4 w-4 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-white">
+                  {leadCount}
+                  {viewCount > 0 && (
+                    <span className="ml-1.5 text-xs font-normal text-gray-500">
+                      ({((leadCount / viewCount) * 100).toFixed(1)}%)
+                    </span>
+                  )}
+                </p>
+                <p className="text-xs text-gray-500">Conversões (leads)</p>
+              </div>
+            </div>
+          </div>
+
+          {recentLeads.length > 0 && (
+            <div>
+              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">Leads recentes</h2>
+              <div className="space-y-2">
+                {recentLeads.map(lead => {
+                  const fields = lead.quizAnswers as Record<string, string>
+                  return (
+                    <div
+                      key={lead.id}
+                      className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm"
+                    >
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-gray-200">
+                        {lead.name && <span className="font-medium text-white">{lead.name}</span>}
+                        {lead.email && <span className="text-gray-400">{lead.email}</span>}
+                        {lead.phone && <span className="text-gray-400">{lead.phone}</span>}
+                        <span className="ml-auto text-xs text-gray-500">
+                          {new Date(lead.createdAt).toLocaleString('pt-BR')}
+                        </span>
+                      </div>
+                      {!!fields && Object.keys(fields).length > 0 && (
+                        <p className="mt-1 truncate text-xs text-gray-500">
+                          {Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                        </p>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {stats && (
             <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm">
               <span className="text-gray-300">

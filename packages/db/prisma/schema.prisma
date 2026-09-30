@@ -70,8 +70,32 @@ model Project {
   pages       Page[]
   scanJob     ScanJob?  @relation(fields: [scanJobId], references: [id])
   trackings   ProjectTracking[]
+  pageEvents  PageEvent[]
 
   @@map("projects")
+}
+
+// ─── Page Events (first-party analytics) ──────────────────
+// "view" is recorded once per page load by the public clone viewer's own
+// tracking beacon; "lead" is recorded whenever a visitor submits any form
+// on that page (see api/track). Kept as one lean table — visitantes =
+// count(type=view), conversões = count(type=lead) — rather than a
+// separate aggregate table, since raw events are cheap at this volume and
+// let the dashboard slice by day/page later without a schema change.
+model PageEvent {
+  id        String   @id @default(cuid())
+  projectId String
+  pageId    String?
+  type      String
+  path      String?
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, createdAt])
+  @@index([projectId, type])
+  @@map("page_events")
 }
 
 // ─── Page ────────────────────────────────────────────────

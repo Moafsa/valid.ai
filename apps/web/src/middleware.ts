@@ -7,6 +7,11 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/api/webhooks/(.*)',
   '/api/health',
+  // The cloned page itself — this is what a real site visitor opens, so it
+  // can't require the owner's own login. /api/track is the beacon that
+  // page posts view/lead events to, same reasoning.
+  '/projects/(.*)/p/(.*)',
+  '/api/track',
 ])
 
 const isClerkKeyValid = () => {

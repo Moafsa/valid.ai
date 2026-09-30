@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import grapesjs, { Editor } from 'grapesjs'
 import 'grapesjs/dist/css/grapes.min.css'
-import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2 } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2, Image as ImageIcon, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 import { STARTER_BLOCKS } from '@/lib/visual-editor/starter-blocks'
 
@@ -43,8 +43,16 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
   const [canRedo, setCanRedo] = useState(false)
   const [rightTab, setRightTab] = useState<RightTab>('conteudo')
   const [blockSearch, setBlockSearch] = useState('')
-  const [selected, setSelected] = useState<{ text: string; href: string | null; isLink: boolean; isTextLeaf: boolean } | null>(null)
+  const [selected, setSelected] = useState<{
+    text: string
+    href: string | null
+    isLink: boolean
+    isTextLeaf: boolean
+    isImage: boolean
+    src: string | null
+  } | null>(null)
   const selectedComponentRef = useRef<any>(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   useEffect(() => {
     if (!containerRef.current || editorRef.current) return
@@ -140,6 +148,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
       layerManager: { appendTo: layerManagerRef.current! },
     })
     editorRef.current = editor
+    if (typeof window !== 'undefined') (window as any).__vaiEditor = editor
 
     if (pageCss) {
       editor.on('load', () => {
@@ -170,6 +179,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
       const el = component.getEl?.()
       const tag = (el?.tagName || '').toLowerCase()
       const isLink = tag === 'a'
+      const isImage = tag === 'img'
       // A container (a <section>/<div> wrapping several nested elements)
       // has more than one child component, or a child that isn't a plain
       // text node — editing "its text" via a single textarea would
@@ -184,6 +194,8 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
         href: isLink ? component.getAttributes()['href'] ?? '' : null,
         isLink,
         isTextLeaf,
+        isImage,
+        src: isImage ? component.getAttributes()['src'] ?? '' : null,
       })
     }
     editor.on('component:selected', readSelection)
@@ -221,6 +233,32 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
     if (!comp) return
     comp.addAttributes({ href })
     setSelected(prev => (prev ? { ...prev, href } : prev))
+  }
+
+  const applyImageUpload = async (file: File) => {
+    const comp = selectedComponentRef.current
+    if (!comp) return
+    setUploadingImage(true)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      const res = await fetch('/api/editor/upload-image', { method: 'POST', body: form })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Falha ao enviar imagem')
+      // GrapesJS's built-in "image" component type keeps `src` as its own
+      // model property (comp.get('src')), separate from the generic
+      // attributes hash — toHTML()/export reads from that property, so
+      // addAttributes() alone updates the DOM but silently doesn't
+      // round-trip on save. Setting both keeps the two in sync.
+      comp.set('src', data.url)
+      comp.addAttributes({ src: data.url })
+      setSelected(prev => (prev ? { ...prev, src: data.url } : prev))
+      toast.success('Imagem atualizada!')
+    } catch (e: any) {
+      toast.error(e.message || 'Erro ao enviar imagem')
+    } finally {
+      setUploadingImage(false)
+    }
   }
 
   const handleSave = async () => {
@@ -375,7 +413,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
           <div className={rightTab === 'conteudo' ? 'flex-1 overflow-y-auto p-4' : 'hidden'}>
             {selected ? (
               <div className="space-y-4">
-                {selected.isTextLeaf ? (
+                {selected.isImage ? null : selected.isTextLeaf ? (
                   <div>
                     <label className="mb-1.5 block text-xs font-medium text-gray-500">Texto (atualiza enquanto digita)</label>
                     <textarea
@@ -401,6 +439,40 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
                       onChange={e => applyHrefEdit(e.target.value)}
                       className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none"
                     />
+                  </div>
+                )}
+                {selected.isImage && (
+                  <div>
+                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                      <ImageIcon className="h-3.5 w-3.5" /> Imagem
+                    </label>
+                    {selected.src && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={selected.src}
+                        alt=""
+                        className="mb-2 h-24 w-full rounded-lg border border-gray-200 object-cover"
+                      />
+                    )}
+                    <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 hover:border-violet-400 hover:text-violet-700">
+                      {uploadingImage ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Upload className="h-4 w-4" />
+                      )}
+                      {uploadingImage ? 'Enviando...' : 'Trocar imagem'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingImage}
+                        className="hidden"
+                        onChange={e => {
+                          const file = e.target.files?.[0]
+                          if (file) applyImageUpload(file)
+                          e.target.value = ''
+                        }}
+                      />
+                    </label>
                   </div>
                 )}
               </div>

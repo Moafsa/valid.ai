@@ -8,6 +8,7 @@ from loguru import logger
 
 from services.scan_orchestrator import ScanOrchestrator
 from services.progress_store import ProgressStore
+from services.asset_uploader import AssetUploader
 
 router = APIRouter()
 
@@ -17,6 +18,12 @@ class ScanRequest(BaseModel):
     project_id: str
     url: str
     workspace_id: Optional[str] = None
+
+
+class UploadAssetRequest(BaseModel):
+    data_b64: str
+    filename: str
+    content_type: Optional[str] = None
 
 
 @router.post("/start")
@@ -30,6 +37,23 @@ async def start_scan(request: ScanRequest, background_tasks: BackgroundTasks):
     )
     background_tasks.add_task(orchestrator.run)
     return {"job_id": request.job_id, "project_id": request.project_id, "status": "queued"}
+
+
+@router.post("/upload-asset")
+async def upload_asset(request: UploadAssetRequest):
+    """Manual image swap from the visual editor — the browser sends the
+    file as base64, we re-host it on our own S3/MinIO the same way cloned
+    assets already are, and hand back a stable URL to store on the block."""
+    import uuid
+
+    ext = (request.filename.rsplit(".", 1)[-1] if "." in request.filename else "png").lower()[:8]
+    key = f"editor-uploads/{uuid.uuid4()}.{ext}"
+    url = await AssetUploader().upload_base64(
+        data_b64=request.data_b64,
+        key=key,
+        content_type=request.content_type or "image/png",
+    )
+    return {"url": url}
 
 
 @router.get("/progress/{job_id}")

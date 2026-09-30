@@ -3,6 +3,7 @@ import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
 import { BackToProjectChip } from '@/components/dashboard/back-to-project-chip'
 import { PageTracker } from '@/components/public/page-tracker'
+import { ImageLightbox } from '@/components/public/image-lightbox'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,6 +50,7 @@ export default async function ClonePageViewer({
     <>
       {page.customCss && <style dangerouslySetInnerHTML={{ __html: page.customCss }} />}
       <PageTracker projectId={id} pageId={page.id} />
+      <ImageLightbox />
       {isOwner && <BackToProjectChip projectId={id} />}
       <div dangerouslySetInnerHTML={{ __html: body }} />
     </>

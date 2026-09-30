@@ -126,9 +126,136 @@ class PlaywrightScraper:
         except Exception:
             pass
 
+    async def _expand_accordions(self, page: Page):
+        """Clicks accordion/tab/disclosure triggers so their content is
+        actually IN the DOM before capture.
+
+        _reveal_hidden (below) only fixes CSS-collapsed content — it can't
+        help when a framework only MOUNTS the panel on click (React/Vue
+        state, e.g. `{isOpen && <div>...}`), which is common enough that a
+        multi-item FAQ often only has its first, default-open item's answer
+        in the DOM at all. The rest simply aren't there yet, no CSS trick
+        recovers content that was never sent.
+
+        Clicking arbitrary buttons on someone else's live site is real risk
+        (a real form submit, a real "add to cart", a real WhatsApp/mailto
+        handoff) — this only clicks elements that look like pure UI-state
+        toggles: not inside a <form>, not type=submit, not wrapping a real
+        link, and not matching an action-word denylist. If a click still
+        causes a navigation, the URL is restored immediately and nothing
+        else about it is trusted.
+        """
+        clicked = await page.evaluate("""
+            async () => {
+                const DENYLIST = /comprar|compre|carrinho|checkout|finalizar|assinar|assinatura|pagar|pagamento|enviar|submit|cadastr|confirmar pedido|whatsapp|login|entrar|sign in|sign up|baixar|download|compartilhar|share|excluir|deletar|remover|cancelar|logout|sair/i;
+                const originalHref = location.href;
+
+                // A gallery thumbnail is also just a <button> — indistinguishable
+                // from an accordion trigger until it's clicked and a full-screen
+                // lightbox appears. With no script left to close it, that lightbox
+                // would otherwise stay open forever in the capture, blocking
+                // every section behind it. Close/hide anything that suddenly
+                // covers most of the viewport at fixed position immediately
+                // after each click, before it can do that.
+                function closeStrayOverlays() {
+                    const vw = window.innerWidth, vh = window.innerHeight;
+                    let found = false;
+                    document.querySelectorAll('*').forEach(el => {
+                        if (getComputedStyle(el).position !== 'fixed') return;
+                        const r = el.getBoundingClientRect();
+                        if ((r.width * r.height) / (vw * vh) > 0.6) {
+                            el.style.setProperty('display', 'none', 'important');
+                            found = true;
+                        }
+                    });
+                    return found;
+                }
+
+                // This site (like most) has no aria-expanded to tell an
+                // already-open accordion from a closed one, so every button
+                // gets clicked once regardless of its current state. If that
+                // click SHRANK the page, it just toggled something CLOSED
+                // (collapsing content that was already open, or unmounting
+                // it entirely in a React-conditional-render accordion) —
+                // click it again to put it back. Comparing scrollHeight
+                // before/after is a plain, framework-agnostic way to tell
+                // "revealed more content" from "hid what was there" without
+                // needing to know anything about this site's markup.
+                const candidates = Array.from(document.querySelectorAll('button, [role="tab"], [role="button"]'));
+                let clicked = 0;
+                const MAX_CLICKS = 40;
+                for (const el of candidates) {
+                    if (clicked >= MAX_CLICKS) break;
+                    if (el.closest('form')) continue;
+                    if (el.getAttribute('type') === 'submit') continue;
+                    if (el.closest('a[href]')) continue;
+                    const text = (el.textContent || '').trim();
+                    if (DENYLIST.test(text)) continue;
+
+                    const beforeHeight = document.body.scrollHeight;
+                    try { el.click(); } catch (e) { continue; }
+                    clicked++;
+                    await new Promise(r => setTimeout(r, 40));
+                    if (location.href !== originalHref) {
+                        try { history.pushState(null, '', originalHref); } catch (e) {}
+                    }
+                    closeStrayOverlays();
+
+                    if (document.body.scrollHeight < beforeHeight - 5) {
+                        try { el.click(); } catch (e) {}
+                        await new Promise(r => setTimeout(r, 40));
+                        closeStrayOverlays();
+                    }
+                }
+                await new Promise(r => setTimeout(r, 150));
+                closeStrayOverlays();
+                return clicked;
+            }
+        """)
+        if clicked:
+            logger.info(f"Expanded {clicked} accordion/tab-like element(s) before capture")
+
+    async def _close_stray_overlays(self, page: Page):
+        """Hides any position:fixed element covering most of the viewport —
+        almost certainly a lightbox/modal/off-canvas nav drawer, never
+        legitimate page content. Needed as its own pass (not just inside
+        _expand_accordions) because _reveal_hidden's "unhide anything
+        display:none" logic runs AFTER that and doesn't know the
+        difference between lazy-hidden content and a nav drawer that's
+        SUPPOSED to be closed — it happily reopens one this already closed.
+        """
+        closed = await page.evaluate("""
+            () => {
+                const vw = window.innerWidth, vh = window.innerHeight;
+                let found = false;
+                document.querySelectorAll('*').forEach(el => {
+                    if (getComputedStyle(el).position !== 'fixed') return;
+                    const r = el.getBoundingClientRect();
+                    if ((r.width * r.height) / (vw * vh) > 0.6) {
+                        el.style.setProperty('display', 'none', 'important');
+                        found = true;
+                    }
+                });
+                return found;
+            }
+        """)
+        if closed:
+            logger.info("Closed a stray full-viewport overlay before capture")
+
     async def _reveal_hidden(self, page: Page):
         """Forces anything hidden behind a timer/condition visible before
-        capture, so a clone doesn't ship permanently-hidden content."""
+        capture, so a clone doesn't ship permanently-hidden content.
+
+        Also forces open anything collapsed via a clipped max-height or
+        grid-template-rows (the standard CSS accordion technique — an FAQ
+        panel or expandable section sitting at max-height:0/overflow:hidden
+        until a JS class toggle opens it). The original toggle script is
+        gone by the time this ships (sanitize() strips every <script>), so
+        an accordion that's merely reproduced as-is stays permanently
+        collapsed with no way to open it. Forcing it open trades "click to
+        expand" for "just always readable" — worse than a real accordion,
+        but far better than content nobody can ever see.
+        """
         await page.evaluate("""
             () => {
                 document.querySelectorAll('*').forEach(el => {
@@ -137,6 +264,18 @@ class PlaywrightScraper:
                         el.style.setProperty('display', cs.display === 'none' ? 'block' : cs.display, 'important');
                         el.style.setProperty('visibility', 'visible', 'important');
                         el.style.setProperty('opacity', '1', 'important');
+                    }
+
+                    if (cs.overflow === 'hidden' || cs.overflowY === 'hidden') {
+                        const maxH = parseFloat(cs.maxHeight);
+                        const rows = cs.gridTemplateRows;
+                        const clippedByMaxHeight = !isNaN(maxH) && isFinite(maxH) && maxH < el.scrollHeight - 2;
+                        const clippedByGridRows = /^\\d/.test(rows) && parseFloat(rows) < el.scrollHeight - 2;
+                        if (clippedByMaxHeight || clippedByGridRows) {
+                            el.style.setProperty('max-height', 'none', 'important');
+                            el.style.setProperty('grid-template-rows', '1fr', 'important');
+                            el.style.setProperty('overflow', 'visible', 'important');
+                        }
                     }
                 });
             }
@@ -196,6 +335,14 @@ class PlaywrightScraper:
         REAL outerHTML with every element's computed style inlined
         (STYLE_PROPS) — a safety net for whatever the page-level captured
         stylesheet doesn't cleanly cover once rendered standalone.
+
+        Deliberately NOT including 'width': an inline style attribute beats
+        any external stylesheet rule regardless of selector specificity,
+        including rules inside @media queries — baking in the ONE desktop
+        width computed for every element made every clone rigid at that
+        exact viewport, overriding the real (already-captured) responsive
+        CSS and breaking mobile entirely. max-width is kept (constraints
+        like Tailwind's max-w-4xl are usually intentional either way).
         """
         sections = await page.evaluate("""
             () => {
@@ -208,7 +355,7 @@ class PlaywrightScraper:
                     'border-radius', 'border-width', 'border-style', 'border-color',
                     'display', 'flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'gap',
                     'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row',
-                    'width', 'max-width', 'min-height', 'box-shadow', 'opacity', 'object-fit',
+                    'max-width', 'min-height', 'box-shadow', 'opacity', 'object-fit',
                     'position', 'top', 'right', 'bottom', 'left', 'z-index',
                     'transform', 'transform-origin', 'filter', 'backdrop-filter', 'clip-path',
                     'cursor', 'overflow', 'aspect-ratio',
@@ -459,7 +606,9 @@ class PlaywrightScraper:
             await self._goto_resilient(page, url)
             await page.wait_for_timeout(1500)
             await self._scroll_page(page)
+            await self._expand_accordions(page)
             await self._reveal_hidden(page)
+            await self._close_stray_overlays(page)
 
             # Real content first — sections, CSS, video. A heavy/very tall
             # real-world page (huge product pages, lots of media) can make

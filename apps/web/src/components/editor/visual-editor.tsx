@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import grapesjs, { Editor } from 'grapesjs'
 import 'grapesjs/dist/css/grapes.min.css'
-import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2, Image as ImageIcon, Upload } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2, Image as ImageIcon, Upload, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { STARTER_BLOCKS } from '@/lib/visual-editor/starter-blocks'
 
@@ -16,11 +16,25 @@ interface Block {
   [key: string]: any
 }
 
+interface PageSummary {
+  id: string
+  slug: string
+  name: string
+  order: number
+}
+
 interface VisualEditorProps {
   projectId: string
   pageId: string
   blocks: Block[]
   pageCss: string | null
+  pages: PageSummary[]
+}
+
+interface MediaItem {
+  component: any
+  src: string
+  alt: string
 }
 
 // GrapesJS always includes this reset in editor.getCss(), even for a
@@ -28,9 +42,53 @@ interface VisualEditorProps {
 // <style> tag when the block actually defines custom CSS.
 const GJS_BASE_CSS = '* { box-sizing: border-box; } body {margin: 0;}'
 
-type RightTab = 'conteudo' | 'estilo' | 'layout'
+// GrapesJS ships with a dark-gray chrome by default (block/style/layer
+// panels), themed entirely through these CSS custom properties — so
+// instead of overriding ~300 individual classes, we re-tint the palette
+// itself to the site's violet/blue identity. Doubling the class selector
+// bumps specificity above :root without needing !important or relying on
+// stylesheet load order (grapes.min.css also defines these on :root).
+const GJS_THEME_CSS = `
+.vai-editor-shell.vai-editor-shell {
+  --gjs-primary-color: #7c3aed;
+  --gjs-secondary-color: #c4b5fd;
+  --gjs-tertiary-color: #a78bfa;
+  --gjs-quaternary-color: #ddd6fe;
+  --gjs-font-color: #cbd5e1;
+  --gjs-font-color-active: #ffffff;
+  --gjs-main-color: #15101f;
+  --gjs-main-dark-color: rgba(0, 0, 0, 0.35);
+  --gjs-secondary-dark-color: rgba(0, 0, 0, 0.25);
+  --gjs-main-light-color: rgba(255, 255, 255, 0.06);
+  --gjs-secondary-light-color: rgba(255, 255, 255, 0.55);
+  --gjs-soft-light-color: rgba(255, 255, 255, 0.03);
+  --gjs-color-blue: #8b5cf6;
+  --gjs-color-highlight: #a78bfa;
+  --gjs-light-border: rgba(255, 255, 255, 0.08);
+  --gjs-arrow-color: rgba(255, 255, 255, 0.5);
+}
+/* A few spots GrapesJS hardcodes for a light backdrop instead of using a
+   variable (block borders/hover assume a white page behind them). */
+.vai-editor-shell .gjs-block { border-color: rgba(255, 255, 255, 0.08); }
+.vai-editor-shell .gjs-block:hover { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(139, 92, 246, 0.4); box-shadow: none; }
+.vai-editor-shell .gjs-category-title,
+.vai-editor-shell .gjs-sm-sector-title,
+.vai-editor-shell .gjs-layer-title { border-bottom-color: rgba(255, 255, 255, 0.06); }
+.vai-editor-shell ::-webkit-scrollbar { width: 8px; height: 8px; }
+.vai-editor-shell ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+.vai-editor-shell ::-webkit-scrollbar-track { background: transparent; }
+/* The color-picker popup (Spectrum) is appended straight to <body>, so it
+   sits outside .vai-editor-shell and needs its own (page-global, but this
+   is a standalone fullscreen route with nothing else on it) dark theme. */
+.sp-container { background-color: #15101f; border: 1px solid rgba(255, 255, 255, 0.1); }
+.sp-replacer { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); }
+.sp-input { background: rgba(255, 255, 255, 0.05); color: #e5e7eb !important; border-color: rgba(255, 255, 255, 0.1); }
+.sp-picker-container { border-left-color: rgba(255, 255, 255, 0.1); }
+`
 
-export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEditorProps) {
+type RightTab = 'conteudo' | 'estilo' | 'layout' | 'midias'
+
+export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: VisualEditorProps) {
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
   const blocksPanelRef = useRef<HTMLDivElement>(null)
@@ -43,6 +101,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
   const [canRedo, setCanRedo] = useState(false)
   const [rightTab, setRightTab] = useState<RightTab>('conteudo')
   const [blockSearch, setBlockSearch] = useState('')
+  const [pageMenuOpen, setPageMenuOpen] = useState(false)
   const [selected, setSelected] = useState<{
     text: string
     href: string | null
@@ -53,6 +112,12 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
   } | null>(null)
   const selectedComponentRef = useRef<any>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [mediaList, setMediaList] = useState<MediaItem[]>([])
+  const [uploadingMediaIndex, setUploadingMediaIndex] = useState<number | null>(null)
+
+  const sortedPages = [...pages].sort((a, b) => a.order - b.order)
+  const pagePath = (p: PageSummary, i: number) => (i === 0 ? '/' : `/${p.slug}`)
+  const currentPageIndex = sortedPages.findIndex(p => p.id === pageId)
 
   useEffect(() => {
     if (!containerRef.current || editorRef.current) return
@@ -221,6 +286,34 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // The Mídias tab lists every <img> in the page from a fresh walk of the
+  // component tree (not raw DOM) so "Trocar" always has a real GrapesJS
+  // component to call .set('src', ...) on, however deeply nested it is.
+  const collectMedia = (collection: any, acc: MediaItem[]): MediaItem[] => {
+    collection.forEach((c: any) => {
+      const el = c.getEl?.()
+      if (el?.tagName === 'IMG') {
+        const attrs = c.getAttributes?.() ?? {}
+        const src = attrs.src || el.getAttribute('src') || ''
+        if (src) acc.push({ component: c, src, alt: attrs.alt || '' })
+      }
+      const children = c.components?.()
+      if (children?.length) collectMedia(children, acc)
+    })
+    return acc
+  }
+
+  const refreshMediaList = () => {
+    const editor = editorRef.current
+    if (!editor) return
+    setMediaList(collectMedia(editor.getWrapper()!.components(), []))
+  }
+
+  useEffect(() => {
+    if (rightTab === 'midias') refreshMediaList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rightTab])
+
   const applyTextEdit = (text: string) => {
     const comp = selectedComponentRef.current
     if (!comp) return
@@ -235,10 +328,10 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
     setSelected(prev => (prev ? { ...prev, href } : prev))
   }
 
-  const applyImageUpload = async (file: File) => {
-    const comp = selectedComponentRef.current
+  const applyImageUploadTo = async (comp: any, file: File, mediaIndex?: number) => {
     if (!comp) return
-    setUploadingImage(true)
+    if (mediaIndex !== undefined) setUploadingMediaIndex(mediaIndex)
+    else setUploadingImage(true)
     try {
       const form = new FormData()
       form.append('file', file)
@@ -252,14 +345,20 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
       // round-trip on save. Setting both keeps the two in sync.
       comp.set('src', data.url)
       comp.addAttributes({ src: data.url })
-      setSelected(prev => (prev ? { ...prev, src: data.url } : prev))
+      if (comp === selectedComponentRef.current) {
+        setSelected(prev => (prev ? { ...prev, src: data.url } : prev))
+      }
+      refreshMediaList()
       toast.success('Imagem atualizada!')
     } catch (e: any) {
       toast.error(e.message || 'Erro ao enviar imagem')
     } finally {
-      setUploadingImage(false)
+      if (mediaIndex !== undefined) setUploadingMediaIndex(null)
+      else setUploadingImage(false)
     }
   }
+
+  const applyImageUpload = (file: File) => applyImageUploadTo(selectedComponentRef.current, file)
 
   const handleSave = async () => {
     const editor = editorRef.current
@@ -312,23 +411,59 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
   const setDevice = (name: string) => editorRef.current?.setDevice(name)
 
   return (
-    <div className="flex h-screen flex-col bg-gray-100">
-      <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2.5 flex-shrink-0">
-        <button
-          onClick={() => router.push(`/projects/${projectId}`)}
-          className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Voltar ao projeto
-        </button>
-        <div className="flex items-center gap-1 rounded-lg border border-gray-200 p-1">
-          <button onClick={() => setDevice('Desktop')} title="Desktop" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+    <div className="vai-editor-shell flex h-screen flex-col bg-[#07050f] text-white">
+      <style>{GJS_THEME_CSS}</style>
+      <div className="flex items-center justify-between border-b border-white/10 bg-[#0a0714] px-4 py-2.5 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.push(`/projects/${projectId}`)}
+            className="flex items-center gap-1.5 text-sm text-gray-400 transition-colors hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </button>
+          {sortedPages.length > 1 && (
+            <div className="relative">
+              <button
+                onClick={() => setPageMenuOpen(v => !v)}
+                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-gray-200 hover:border-violet-500/40 hover:bg-white/10"
+              >
+                {currentPageIndex >= 0 ? pagePath(sortedPages[currentPageIndex], currentPageIndex) : '/'}
+                <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
+              </button>
+              {pageMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setPageMenuOpen(false)} />
+                  <div className="absolute left-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-[#0e0a1a] py-1 shadow-2xl shadow-black/50">
+                    {sortedPages.map((p, i) => (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          setPageMenuOpen(false)
+                          if (p.id !== pageId) router.push(`/projects/${projectId}/editor/${p.slug}`)
+                        }}
+                        className={`flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm ${
+                          p.id === pageId ? 'bg-violet-600/15 text-violet-300' : 'text-gray-300 hover:bg-white/5'
+                        }`}
+                      >
+                        <span className="truncate">{p.name || pagePath(p, i)}</span>
+                        <span className="shrink-0 text-xs text-gray-500">{pagePath(p, i)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 p-1">
+          <button onClick={() => setDevice('Desktop')} title="Desktop" className="rounded p-1.5 text-gray-400 hover:bg-white/10 hover:text-white">
             <Monitor className="h-4 w-4" />
           </button>
-          <button onClick={() => setDevice('Tablet')} title="Tablet" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+          <button onClick={() => setDevice('Tablet')} title="Tablet" className="rounded p-1.5 text-gray-400 hover:bg-white/10 hover:text-white">
             <Tablet className="h-4 w-4" />
           </button>
-          <button onClick={() => setDevice('Mobile')} title="Celular" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+          <button onClick={() => setDevice('Mobile')} title="Celular" className="rounded p-1.5 text-gray-400 hover:bg-white/10 hover:text-white">
             <Smartphone className="h-4 w-4" />
           </button>
         </div>
@@ -337,7 +472,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
             onClick={() => editorRef.current?.runCommand('core:undo')}
             disabled={!canUndo}
             title="Desfazer"
-            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30"
+            className="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30"
           >
             <Undo2 className="h-4 w-4" />
           </button>
@@ -345,14 +480,14 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
             onClick={() => editorRef.current?.runCommand('core:redo')}
             disabled={!canRedo}
             title="Refazer"
-            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30"
+            className="rounded-lg p-2 text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30"
           >
             <Redo2 className="h-4 w-4" />
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/20 transition hover:from-violet-500 hover:to-blue-500 disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Salvar
@@ -362,8 +497,8 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
 
       <div className="flex flex-1 min-h-0">
         {/* Left: block library */}
-        <div className="flex w-56 flex-shrink-0 flex-col border-r border-gray-200 bg-white">
-          <div className="border-b border-gray-200 p-3">
+        <div className="flex w-56 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0714]">
+          <div className="border-b border-white/10 p-3">
             <input
               type="text"
               value={blockSearch}
@@ -376,7 +511,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
                 })
               }}
               placeholder="Buscar blocos..."
-              className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white placeholder:text-gray-500 focus:border-violet-500 focus:outline-none"
             />
           </div>
           <div ref={blocksPanelRef} className="flex-1 overflow-y-auto p-2" />
@@ -386,17 +521,18 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
         <div className="flex-1 min-h-0" ref={containerRef} />
 
         {/* Right: properties */}
-        <div className="flex w-72 flex-shrink-0 flex-col border-l border-gray-200 bg-white">
-          <div className="flex border-b border-gray-200 text-xs font-semibold">
+        <div className="flex w-72 flex-shrink-0 flex-col border-l border-white/10 bg-[#0a0714]">
+          <div className="flex border-b border-white/10 text-xs font-semibold">
             {([
               ['conteudo', 'Conteúdo'],
               ['estilo', 'Estilo'],
               ['layout', 'Camadas'],
+              ['midias', 'Mídias'],
             ] as [RightTab, string][]).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setRightTab(key)}
-                className={`flex-1 px-2 py-2.5 ${rightTab === key ? 'border-b-2 border-violet-600 text-violet-700' : 'text-gray-500 hover:text-gray-800'}`}
+                className={`flex-1 px-2 py-2.5 ${rightTab === key ? 'border-b-2 border-violet-500 text-violet-400' : 'text-gray-500 hover:text-gray-200'}`}
               >
                 {label}
               </button>
@@ -404,7 +540,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
             <button
               disabled
               title="Em breve"
-              className="flex-1 cursor-not-allowed px-2 py-2.5 text-gray-300"
+              className="flex-1 cursor-not-allowed px-2 py-2.5 text-gray-600"
             >
               IA
             </button>
@@ -415,35 +551,35 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
               <div className="space-y-4">
                 {selected.isImage ? null : selected.isTextLeaf ? (
                   <div>
-                    <label className="mb-1.5 block text-xs font-medium text-gray-500">Texto (atualiza enquanto digita)</label>
+                    <label className="mb-1.5 block text-xs font-medium text-gray-400">Texto (atualiza enquanto digita)</label>
                     <textarea
                       value={selected.text}
                       onChange={e => applyTextEdit(e.target.value)}
                       rows={4}
-                      className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none"
+                      className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-violet-500 focus:outline-none"
                     />
                   </div>
                 ) : (
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     Este elemento tem outros elementos dentro dele. Clique duas vezes pra entrar e selecionar um título, parágrafo ou botão específico pra editar o texto.
                   </p>
                 )}
                 {selected.isLink && (
                   <div>
-                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-400">
                       <Link2 className="h-3.5 w-3.5" /> Link (href)
                     </label>
                     <input
                       type="text"
                       value={selected.href ?? ''}
                       onChange={e => applyHrefEdit(e.target.value)}
-                      className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none"
+                      className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:border-violet-500 focus:outline-none"
                     />
                   </div>
                 )}
                 {selected.isImage && (
                   <div>
-                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-400">
                       <ImageIcon className="h-3.5 w-3.5" /> Imagem
                     </label>
                     {selected.src && (
@@ -451,10 +587,10 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
                       <img
                         src={selected.src}
                         alt=""
-                        className="mb-2 h-24 w-full rounded-lg border border-gray-200 object-cover"
+                        className="mb-2 h-24 w-full rounded-lg border border-white/10 object-cover"
                       />
                     )}
-                    <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 py-2.5 text-sm font-medium text-gray-600 hover:border-violet-400 hover:text-violet-700">
+                    <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-white/15 py-2.5 text-sm font-medium text-gray-300 hover:border-violet-400 hover:text-violet-300">
                       {uploadingImage ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
@@ -477,12 +613,61 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEdito
                 )}
               </div>
             ) : (
-              <p className="text-xs text-gray-400">Selecione um elemento na página pra editar o conteúdo.</p>
+              <p className="text-xs text-gray-500">Selecione um elemento na página pra editar o conteúdo.</p>
             )}
           </div>
 
           <div ref={styleManagerRef} className={rightTab === 'estilo' ? 'flex-1 overflow-y-auto' : 'hidden'} />
           <div ref={layerManagerRef} className={rightTab === 'layout' ? 'flex-1 overflow-y-auto' : 'hidden'} />
+
+          <div className={rightTab === 'midias' ? 'flex-1 overflow-y-auto p-4' : 'hidden'}>
+            {mediaList.length === 0 ? (
+              <p className="text-xs text-gray-500">Nenhuma imagem encontrada nesta página.</p>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-xs text-gray-500">
+                  {mediaList.length} imagem{mediaList.length === 1 ? '' : 'ns'} encontrada{mediaList.length === 1 ? '' : 's'}
+                </p>
+                {mediaList.map((item, i) => (
+                  <div key={i} className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.03]">
+                    <button
+                      onClick={() => {
+                        editorRef.current?.select(item.component)
+                        setRightTab('conteudo')
+                      }}
+                      className="block w-full"
+                      title="Selecionar na página"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={item.src} alt={item.alt} className="h-28 w-full object-cover" />
+                    </button>
+                    <div className="flex items-center justify-between gap-2 p-2">
+                      <span className="truncate text-[11px] text-gray-500">{item.alt || 'sem legenda'}</span>
+                      <label className="flex shrink-0 cursor-pointer items-center gap-1 rounded-md border border-white/10 px-2 py-1 text-[11px] font-medium text-gray-300 hover:border-violet-400 hover:text-violet-300">
+                        {uploadingMediaIndex === i ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <Upload className="h-3 w-3" />
+                        )}
+                        Trocar
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingMediaIndex !== null}
+                          className="hidden"
+                          onChange={e => {
+                            const file = e.target.files?.[0]
+                            if (file) applyImageUploadTo(item.component, file, i)
+                            e.target.value = ''
+                          }}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

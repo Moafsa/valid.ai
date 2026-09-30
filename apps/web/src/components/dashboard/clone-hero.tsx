@@ -57,6 +57,7 @@ async function finalizeWithRetry(payload: object, attempts = 3): Promise<{ ok: b
 export function CloneHero() {
   const router = useRouter()
   const [url, setUrl] = useState('')
+  const [slug, setSlug] = useState('')
   const [phase, setPhase] = useState<Phase>('idle')
   const [progress, setProgress] = useState(0)
   const [step, setStep] = useState('')
@@ -75,7 +76,8 @@ export function CloneHero() {
 
   const handleClone = async () => {
     const trimmed = url.trim()
-    if (!trimmed) return
+    const trimmedSlug = slug.trim()
+    if (!trimmed || !trimmedSlug) return
     let normalized = trimmed
     if (!/^https?:\/\//i.test(normalized)) normalized = `https://${normalized}`
 
@@ -88,7 +90,7 @@ export function CloneHero() {
       const projectRes = await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourceUrl: normalized }),
+        body: JSON.stringify({ sourceUrl: normalized, slug: trimmedSlug }),
       })
       const project = await projectRes.json()
       if (!projectRes.ok) throw new Error(project.error ?? 'Erro ao criar projeto')
@@ -244,23 +246,39 @@ export function CloneHero() {
               </div>
             </div>
           ) : !busy ? (
-            <div className="flex flex-col items-stretch gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 shadow-inner sm:flex-row sm:items-center">
-              <input
-                type="text"
-                value={url}
-                onChange={e => setUrl(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleClone()}
-                placeholder="https://exemplo.com/pagina-de-vendas"
-                className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none"
-              />
-              <button
-                onClick={handleClone}
-                disabled={!url.trim()}
-                className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Clonar
-                <ArrowRight className="h-4 w-4" />
-              </button>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 shadow-inner">
+                <span className="shrink-0 pl-2 text-sm text-gray-500">seusite.be-vallid.com/</span>
+                <input
+                  type="text"
+                  value={slug}
+                  onChange={e => setSlug(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleClone()}
+                  placeholder="minha-oferta"
+                  className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none"
+                />
+              </div>
+              <div className="flex flex-col items-stretch gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 shadow-inner sm:flex-row sm:items-center">
+                <input
+                  type="text"
+                  value={url}
+                  onChange={e => setUrl(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleClone()}
+                  placeholder="https://exemplo.com/pagina-de-vendas"
+                  className="min-w-0 flex-1 bg-transparent px-4 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none"
+                />
+                <button
+                  onClick={handleClone}
+                  disabled={!url.trim() || !slug.trim()}
+                  className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Clonar
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+              <p className="px-2 text-left text-[11px] text-gray-500">
+                Se a página tiver mais de uma etapa, elas viram <span className="text-gray-400">/1</span>, <span className="text-gray-400">/2</span>... dentro do mesmo domínio
+              </p>
             </div>
           ) : (
             <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left">

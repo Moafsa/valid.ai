@@ -56,11 +56,19 @@ export async function POST(req: NextRequest) {
     // becomes its own Page row, reachable at its own /projects/[id]/p/[slug]
     // route (see the isolated page-viewer route), with internal <a href>s
     // already rewritten by the scanner to point at each other.
+    //
+    // Page slugs are derived from the domain/slug the user chose when
+    // starting the clone (project.slug): the first page IS that slug (the
+    // "home" of the project, e.g. "minha-oferta"), and every page after it
+    // gets a plain path-style number as its own slug ("1", "2", "3", ...),
+    // so a multi-page clone reads as "minha-oferta" + "/1" + "/2" — numbered
+    // steps under one domain — instead of a grab-bag of whatever path names
+    // the original site happened to use.
     const pages = Array.isArray(result.pages) ? result.pages : []
     const pageCreates = pages.map((p: any, i: number) => ({
       projectId,
       name: p.name || p.slug || `Página ${i + 1}`,
-      slug: p.slug || `page-${i + 1}`,
+      slug: project.slug ? (i === 0 ? project.slug : String(i)) : (p.slug || `page-${i + 1}`),
       order: i,
       blocks: toBlocks(p.sections),
       customCss: p.page_css || null,

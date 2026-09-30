@@ -41,16 +41,30 @@ model WorkspaceMember {
 
 // ─── Project ─────────────────────────────────────────────
 model Project {
-  id          String        @id @default(cuid())
-  workspaceId String
-  name        String
-  sourceUrl   String
-  type        ProjectType   @default(LP)
-  status      ProjectStatus @default(PENDING)
-  thumbnail   String?
-  scanJobId   String?       @unique
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id           String        @id @default(cuid())
+  workspaceId  String
+  name         String
+  sourceUrl    String
+  type         ProjectType   @default(LP)
+  status       ProjectStatus @default(PENDING)
+  thumbnail    String?
+  scanJobId    String?       @unique
+  // Public slug used at /f/[slug or id]/[pageSlug] instead of the raw
+  // cuid. Optional: projects published before this existed keep resolving
+  // by id.
+  slug         String?       @unique
+  // Custom domain associated with this project at publish time. Storage
+  // only — actually routing a real domain here needs DNS + a TLS cert,
+  // which nothing in this repo automates (see /domains, still a static
+  // page with no backend).
+  customDomain String?       @unique
+  // {found, completed, failed: [{url, error}]} from the crawler's last
+  // run — kept after the scan finishes so the dashboard can always show
+  // "N páginas encontradas, M clonadas, K falharam" without needing the
+  // live SSE stream.
+  crawlStats   Json?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   pages       Page[]
@@ -68,6 +82,7 @@ model Page {
   slug        String
   order       Int      @default(0)
   blocks      Json     @default("[]")
+  customCss   String?
   publishedUrl String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

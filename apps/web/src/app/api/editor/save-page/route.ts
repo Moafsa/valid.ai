@@ -1,50 +1,45 @@
-import { getAuthUser } from '@/lib/auth-helper'
+import { getCurrentWorkspace } from '@/lib/auth-helper'
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@funnelai/db'
 import { z } from 'zod'
 
-/**
- * Replaces a page's entire blocks array in one shot. save-block can only
- * patch one existing block's generatedHtml — it can't add, remove, or
- * reorder entries, which is exactly what the visual editor's duplicate/
- * reorder/create-section operations need (they change the array's shape,
- * not just one block's content).
- */
-const blockSchema = z
-  .object({
-    id: z.string(),
-    type: z.string(),
-    order: z.number(),
-  })
-  .passthrough()
+const blockSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  order: z.number(),
+  generatedHtml: z.string().nullable().optional(),
+}).passthrough()
 
-const bodySchema = z.object({
+const schema = z.object({
   pageId: z.string(),
   blocks: z.array(blockSchema),
 })
 
+/**
+ * Replaces a page's entire blocks array — the editor sends back the full,
+ * final component tree on every save (not a diff), same as GrapesJS's own
+ * model: the canvas is the source of truth at save time.
+ */
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await getAuthUser()
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const workspace = await getCurrentWorkspace()
+    if (!workspace) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { pageId, blocks } = bodySchema.parse(await req.json())
+    const { pageId, blocks } = schema.parse(await req.json())
 
-    const page = await db.page.findUnique({ where: { id: pageId } })
-    if (!page) {
-      return NextResponse.json({ error: 'Page not found' }, { status: 404 })
+    const page = await db.page.findUnique({ where: { id: pageId }, include: { project: true } })
+    if (!page || page.project.workspaceId !== workspace.id) {
+      return NextResponse.json({ error: 'Página não encontrada' }, { status: 404 })
     }
 
     await db.page.update({ where: { id: pageId }, data: { blocks: blocks as any } })
 
-    return NextResponse.json({ ok: true, blocksCount: blocks.length })
-  } catch (error) {
+    return NextResponse.json({ ok: true })
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors[0]?.message }, { status: 400 })
     }
     console.error('Save page error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: error?.message || 'Internal server error' }, { status: 500 })
   }
 }

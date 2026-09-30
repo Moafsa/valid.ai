@@ -7,8 +7,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'Valid.ai — Clone, Edite e Publique Funis com IA',
-  description: 'Plataforma de clonagem e validação de funis de vendas com Inteligência Artificial.',
+  title: 'be-Vallid: clone qualquer página e fica no controle dela',
+  description: 'Clone páginas reais com HTML, CSS, imagens, fontes e vídeos preservados, hospedados com a gente.',
   icons: { icon: '/favicon.ico' },
 }
 

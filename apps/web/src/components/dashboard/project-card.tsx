@@ -1,65 +1,68 @@
 import Link from 'next/link'
-import { formatDistanceToNow } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-import { Clock, Globe, MoreHorizontal } from 'lucide-react'
+import { Globe2, Loader2, AlertCircle } from 'lucide-react'
+import { DeleteProjectButton } from './delete-project-button'
 
-const STATUS_LABELS = {
-  PENDING: { label: 'Pendente', color: 'bg-gray-100 text-gray-600' },
-  SCANNING: { label: 'Analisando...', color: 'bg-blue-100 text-blue-600' },
-  CLONING: { label: 'Clonando...', color: 'bg-yellow-100 text-yellow-600' },
-  READY: { label: 'Pronto', color: 'bg-green-100 text-green-600' },
-  PUBLISHED: { label: 'Publicado', color: 'bg-brand-100 text-brand-700' },
-  ERROR: { label: 'Erro', color: 'bg-red-100 text-red-600' },
-} as const
+const STATUS_LABEL: Record<string, string> = {
+  PENDING: 'Aguardando',
+  SCANNING: 'Clonando...',
+  CLONING: 'Clonando...',
+  READY: 'Pronto',
+  PUBLISHED: 'Publicado',
+  ERROR: 'Erro',
+}
 
-const TYPE_ICONS = {
-  LP: '📄',
-  QUIZ: '❓',
-  VSL: '🎬',
-  CHECKOUT: '🛒',
-  FUNNEL: '🔀',
+function hostnameOf(url: string) {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
 }
 
 export function ProjectCard({ project }: { project: any }) {
-  const status = STATUS_LABELS[project.status as keyof typeof STATUS_LABELS] ?? STATUS_LABELS.PENDING
-  const typeIcon = TYPE_ICONS[project.type as keyof typeof TYPE_ICONS] ?? '📄'
+  const isBusy = ['PENDING', 'SCANNING', 'CLONING'].includes(project.status)
+  const isError = project.status === 'ERROR'
 
   return (
-    <Link href={`/projects/${project.id}`} className="group block">
-      <div className="rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-brand-200 transition-all duration-200 overflow-hidden">
-        {/* Thumbnail */}
-        <div className="relative h-40 bg-gradient-to-br from-brand-50 to-brand-100 flex items-center justify-center">
-          <span className="text-5xl">{typeIcon}</span>
-          {project.thumbnail && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={project.thumbnail}
-              alt={project.name}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          )}
-          <div className="absolute top-2 right-2">
-            <span className={`text-xs font-medium px-2 py-1 rounded-full ${status.color}`}>
-              {status.label}
-            </span>
-          </div>
-        </div>
+    <Link
+      href={`/projects/${project.id}`}
+      className="group relative block overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition hover:border-violet-500/40 hover:bg-white/[0.05]"
+    >
+      <DeleteProjectButton projectId={project.id} />
 
-        {/* Info */}
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-900 truncate group-hover:text-brand-700">
-            {project.name}
-          </h3>
-          <p className="text-xs text-gray-400 truncate mt-0.5">{project.sourceUrl}</p>
-          <div className="flex items-center gap-1 mt-3 text-xs text-gray-400">
-            <Clock className="h-3 w-3" />
-            <span>
-              {formatDistanceToNow(new Date(project.createdAt), {
-                addSuffix: true,
-                locale: ptBR
-              })}
-            </span>
+      <div className="relative aspect-[16/10] overflow-hidden bg-white/5">
+        {project.thumbnail ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={project.thumbnail} alt="" className="h-full w-full object-cover object-top" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-950/40 to-blue-950/40">
+            {isBusy ? (
+              <Loader2 className="h-6 w-6 animate-spin text-violet-400" />
+            ) : isError ? (
+              <AlertCircle className="h-6 w-6 text-red-400" />
+            ) : (
+              <Globe2 className="h-6 w-6 text-gray-600" />
+            )}
           </div>
+        )}
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
+      </div>
+
+      <div className="p-4">
+        <h3 className="truncate text-sm font-semibold text-gray-100">{project.name}</h3>
+        <p className="mt-0.5 truncate text-xs text-gray-500">{hostnameOf(project.sourceUrl)}</p>
+        <div className="mt-3 flex items-center justify-between">
+          <span
+            className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
+              isError
+                ? 'bg-red-500/10 text-red-400'
+                : isBusy
+                ? 'bg-amber-500/10 text-amber-400'
+                : 'bg-emerald-500/10 text-emerald-400'
+            }`}
+          >
+            {STATUS_LABEL[project.status] ?? project.status}
+          </span>
         </div>
       </div>
     </Link>

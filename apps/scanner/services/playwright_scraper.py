@@ -1,201 +1,157 @@
-from playwright.async_api import async_playwright, Browser, Page
+from playwright.async_api import async_playwright, Browser, Page, Response
 from loguru import logger
-from typing import Optional, List, Tuple
+from typing import Optional, List
 import asyncio
 import base64
-from pathlib import Path
-import tempfile
+import re
+from urllib.parse import urljoin, urlparse, urlunparse
 
 from config import settings
+
+# File extensions that are never "another page to clone" — following these
+# would download binaries/stylesheets/etc. as if they were navigable pages.
+_NON_PAGE_EXTENSIONS = (
+    ".pdf", ".zip", ".rar", ".7z", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+    ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".ico", ".bmp",
+    ".mp4", ".webm", ".mov", ".avi", ".mp3", ".wav", ".ogg",
+    ".css", ".js", ".json", ".xml", ".woff", ".woff2", ".ttf", ".eot",
+)
+
+
+def normalize_url(url: str) -> str:
+    """
+    Canonical form used for dedup/visited-tracking: strips the fragment
+    (#section-anchor is the same page, not a different one), strips a
+    trailing slash (except the bare root), lowercases the host. Query
+    strings are kept — ?page=2 is treated as a distinct page on purpose,
+    since it often genuinely is.
+    """
+    parsed = urlparse(url)
+    path = parsed.path.rstrip("/") or "/"
+    return urlunparse((parsed.scheme, parsed.netloc.lower(), path, "", parsed.query, ""))
+
+
+def is_same_site(url: str, base_url: str) -> bool:
+    """Same-domain check tolerant of a bare www. prefix difference —
+    site.com and www.site.com are the same site for crawling purposes."""
+    def _host(u: str) -> str:
+        return urlparse(u).netloc.lower().removeprefix("www.")
+    return _host(url) == _host(base_url)
+
+
+def looks_like_page(url: str) -> bool:
+    path = urlparse(url).path.lower()
+    return not path.endswith(_NON_PAGE_EXTENSIONS)
+
+# Matches any url(...) inside a raw CSS blob — background images,
+# @font-face src, masks, all look identical to this: a bare url().
+CSS_URL_RE = re.compile(r'url\((["\']?)([^)"\']+)\1\)', re.IGNORECASE)
+
+
+def resolve_css_urls(css_text: str, base_url: str) -> str:
+    """Rewrites relative url(...) references in a CSS blob to absolute,
+    resolved against base_url — the stylesheet's own URL, or the page's URL
+    for inline <style> tags."""
+    def _sub(m: "re.Match") -> str:
+        target = m.group(2).strip()
+        if target.startswith(("data:", "http://", "https://")):
+            return m.group(0)
+        return f'url("{urljoin(base_url, target)}")'
+    return CSS_URL_RE.sub(_sub, css_text)
 
 
 class PlaywrightScraper:
     """
-    Stealth browser scraper using Playwright.
-    Captures full page and per-section screenshots.
-    Extracts HTML, scripts, and metadata.
+    Stealth browser scraper — captures the REAL DOM and CSS of a page,
+    element by element, instead of reconstructing it via AI from a
+    screenshot. This is the only way to get "100% idêntico": an AI model
+    looking at a picture of a section always guesses layout/colors/spacing;
+    the browser's own rendered DOM has the exact values already.
     """
 
-    # Viewport mimicking a real desktop user
     VIEWPORT = {"width": 1440, "height": 900}
-
-    # Realistic user agent
     USER_AGENT = (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/125.0.0.0 Safari/537.36"
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
     )
 
     def __init__(self, use_proxy: bool = False):
         self.use_proxy = use_proxy and bool(settings.PROXY_URL)
-        self._browser: Optional[Browser] = None
+        self.browser: Optional[Browser] = None
+        self._playwright = None
 
     async def __aenter__(self):
         self._playwright = await async_playwright().start()
-
-        launch_kwargs = {
-            "headless": True,
-            "args": [
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-blink-features=AutomationControlled",
-            ]
-        }
-
+        launch_kwargs = {"headless": True}
         if self.use_proxy:
             launch_kwargs["proxy"] = {"server": settings.PROXY_URL}
-
-        self._browser = await self._playwright.chromium.launch(**launch_kwargs)
+        self.browser = await self._playwright.chromium.launch(**launch_kwargs)
         return self
 
-    async def __aexit__(self, *args):
-        if self._browser:
-            await self._browser.close()
-        await self._playwright.stop()
+    async def __aexit__(self, *exc):
+        if self.browser:
+            await self.browser.close()
+        if self._playwright:
+            await self._playwright.stop()
 
     async def get_page(self) -> Page:
-        context = await self._browser.new_context(
+        context = await self.browser.new_context(
             viewport=self.VIEWPORT,
             user_agent=self.USER_AGENT,
-            locale="pt-BR",
-            timezone_id="America/Sao_Paulo",
-            extra_http_headers={
-                "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Sec-Fetch-Dest": "document",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Site": "none",
-            }
         )
-        # Mask automation flags
+        # Caps setTimeout/setInterval delays so countdown/reveal timers on
+        # the source page fire almost immediately, before we capture —
+        # otherwise urgency banners/hidden offers that only reveal after
+        # N seconds would be captured still-hidden.
         await context.add_init_script("""
-            Object.defineProperty(navigator, 'webdriver', { get: () => undefined })
-            Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] })
-            Object.defineProperty(navigator, 'languages', { get: () => ['pt-BR', 'en-US', 'en'] })
+            (() => {
+                const cap = (fn) => function(cb, delay, ...args) {
+                    return fn(cb, Math.min(delay || 0, 300), ...args);
+                };
+                window.setTimeout = cap(window.setTimeout.bind(window));
+                window.setInterval = cap(window.setInterval.bind(window));
+            })();
         """)
-        return await context.new_page()
+        page = await context.new_page()
+        return page
 
-    async def scrape_url(self, url: str) -> dict:
-        """
-        Loads a page and returns:
-        - full_screenshot: base64 PNG of the full page
-        - html: raw HTML source
-        - section_screenshots: list of {name, screenshot_b64} per section
-        - detected_scripts: list of external script URLs found
-        - pixel_ids: detected tracking pixel IDs
-        """
-        logger.info(f"Scraping URL: {url}")
-        page = await self.get_page()
-
+    async def _goto_resilient(self, page: Page, url: str, timeout: int = 45000):
+        """`wait_until="networkidle"` never resolves on pages with continuous
+        background network activity (pixels, chat widgets, polling) — load
+        the page, then make a best-effort short attempt at networkidle
+        that's allowed to fail without aborting the whole scrape."""
+        await page.goto(url, wait_until="load", timeout=timeout)
         try:
-            await page.goto(url, wait_until="networkidle", timeout=30000)
-            await page.wait_for_timeout(2000)  # Extra wait for dynamic content
+            await page.wait_for_load_state("networkidle", timeout=8000)
+        except Exception:
+            pass
 
-            # Scroll to load lazy images
-            await self._scroll_page(page)
-
-            # Get full HTML
-            html = await page.content()
-
-            # Full page screenshot
-            full_screenshot_bytes = await page.screenshot(full_page=True)
-            full_screenshot_b64 = base64.b64encode(full_screenshot_bytes).decode()
-
-            # Per-section screenshots
-            section_screenshots = await self._capture_sections(page)
-
-            # Extract external scripts and pixels
-            scripts = await self._extract_scripts(page)
-            pixel_ids = await self._detect_pixels(page, html)
-            video = await self._detect_video(page)
-
-            logger.info(f"Scrape complete: {len(section_screenshots)} sections found")
-
-            return {
-                "html": html,
-                "full_screenshot_b64": full_screenshot_b64,
-                "section_screenshots": section_screenshots,
-                "scripts": scripts,
-                "pixel_ids": pixel_ids,
-                "video": video,
+    async def _reveal_hidden(self, page: Page):
+        """Forces anything hidden behind a timer/condition visible before
+        capture, so a clone doesn't ship permanently-hidden content."""
+        await page.evaluate("""
+            () => {
+                document.querySelectorAll('*').forEach(el => {
+                    const cs = getComputedStyle(el);
+                    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') {
+                        el.style.setProperty('display', cs.display === 'none' ? 'block' : cs.display, 'important');
+                        el.style.setProperty('visibility', 'visible', 'important');
+                        el.style.setProperty('opacity', '1', 'important');
+                    }
+                });
             }
-
-        finally:
-            await page.close()
-
-    async def quick_analyze(self, url: str) -> dict:
-        """
-        Fast, lightweight pass used for the pre-clone summary ("Encontramos
-        uma LP com X imagens, Y botões..."). Unlike scrape_url(), this never
-        takes a screenshot and never scrolls section by section — it only
-        loads the page once and counts elements, so it stays fast enough to
-        run before the user commits to a full clone.
-        """
-        from bs4 import BeautifulSoup
-
-        logger.info(f"Quick-analyzing URL: {url}")
-        page = await self.get_page()
-
-        try:
-            await page.goto(url, wait_until="networkidle", timeout=30000)
-            await page.wait_for_timeout(1000)
-
-            html = await page.content()
-            scripts = await self._extract_scripts(page)
-            pixel_ids = await self._detect_pixels(page, html)
-
-            soup = BeautifulSoup(html, "lxml")
-
-            images_count = len(soup.find_all("img"))
-            videos_count = len(soup.find_all("video")) + len(
-                [
-                    f for f in soup.find_all("iframe")
-                    if f.get("src") and any(
-                        host in f.get("src", "")
-                        for host in ("youtube", "vimeo", "wistia", "vturb", "player")
-                    )
-                ]
-            )
-            forms_count = len(soup.find_all("form"))
-            buttons_count = len(soup.find_all("button")) + len(
-                soup.find_all("input", attrs={"type": ["submit", "button"]})
-            )
-            links_count = len(soup.find_all("a", href=True))
-            choice_inputs = len(soup.find_all("input", attrs={"type": ["radio", "checkbox"]}))
-
-            text_lower = html.lower()
-            page_type = "LP"
-            if choice_inputs >= 4 or "quiz" in url.lower() or "step=" in url.lower():
-                page_type = "QUIZ"
-            elif videos_count >= 1 and images_count <= 5 and forms_count == 0:
-                page_type = "VSL"
-            elif any(k in text_lower for k in ("checkout", "cartão de crédito", "finalizar compra", "cpf")):
-                page_type = "CHECKOUT"
-
-            return {
-                "page_type": page_type,
-                "images_count": images_count,
-                "videos_count": videos_count,
-                "forms_count": forms_count,
-                "buttons_count": buttons_count,
-                "links_count": links_count,
-                "scripts_count": len(scripts),
-                "pixels": pixel_ids,
-            }
-        finally:
-            await page.close()
+        """)
 
     async def _scroll_page(self, page: Page):
-        """Scroll down the page to trigger lazy loading."""
         await page.evaluate("""
             async () => {
                 await new Promise((resolve) => {
-                    let totalHeight = 0;
-                    const distance = 300;
+                    let total = 0;
+                    const step = 300;
                     const timer = setInterval(() => {
-                        window.scrollBy(0, distance);
-                        totalHeight += distance;
-                        if (totalHeight >= document.body.scrollHeight) {
+                        window.scrollBy(0, step);
+                        total += step;
+                        if (total >= document.body.scrollHeight) {
                             clearInterval(timer);
                             window.scrollTo(0, 0);
                             resolve();
@@ -204,16 +160,129 @@ class PlaywrightScraper:
                 });
             }
         """)
-        await page.wait_for_timeout(1000)
+        await page.wait_for_timeout(800)
+
+    async def capture_page_css(self, page: Page, sniffed_stylesheets: Optional[List[Response]] = None) -> str:
+        """
+        The page's REAL stylesheet text (every inline <style> tag, plus
+        every external stylesheet the network sniffer caught) — this is
+        what preserves :hover/:focus, ::before/::after, @media breakpoints,
+        @keyframes and CSS variables, none of which a per-element
+        computed-style snapshot can represent.
+        """
+        inline_css = await page.evaluate(
+            "() => Array.from(document.querySelectorAll('style')).map(s => s.textContent || '').join('\\n')"
+        )
+        parts = [resolve_css_urls(inline_css, page.url)]
+        for response in sniffed_stylesheets or []:
+            try:
+                text = await response.text()
+                parts.append(resolve_css_urls(text, response.url))
+            except Exception:
+                pass
+        return "\n".join(p for p in parts if p).strip()
+
+    async def capture_font_links(self, page: Page) -> List[str]:
+        """Google Fonts <link> tags — the common case, safe to link
+        directly rather than rehost."""
+        return await page.evaluate("""
+            () => Array.from(document.querySelectorAll('link[rel="stylesheet"][href*="fonts.googleapis.com"]'))
+                .map(l => l.href)
+        """)
 
     async def _capture_sections(self, page: Page) -> List[dict]:
         """
-        Identifies major visual sections and takes individual screenshots.
-        Uses semantic HTML elements and visual breaks.
+        Splits the page into visual sections and, for each, captures its
+        REAL outerHTML with every element's computed style inlined
+        (STYLE_PROPS) — a safety net for whatever the page-level captured
+        stylesheet doesn't cleanly cover once rendered standalone.
         """
-        # Try to find semantic sections
         sections = await page.evaluate("""
             () => {
+                const STYLE_PROPS = [
+                    'color', 'background-color', 'background-image', 'background-size', 'background-position',
+                    'font-family', 'font-size', 'font-weight', 'font-style', 'line-height',
+                    'text-align', 'text-decoration', 'text-transform', 'letter-spacing', 'text-shadow',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'border-radius', 'border-width', 'border-style', 'border-color',
+                    'display', 'flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'gap',
+                    'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row',
+                    'width', 'max-width', 'min-height', 'box-shadow', 'opacity', 'object-fit',
+                    'position', 'top', 'right', 'bottom', 'left', 'z-index',
+                    'transform', 'transform-origin', 'filter', 'backdrop-filter', 'clip-path',
+                    'cursor', 'overflow', 'aspect-ratio',
+                ];
+
+                function inlineComputedStyles(root) {
+                    const nodes = [root, ...root.querySelectorAll('*')];
+                    for (const node of nodes) {
+                        const cs = getComputedStyle(node);
+                        let styleStr = '';
+                        for (const prop of STYLE_PROPS) {
+                            const v = cs.getPropertyValue(prop);
+                            if (v) styleStr += prop + ':' + v + ';';
+                        }
+                        node.setAttribute('style', styleStr);
+                    }
+                }
+
+                function sanitize(root) {
+                    root.querySelectorAll('script, noscript').forEach(n => n.remove());
+                    const nodes = [root, ...root.querySelectorAll('*')];
+                    for (const node of nodes) {
+                        for (const attr of [...node.attributes]) {
+                            const name = attr.name.toLowerCase();
+                            if (name.startsWith('on')) node.removeAttribute(attr.name);
+                            if (name === 'href' && attr.value.trim().toLowerCase().startsWith('javascript:')) {
+                                node.removeAttribute('href');
+                            }
+                        }
+                    }
+                    // a.href (not getAttribute) is the browser-RESOLVED
+                    // absolute URL — writing that back means the captured
+                    // HTML's href is always absolute, never a bare
+                    // relative path like "/sobre" that would resolve
+                    // against OUR domain once hosted there instead of the
+                    // original site. This also makes the attribute match
+                    // exactly what the separately-captured `links` array
+                    // records, which the orchestrator's link-rewrite pass
+                    // depends on for exact-string replacement.
+                    root.querySelectorAll('a[href]').forEach(a => {
+                        if (a.href) a.setAttribute('href', a.href);
+                    });
+                    root.querySelectorAll('img').forEach(img => {
+                        const real = img.currentSrc || img.src;
+                        if (real) img.setAttribute('src', real);
+                        img.removeAttribute('srcset');
+                        img.removeAttribute('loading');
+                    });
+                    // Any OTHER element with a src content attribute —
+                    // <video>/<source>/<audio>/<iframe>/<embed>/<track> —
+                    // exposes a .src IDL property that resolves it to an
+                    // absolute URL the same way img.src does. Missing this
+                    // was a real bug: a page's secondary/carousel <video
+                    // src="/relative/path.mp4"> (anything other than the
+                    // ONE video _detect_video already grounds separately)
+                    // kept a relative src that resolves against OUR domain
+                    // once hosted there, breaking silently instead of
+                    // playing the original file.
+                    root.querySelectorAll('video[src], source[src], audio[src], iframe[src], embed[src], track[src]').forEach(el => {
+                        const real = el.src;
+                        if (real) el.setAttribute('src', real);
+                    });
+                }
+
+                function captureRealHtml(el) {
+                    try {
+                        sanitize(el);
+                        inlineComputedStyles(el);
+                        return el.outerHTML;
+                    } catch (e) {
+                        return '';
+                    }
+                }
+
                 const candidates = [
                     ...document.querySelectorAll(
                         'section, [class*="section"], [class*="block"], [class*="hero"], ' +
@@ -237,160 +306,206 @@ class PlaywrightScraper:
                         index: i,
                         tag: el.tagName,
                         className: el.className.substring(0, 100),
-                        rect: el.getBoundingClientRect()
+                        rect: el.getBoundingClientRect(),
+                        images: Array.from(el.querySelectorAll('img')).slice(0, 20).map(img => ({
+                            src: img.currentSrc || img.src || '',
+                            alt: img.alt || '',
+                        })).filter(i => i.src),
+                        links: Array.from(el.querySelectorAll('a[href]')).slice(0, 20).map(a => ({
+                            href: a.href || '',
+                            text: (a.textContent || '').trim().slice(0, 80),
+                        })).filter(l => l.href && !l.href.startsWith('javascript:')),
+                        domHtml: captureRealHtml(el),
                     }));
             }
         """)
 
-        screenshots = []
+        results = []
         page_height = await page.evaluate("document.body.scrollHeight")
 
-        # If no sections found, split full page into 900px chunks
         if not sections:
             chunk_size = 900
             num_chunks = max(1, page_height // chunk_size)
             for i in range(num_chunks):
                 y = i * chunk_size
                 await page.evaluate(f"window.scrollTo(0, {y})")
-                await page.wait_for_timeout(300)
-                chunk_bytes = await page.screenshot(clip={
-                    "x": 0, "y": 0,
-                    "width": self.VIEWPORT["width"],
-                    "height": min(chunk_size, page_height - y)
+                await page.wait_for_timeout(200)
+                shot = await page.screenshot(clip={
+                    "x": 0, "y": 0, "width": self.VIEWPORT["width"],
+                    "height": min(chunk_size, page_height - y),
                 })
-                screenshots.append({
+                results.append({
                     "name": f"section_{i+1}",
-                    "screenshot_b64": base64.b64encode(chunk_bytes).decode()
+                    "screenshot_b64": base64.b64encode(shot).decode(),
+                    "dom_html": "", "images": [], "links": [],
                 })
-            return screenshots
+            return results
 
-        # Capture each detected section
-        for section in sections[:15]:  # Cap at 15 sections
+        for section in sections[:20]:
             try:
                 rect = section["rect"]
                 if rect["height"] < 50:
                     continue
-
-                # rect.y came from getBoundingClientRect() taken at scroll
-                # position 0, so it's a page-absolute offset. Scrolling
-                # there and then reusing that same number as the clip's y
-                # is wrong: page.screenshot(clip=...) — without
-                # full_page — clips against the CURRENT viewport, not the
-                # page, so it needs the element's position relative to
-                # wherever we actually land, not where it sits on the page.
-                # Near the bottom, the browser also can't scroll a full
-                # `rect.y - 20` if that overshoots the page's max scroll,
-                # so re-reading the real offset (rather than assuming the
-                # requested one applied) is what keeps this correct there
-                # too. Every section past the first viewport was silently
-                # dropped by this before — "Clipped area is either empty
-                # or outside the resulting image" — which is exactly why
-                # a long, multi-section landing page always came back as
-                # a single section.
-                await page.evaluate(f"window.scrollTo(0, {rect['y']} - 20)")
-                await page.wait_for_timeout(300)
-                scroll_y = await page.evaluate("window.scrollY")
-                relative_y = max(0, rect["y"] - scroll_y)
-
-                available_height = self.VIEWPORT["height"] - relative_y
-                if available_height < 50:
-                    continue
-
-                shot = await page.screenshot(clip={
-                    "x": max(0, rect["x"]),
-                    "y": relative_y,
-                    "width": min(rect["width"], self.VIEWPORT["width"] - max(0, rect["x"])),
-                    "height": min(rect["height"], available_height)
-                })
-
-                screenshots.append({
+                results.append({
                     "name": f"section_{section['index']+1}_{section['tag'].lower()}",
                     "class_hint": section["className"],
-                    "screenshot_b64": base64.b64encode(shot).decode()
+                    "images": section.get("images", []),
+                    "links": section.get("links", []),
+                    "dom_html": section.get("domHtml", ""),
                 })
             except Exception as e:
-                logger.warning(f"Failed to capture section {section}: {e}")
+                logger.warning(f"Failed to process section {section}: {e}")
 
-        return screenshots
+        return results
 
-    async def _extract_scripts(self, page: Page) -> List[str]:
-        """Extract all external script URLs."""
-        return await page.evaluate("""
-            () => Array.from(document.scripts)
-                .map(s => s.src)
-                .filter(s => s && s.startsWith('http'))
+    async def discover_internal_links(self, page: Page, base_url: str) -> List[str]:
+        """
+        Every same-site, page-like link found ANYWHERE on the page (not
+        just inside a captured section — nav/footer links matter most here
+        and are usually outside the section boundaries used for content
+        capture). Deliberately does NOT filter by "looks like a funnel
+        step" the way the old single-purpose funnel crawler did — this is
+        a general site crawler now, following whatever the site actually
+        links to. External domains, mailto:/tel:/javascript:, and
+        same-page #anchors are excluded at the source (no point queuing
+        something that's never going to be same-site anyway).
+        """
+        raw_links = await page.evaluate("""
+            (base) => {
+                const baseUrl = new URL(base);
+                const out = [];
+                for (const a of document.querySelectorAll('a[href]')) {
+                    const raw = a.getAttribute('href') || '';
+                    if (!raw || raw.startsWith('#')) continue;
+                    let href;
+                    try { href = new URL(raw, base); } catch { continue; }
+                    if (href.protocol.startsWith('javascript') || href.protocol === 'mailto:' || href.protocol === 'tel:') continue;
+                    out.push(href.href);
+                }
+                return out;
+            }
+        """, base_url)
+
+        seen = set()
+        result = []
+        for link in raw_links:
+            if not is_same_site(link, base_url) or not looks_like_page(link):
+                continue
+            norm = normalize_url(link)
+            if norm in seen:
+                continue
+            seen.add(norm)
+            result.append(link)
+        return result
+
+    async def scrape_url(self, url: str, capture_thumbnail: bool = True) -> dict:
+        """Loads a page and returns everything needed to clone it: real
+        per-section DOM+images+links, the page's own real stylesheet, its
+        Google Fonts links, and every same-site link found on it (for the
+        orchestrator's crawl queue)."""
+        logger.info(f"Scraping URL: {url}")
+        page = await self.get_page()
+
+        sniffed_stylesheets: List[Response] = []
+        # VSL/embedded-video players (VTurb/Panda-style) almost always stream
+        # through a MediaSource/blob URL, so <video>.src is just "blob:..."
+        # — useless as a link. The real .mp4/.m3u8 the browser is actually
+        # fetching only shows up on the network.
+        sniffed_videos: List[dict] = []
+
+        def _on_response(response):
+            try:
+                url_l = response.url.lower().split("?")[0]
+                ctype = (response.headers or {}).get("content-type", "").lower()
+                if url_l.endswith(".css") or "text/css" in ctype:
+                    sniffed_stylesheets.append(response)
+                elif url_l.endswith(".m3u8") or "mpegurl" in ctype:
+                    sniffed_videos.append({"url": response.url, "kind": "hls"})
+                elif url_l.endswith(".mp4") or ctype.startswith("video/"):
+                    sniffed_videos.append({"url": response.url, "kind": "mp4"})
+            except Exception:
+                pass
+
+        page.on("response", _on_response)
+
+        try:
+            await self._goto_resilient(page, url)
+            await page.wait_for_timeout(1500)
+            await self._scroll_page(page)
+            await self._reveal_hidden(page)
+
+            # Real content first — sections, CSS, video. A heavy/very tall
+            # real-world page (huge product pages, lots of media) can make
+            # the vanity thumbnail below time out; that must never cost us
+            # the actual capture, which is the whole point of the clone.
+            sections = await self._capture_sections(page)
+            font_links = await self.capture_font_links(page)
+            page_css = await self.capture_page_css(page, sniffed_stylesheets)
+            video = await self._detect_video(page, sniffed_videos)
+            internal_links = await self.discover_internal_links(page, url)
+
+            # Thumbnail: viewport-only (not full_page) — dramatically
+            # cheaper on a tall page, and non-fatal if it still times out.
+            # Only needed once per project (the home page), not for every
+            # crawled page — skip it entirely there to keep a multi-page
+            # crawl from paying this cost N times.
+            full_screenshot_b64 = None
+            if capture_thumbnail:
+                try:
+                    full_screenshot_bytes = await page.screenshot(timeout=15000)
+                    full_screenshot_b64 = base64.b64encode(full_screenshot_bytes).decode()
+                except Exception as e:
+                    logger.warning(f"Thumbnail screenshot failed (non-fatal): {e}")
+
+            logger.info(f"Scrape complete: {len(sections)} sections found, video={bool(video)}, {len(internal_links)} internal links")
+
+            return {
+                "full_screenshot_b64": full_screenshot_b64,
+                "sections": sections,
+                "font_links": font_links,
+                "page_css": page_css,
+                "video": video,
+                "internal_links": internal_links,
+            }
+        finally:
+            await page.close()
+
+    async def _detect_video(self, page: Page, sniffed_videos: Optional[List[dict]] = None) -> Optional[dict]:
+        """
+        Real video capture, not a placeholder: checks the DOM for a plain
+        <video src> or a known video-embed <iframe> (YouTube/Vimeo/Wistia/
+        VTurb/Panda-style players) first. If the DOM video's src is a
+        useless blob: URL (VTurb/Panda MediaSource players), falls back to
+        whatever real .mp4/.m3u8 the network sniffer caught instead.
+        """
+        dom_video = await page.evaluate("""
+            () => {
+                const v = document.querySelector('video');
+                if (v && (v.currentSrc || v.src)) {
+                    return { type: 'native', url: v.currentSrc || v.src, poster: v.poster || null, duration: v.duration || null };
+                }
+                const EMBED_HOSTS = ['youtube.com', 'youtube-nocookie.com', 'vimeo.com', 'wistia.com', 'wistia.net', 'fast.wistia.net'];
+                const iframes = Array.from(document.querySelectorAll('iframe[src]'));
+                for (const f of iframes) {
+                    try {
+                        const host = new URL(f.src).hostname;
+                        if (EMBED_HOSTS.some(h => host.includes(h))) {
+                            return { type: 'iframe', url: f.src, poster: null, duration: null };
+                        }
+                    } catch {}
+                }
+                return null;
+            }
         """)
 
-    async def _detect_video(self, page: Page) -> Optional[dict]:
-        """
-        Finds the page's main video, whether it's a self-hosted <video> tag
-        (the common pattern for VTurb/Converteai-style VSL players) or an
-        embed from a known host (YouTube, Vimeo, Wistia). We re-embed the
-        original source on the published page rather than downloading and
-        re-hosting the file — the spec's "baixa o mesmo vídeo" goal, without
-        the copyright and storage weight of actually mirroring someone
-        else's video file.
-        """
-        try:
-            return await page.evaluate("""
-                () => {
-                    const video = document.querySelector('video');
-                    if (video && (video.currentSrc || video.src)) {
-                        return {
-                            type: 'native',
-                            url: video.currentSrc || video.src,
-                            poster: video.poster || null,
-                            duration: isFinite(video.duration) ? Math.round(video.duration) : null,
-                        };
-                    }
-                    const iframe = Array.from(document.querySelectorAll('iframe')).find(f => {
-                        const src = f.src || '';
-                        return /youtube|youtu\\.be|vimeo|wistia|vturb|panda|player\\./i.test(src);
-                    });
-                    if (iframe) {
-                        const src = iframe.src;
-                        let type = 'iframe';
-                        if (/youtube|youtu\\.be/i.test(src)) type = 'youtube';
-                        else if (/vimeo/i.test(src)) type = 'vimeo';
-                        else if (/wistia/i.test(src)) type = 'wistia';
-                        return { type, url: src, poster: null, duration: null };
-                    }
-                    return null;
-                }
-            """)
-        except Exception as e:
-            logger.warning(f"Video detection failed: {e}")
-            return None
+        is_unusable = not dom_video or (dom_video.get("type") == "native" and (dom_video.get("url") or "").startswith("blob:"))
+        if is_unusable and sniffed_videos:
+            hls = next((v for v in sniffed_videos if v["kind"] == "hls"), None)
+            mp4 = next((v for v in sniffed_videos if v["kind"] == "mp4"), None)
+            picked = hls or mp4
+            if picked:
+                poster = (dom_video or {}).get("poster")
+                duration = (dom_video or {}).get("duration")
+                return {"type": "native", "url": picked["url"], "poster": poster, "duration": duration, "hls": picked["kind"] == "hls"}
 
-    async def _detect_pixels(self, page: Page, html: str) -> List[dict]:
-        """Detect common tracking pixels from HTML and window vars."""
-        import re
-        pixels = []
-
-        # Meta Pixel
-        meta_match = re.search(
-            r"fbq\s*\(\s*['\"]init['\"]\s*,\s*['\"]?(\d{10,20})",
-            html
-        )
-        if meta_match:
-            pixels.append({"type": "meta_pixel", "id": meta_match.group(1)})
-
-        # TikTok Pixel
-        tiktok_match = re.search(
-            r"ttq\.load\s*\(\s*['\"]([A-Z0-9]{20,})",
-            html
-        )
-        if tiktok_match:
-            pixels.append({"type": "tiktok_pixel", "id": tiktok_match.group(1)})
-
-        # Google Tag Manager
-        gtm_match = re.search(r"GTM-([A-Z0-9]+)", html)
-        if gtm_match:
-            pixels.append({"type": "gtm", "id": f"GTM-{gtm_match.group(1)}"})
-
-        # Google Analytics GA4
-        ga4_match = re.search(r"G-([A-Z0-9]+)", html)
-        if ga4_match:
-            pixels.append({"type": "google_analytics", "id": f"G-{ga4_match.group(1)}"})
-
-        return pixels
+        return dom_video if not is_unusable else None

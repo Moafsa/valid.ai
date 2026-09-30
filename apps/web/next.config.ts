@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     ]
   },
   experimental: {
-    serverActions: { allowedOrigins: ['localhost:3000', 'localhost:3005', 'app.funnelai.com'] },
+    serverActions: { allowedOrigins: ['localhost:3000', 'localhost:3005', 'be-vallid.com', 'www.be-vallid.com', 'app.funnelai.com'] },
   },
 }
 

@@ -4,10 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import grapesjs, { Editor } from 'grapesjs'
 import 'grapesjs/dist/css/grapes.min.css'
-import { ArrowLeft, Save, Loader2, Undo2, Redo2, Sparkles } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { PromptEditModal } from './prompt-edit-modal'
-import { PageAiEditModal } from './page-ai-edit-modal'
 import { STARTER_BLOCKS } from '@/lib/visual-editor/starter-blocks'
 
 interface Block {
@@ -15,7 +13,6 @@ interface Block {
   type: string
   order: number
   generatedHtml?: string | null
-  screenshot?: string | null
   [key: string]: any
 }
 
@@ -23,77 +20,7 @@ interface VisualEditorProps {
   projectId: string
   pageId: string
   blocks: Block[]
-}
-
-// Block types that carry data no plain HTML can represent (a video's real
-// source, a quiz step's answers/branching) — these round-trip through the
-// canvas as flat, non-editable placeholders. Editing what's inside them
-// happens elsewhere (the vsl/quiz-specific flows), never here.
-const LOCKED_TYPES = new Set(['vsl', 'quiz-step', 'quiz-result'])
-
-function isLocked(block: Block): boolean {
-  return LOCKED_TYPES.has(block.type) || !block.generatedHtml
-}
-
-// AI-cloned sections carry <style> tags written for their ORIGINAL standalone
-// page (e.g. `body { overflow: hidden }` for a full-viewport hero). Once
-// several blocks share one scrollable canvas/document, a single block's
-// html/body rule leaks page-wide and can silently disable scrolling for
-// every section after it. Strip only the overflow behavior on html/body
-// selectors — everything else (fonts, backgrounds, colors) is left intact.
-function stripGlobalOverflow(html: string): string {
-  const container = document.createElement('div')
-  container.innerHTML = html
-  container.querySelectorAll('style').forEach((styleEl) => {
-    const probe = document.createElement('style')
-    probe.textContent = styleEl.textContent || ''
-    document.head.appendChild(probe)
-    try {
-      const rules = probe.sheet?.cssRules
-      if (rules) {
-        Array.from(rules as unknown as CSSStyleRule[]).forEach((rule) => {
-          if (rule.selectorText && /(^|[\s,])(html|body)(?=[\s,.:#\[]|$)/.test(rule.selectorText)) {
-            rule.style.removeProperty('overflow')
-            rule.style.removeProperty('overflow-x')
-            rule.style.removeProperty('overflow-y')
-          }
-        })
-        styleEl.textContent = Array.from(rules).map((r) => r.cssText).join('\n')
-      }
-    } finally {
-      document.head.removeChild(probe)
-    }
-  })
-  return container.innerHTML
-}
-
-function blockToWrapperHtml(block: Block): string {
-  const locked = isLocked(block)
-  const attrs = `data-vai-block-id="${block.id}" data-vai-block-type="${block.type}" data-vai-locked="${locked}"`
-
-  if (!locked) {
-    return `<section ${attrs}>${stripGlobalOverflow(block.generatedHtml!)}</section>`
-  }
-
-  // Flat placeholder — deliberately NOT the block's real nested markup, so
-  // there's nothing here that looks editable but silently wouldn't save.
-  const poster = block.screenshot
-    ? `<img src="${block.screenshot}" alt="" style="width:100%;display:block;opacity:.6;" />`
-    : ''
-  const label =
-    block.type === 'vsl'
-      ? '🎬 Vídeo VSL — não editável aqui'
-      : block.type.startsWith('quiz')
-      ? '❓ Etapa de quiz — não editável aqui'
-      : '📸 Seção ainda sem código gerado'
-  return `<section ${attrs} style="position:relative;">${poster}<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);color:#fff;font-size:14px;font-weight:600;text-align:center;padding:1rem;">${label}</div></section>`
-}
-
-/** Strips the outer wrapper tag, returning just its children's HTML. */
-function innerHtmlOf(outerHtml: string): string {
-  const temp = document.createElement('div')
-  temp.innerHTML = outerHtml
-  return temp.firstElementChild?.innerHTML ?? ''
+  pageCss: string | null
 }
 
 // GrapesJS always includes this reset in editor.getCss(), even for a
@@ -101,21 +28,23 @@ function innerHtmlOf(outerHtml: string): string {
 // <style> tag when the block actually defines custom CSS.
 const GJS_BASE_CSS = '* { box-sizing: border-box; } body {margin: 0;}'
 
-export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
+type RightTab = 'conteudo' | 'estilo' | 'layout'
+
+export function VisualEditor({ projectId, pageId, blocks, pageCss }: VisualEditorProps) {
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
+  const blocksPanelRef = useRef<HTMLDivElement>(null)
+  const styleManagerRef = useRef<HTMLDivElement>(null)
+  const layerManagerRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<Editor | null>(null)
-  // Locked blocks' real data never round-trips through the DOM — keep the
-  // original objects so export can restore them by id untouched.
-  const originalBlocksRef = useRef<Map<string, Block>>(new Map(blocks.map(b => [b.id, b])))
+
   const [saving, setSaving] = useState(false)
-  const [editingBlock, setEditingBlock] = useState<{ id: string; code: string; component: any } | null>(null)
   const [canUndo, setCanUndo] = useState(false)
   const [canRedo, setCanRedo] = useState(false)
-  const [pageAiEdit, setPageAiEdit] = useState<{
-    selected: { id: string; code: string } | null
-    all: { id: string; code: string }[]
-  } | null>(null)
+  const [rightTab, setRightTab] = useState<RightTab>('conteudo')
+  const [blockSearch, setBlockSearch] = useState('')
+  const [selected, setSelected] = useState<{ text: string; href: string | null; isLink: boolean; isTextLeaf: boolean } | null>(null)
+  const selectedComponentRef = useRef<any>(null)
 
   useEffect(() => {
     if (!containerRef.current || editorRef.current) return
@@ -125,111 +54,153 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
       height: '100%',
       fromElement: false,
       storageManager: false,
-      canvas: {
-        scripts: ['https://cdn.tailwindcss.com'],
+      panels: { defaults: [] },
+      canvas: { scripts: ['https://cdn.tailwindcss.com'] },
+      deviceManager: {
+        devices: [
+          { name: 'Desktop', width: '' },
+          { name: 'Tablet', width: '768px', widthMedia: '992px' },
+          { name: 'Mobile', width: '375px', widthMedia: '575px' },
+        ],
       },
       blockManager: {
-        blocks: STARTER_BLOCKS.map(b => ({
-          id: b.id,
-          label: b.label,
-          category: 'Novas Seções',
-          content: b.content,
-        })),
+        appendTo: blocksPanelRef.current!,
+        blocks: STARTER_BLOCKS.map(b => ({ id: b.id, label: b.label, content: b.content, category: 'Blocos' })),
       },
       styleManager: {
+        appendTo: styleManagerRef.current!,
         sectors: [
           {
-            name: 'Cores e texto',
-            open: true,
+            name: 'Texto', open: true,
             properties: [
               { property: 'color', name: 'Cor do texto' },
-              { property: 'background-color', name: 'Cor de fundo' },
-              { property: 'font-size', name: 'Tamanho da fonte' },
+              { property: 'font-family', name: 'Fonte' },
+              { property: 'font-size', name: 'Tamanho' },
+              { property: 'font-weight', name: 'Peso' },
+              { property: 'line-height', name: 'Altura da linha' },
+              { property: 'letter-spacing', name: 'Espaçamento' },
               { property: 'text-align', name: 'Alinhamento' },
+              { property: 'text-decoration', name: 'Decoração' },
+              { property: 'text-transform', name: 'Transformação' },
+            ],
+          },
+          {
+            name: 'Posição', open: false,
+            properties: [
+              { property: 'display', name: 'Display' },
+              { property: 'flex-direction', name: 'Direção (flex)' },
+              { property: 'justify-content', name: 'Justificar' },
+              { property: 'align-items', name: 'Alinhar itens' },
+              { property: 'gap', name: 'Espaço entre itens' },
+              { property: 'position', name: 'Posição' },
+              { property: 'top', name: 'Topo' },
+              { property: 'right', name: 'Direita' },
+              { property: 'bottom', name: 'Baixo' },
+              { property: 'left', name: 'Esquerda' },
+              { property: 'z-index', name: 'Camada (z-index)' },
+            ],
+          },
+          {
+            name: 'Dimensões e espaçamento', open: false,
+            properties: [
+              { property: 'width', name: 'Largura' },
+              { property: 'height', name: 'Altura' },
+              { property: 'max-width', name: 'Largura máx.' },
+              { property: 'min-height', name: 'Altura mín.' },
+              { id: 'margin', property: 'margin', name: 'Margem', type: 'composite' },
+              { id: 'padding', property: 'padding', name: 'Preenchimento', type: 'composite' },
+            ],
+          },
+          {
+            name: 'Fundo e borda', open: false,
+            properties: [
+              { property: 'background-color', name: 'Cor de fundo' },
+              { property: 'background-image', name: 'Imagem de fundo' },
+              { property: 'background-size', name: 'Tamanho do fundo' },
+              { property: 'background-position', name: 'Posição do fundo' },
+              { property: 'border-radius', name: 'Borda arredondada' },
+              { property: 'border-width', name: 'Espessura da borda' },
+              { property: 'border-style', name: 'Estilo da borda' },
+              { property: 'border-color', name: 'Cor da borda' },
+              { property: 'box-shadow', name: 'Sombra' },
+            ],
+          },
+          {
+            name: 'Efeitos', open: false,
+            properties: [
+              { property: 'opacity', name: 'Opacidade' },
+              { property: 'transform', name: 'Transformação' },
+              { property: 'filter', name: 'Filtro' },
+              { property: 'cursor', name: 'Cursor' },
+              { property: 'overflow', name: 'Overflow' },
             ],
           },
         ],
       },
+      layerManager: { appendTo: layerManagerRef.current! },
     })
     editorRef.current = editor
-    if (typeof window !== 'undefined') (window as any).__vaiEditor = editor
 
-    editor.DomComponents.addType('vai-section', {
-      isComponent: (el: HTMLElement) =>
-        el.tagName === 'SECTION' && !!el.getAttribute?.('data-vai-block-id')
-          ? { type: 'vai-section' }
-          : undefined,
-      model: {
-        defaults: {
-          draggable: true,
-          droppable: false,
-          copyable: true,
-          removable: true,
-        },
-        init() {
-          const locked = this.getAttributes()['data-vai-locked'] === 'true'
-          this.set('editable', !locked)
-          this.set('resizable', !locked)
-          // `label` (not an icon-font class we can't guarantee is bundled)
-          // so these render regardless of whatever icon font GrapesJS ships.
-          const toolbar = [
-            { attributes: { title: 'Mover' }, label: '✥', command: 'tlb-move' },
-            { attributes: { title: 'Duplicar' }, label: '⧉', command: 'tlb-clone' },
-            { attributes: { title: 'Remover' }, label: '🗑', command: 'tlb-delete' },
-          ]
-          if (!locked) {
-            toolbar.push({
-              attributes: { title: 'Editar com IA' },
-              label: '✨',
-              command: 'vai-open-ai-edit',
-            } as any)
-          }
-          this.set('toolbar', toolbar)
-        },
-      },
-    })
+    if (pageCss) {
+      editor.on('load', () => {
+        const doc = editor.Canvas.getDocument()
+        if (!doc) return
+        const styleTag = doc.createElement('style')
+        styleTag.textContent = pageCss
+        doc.head.appendChild(styleTag)
+      })
+    }
 
-    editor.Commands.add('vai-open-ai-edit', {
-      run(ed: Editor) {
-        const comp = ed.getSelected()
-        if (!comp) return
-        const id = comp.getAttributes()['data-vai-block-id']
-        if (!id) return
-        const code = innerHtmlOf(comp.toHTML())
-        setEditingBlock({ id, code, component: comp })
-      },
-    })
-
-    // Freshly dropped starter blocks and freshly duplicated sections need
-    // their own identity before export — assign it right when it happens
-    // instead of trying to detect "no id" as a special case at save time.
     editor.on('block:drag:stop', (component: any) => {
       if (!component || component.getAttributes?.()['data-vai-block-id']) return
-      component.addAttributes({
-        'data-vai-block-id': crypto.randomUUID(),
-        'data-vai-block-type': 'custom-html',
-        'data-vai-locked': 'false',
-      })
+      component.addAttributes({ 'data-vai-block-id': crypto.randomUUID() })
     })
-
     editor.on('component:clone', (component: any) => {
       const attrs = component.getAttributes?.() ?? {}
-      if (attrs['data-vai-block-id']) {
-        component.addAttributes({ 'data-vai-block-id': crypto.randomUUID() })
-      }
+      if (attrs['data-vai-block-id']) component.addAttributes({ 'data-vai-block-id': crypto.randomUUID() })
     })
 
+    const readSelection = (component: any) => {
+      if (!component) {
+        selectedComponentRef.current = null
+        setSelected(null)
+        return
+      }
+      selectedComponentRef.current = component
+      const el = component.getEl?.()
+      const tag = (el?.tagName || '').toLowerCase()
+      const isLink = tag === 'a'
+      // A container (a <section>/<div> wrapping several nested elements)
+      // has more than one child component, or a child that isn't a plain
+      // text node — editing "its text" via a single textarea would
+      // collapse all of that nested markup into one flat string on the
+      // first keystroke. Only offer free-text editing for genuine text
+      // leaves (a heading, a paragraph, a button's label), matching what
+      // the reference UI's "Texto" field is actually meant for.
+      const children = component.components?.() ?? []
+      const isTextLeaf = children.length === 0 || (children.length === 1 && children.at(0)?.get('type') === 'textnode')
+      setSelected({
+        text: el?.innerText ?? '',
+        href: isLink ? component.getAttributes()['href'] ?? '' : null,
+        isLink,
+        isTextLeaf,
+      })
+    }
+    editor.on('component:selected', readSelection)
+    editor.on('component:deselected', () => readSelection(null))
+
     const sorted = [...blocks].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    editor.setComponents(sorted.map(blockToWrapperHtml).join('\n'))
+    editor.setComponents(
+      sorted
+        .map(b => (b.generatedHtml ? `<section data-vai-block-id="${b.id}">${b.generatedHtml}</section>` : ''))
+        .join('\n')
+    )
 
     const updateUndoState = () => {
       setCanUndo(editor.UndoManager.hasUndo())
       setCanRedo(editor.UndoManager.hasRedo())
     }
-    editor.on(
-      'component:add component:remove component:update component:styleUpdate rte:disable',
-      updateUndoState
-    )
+    editor.on('component:add component:remove component:update component:styleUpdate rte:disable', updateUndoState)
 
     return () => {
       editor.destroy()
@@ -238,51 +209,18 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleAiUpdated = (newCode: string) => {
-    if (!editingBlock) return
-    editingBlock.component.components(newCode)
-    setEditingBlock(null)
+  const applyTextEdit = (text: string) => {
+    const comp = selectedComponentRef.current
+    if (!comp) return
+    comp.components(text)
+    setSelected(prev => (prev ? { ...prev, text } : prev))
   }
 
-  const openPageAiEdit = () => {
-    const editor = editorRef.current
-    if (!editor) return
-    const wrapper = editor.getWrapper()!
-    const top = wrapper.components()
-
-    const all: { id: string; code: string }[] = []
-    top.forEach((comp: any) => {
-      const attrs = comp.getAttributes()
-      const id = attrs['data-vai-block-id']
-      if (!id || attrs['data-vai-locked'] === 'true') return
-      all.push({ id, code: innerHtmlOf(comp.toHTML()) })
-    })
-
-    // Walk up from whatever's selected to the top-level section, so
-    // clicking into a heading or button still resolves to "this section".
-    let node = editor.getSelected()
-    let selected: { id: string; code: string } | null = null
-    while (node && node.parent() && node.parent() !== wrapper) {
-      node = node.parent()
-    }
-    if (node) {
-      const attrs = node.getAttributes()
-      if (attrs['data-vai-block-id'] && attrs['data-vai-locked'] !== 'true') {
-        selected = { id: attrs['data-vai-block-id'], code: innerHtmlOf(node.toHTML()) }
-      }
-    }
-
-    setPageAiEdit({ selected, all })
-  }
-
-  const handlePageAiApplied = (results: { id: string; code: string }[]) => {
-    const editor = editorRef.current
-    if (!editor) return
-    const top = editor.getWrapper()!.components()
-    results.forEach(({ id, code }) => {
-      const comp = top.find((c: any) => c.getAttributes()['data-vai-block-id'] === id)
-      comp?.components(code)
-    })
+  const applyHrefEdit = (href: string) => {
+    const comp = selectedComponentRef.current
+    if (!comp) return
+    comp.addAttributes({ href })
+    setSelected(prev => (prev ? { ...prev, href } : prev))
   }
 
   const handleSave = async () => {
@@ -292,11 +230,6 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
     try {
       const topLevel = editor.getWrapper()!.components()
       const outBlocks: Block[] = []
-      // Authoritative safety net: the block:drag:stop/component:clone
-      // listeners assign ids proactively so the UI looks right immediately,
-      // but this is what actually guarantees no two sections ever reach the
-      // database sharing an id, regardless of whether every GrapesJS event
-      // fired the way we expect.
       const seenIds = new Set<string>()
 
       topLevel.forEach((comp: any, index: number) => {
@@ -308,32 +241,14 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
           attrs = comp.getAttributes()
         }
         seenIds.add(id)
-        const locked = attrs['data-vai-locked'] === 'true'
 
-        if (locked) {
-          const original = originalBlocksRef.current.get(id)
-          if (original) {
-            outBlocks.push({ ...original, order: index })
-            return
-          }
-        }
-
-        // comp.toHTML() only serializes the component tree — any <style>
-        // block embedded in the original AI-generated HTML (common for
-        // sections styled with custom CSS instead of Tailwind classes) gets
-        // parsed out into GrapesJS's CSS Composer on load and would
-        // otherwise be silently lost here. Re-embed it so the block still
-        // renders correctly wherever generatedHtml is used directly
-        // (published page, block-editor preview) and round-trips on reload.
         let scopedCss = (editor.getCss({ component: comp } as any) || '').trim()
-        if (scopedCss.startsWith(GJS_BASE_CSS)) {
-          scopedCss = scopedCss.slice(GJS_BASE_CSS.length).trim()
-        }
-        const innerHtml = innerHtmlOf(comp.toHTML())
+        if (scopedCss.startsWith(GJS_BASE_CSS)) scopedCss = scopedCss.slice(GJS_BASE_CSS.length).trim()
+        const innerHtml = comp.getInnerHTML ? comp.getInnerHTML() : comp.toHTML()
 
         outBlocks.push({
           id,
-          type: attrs['data-vai-block-type'] || 'custom-html',
+          type: 'custom-html',
           order: index,
           generatedHtml: scopedCss ? `<style>${scopedCss}</style>${innerHtml}` : innerHtml,
         })
@@ -356,6 +271,8 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
     }
   }
 
+  const setDevice = (name: string) => editorRef.current?.setDevice(name)
+
   return (
     <div className="flex h-screen flex-col bg-gray-100">
       <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2.5 flex-shrink-0">
@@ -366,20 +283,23 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
           <ArrowLeft className="h-4 w-4" />
           Voltar ao projeto
         </button>
-        <span className="text-sm font-semibold text-gray-900">Editor Visual</span>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={openPageAiEdit}
-            className="flex items-center gap-2 rounded-lg border border-purple-200 bg-purple-50 px-3 py-1.5 text-sm font-semibold text-purple-700 hover:bg-purple-100"
-          >
-            <Sparkles className="h-4 w-4" />
-            Editar com IA
+        <div className="flex items-center gap-1 rounded-lg border border-gray-200 p-1">
+          <button onClick={() => setDevice('Desktop')} title="Desktop" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+            <Monitor className="h-4 w-4" />
           </button>
+          <button onClick={() => setDevice('Tablet')} title="Tablet" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+            <Tablet className="h-4 w-4" />
+          </button>
+          <button onClick={() => setDevice('Mobile')} title="Celular" className="rounded p-1.5 text-gray-500 hover:bg-gray-100">
+            <Smartphone className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => editorRef.current?.runCommand('core:undo')}
             disabled={!canUndo}
             title="Desfazer"
-            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30"
           >
             <Undo2 className="h-4 w-4" />
           </button>
@@ -387,41 +307,112 @@ export function VisualEditor({ projectId, pageId, blocks }: VisualEditorProps) {
             onClick={() => editorRef.current?.runCommand('core:redo')}
             disabled={!canRedo}
             title="Refazer"
-            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent"
+            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30"
           >
             <Redo2 className="h-4 w-4" />
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Salvar
           </button>
         </div>
       </div>
-      <div className="flex-1 min-h-0" ref={containerRef} />
 
-      {editingBlock && (
-        <PromptEditModal
-          isOpen={!!editingBlock}
-          onClose={() => setEditingBlock(null)}
-          blockId={editingBlock.id}
-          currentCode={editingBlock.code}
-          onUpdated={handleAiUpdated}
-        />
-      )}
+      <div className="flex flex-1 min-h-0">
+        {/* Left: block library */}
+        <div className="flex w-56 flex-shrink-0 flex-col border-r border-gray-200 bg-white">
+          <div className="border-b border-gray-200 p-3">
+            <input
+              type="text"
+              value={blockSearch}
+              onChange={e => {
+                setBlockSearch(e.target.value)
+                const q = e.target.value.toLowerCase()
+                blocksPanelRef.current?.querySelectorAll('.gjs-block').forEach(el => {
+                  const label = el.textContent?.toLowerCase() ?? ''
+                  ;(el as HTMLElement).style.display = label.includes(q) ? '' : 'none'
+                })
+              }}
+              placeholder="Buscar blocos..."
+              className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:border-violet-500 focus:outline-none"
+            />
+          </div>
+          <div ref={blocksPanelRef} className="flex-1 overflow-y-auto p-2" />
+        </div>
 
-      {pageAiEdit && (
-        <PageAiEditModal
-          isOpen={!!pageAiEdit}
-          onClose={() => setPageAiEdit(null)}
-          selectedBlock={pageAiEdit.selected}
-          allBlocks={pageAiEdit.all}
-          onApplied={handlePageAiApplied}
-        />
-      )}
+        {/* Center: canvas */}
+        <div className="flex-1 min-h-0" ref={containerRef} />
+
+        {/* Right: properties */}
+        <div className="flex w-72 flex-shrink-0 flex-col border-l border-gray-200 bg-white">
+          <div className="flex border-b border-gray-200 text-xs font-semibold">
+            {([
+              ['conteudo', 'Conteúdo'],
+              ['estilo', 'Estilo'],
+              ['layout', 'Camadas'],
+            ] as [RightTab, string][]).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setRightTab(key)}
+                className={`flex-1 px-2 py-2.5 ${rightTab === key ? 'border-b-2 border-violet-600 text-violet-700' : 'text-gray-500 hover:text-gray-800'}`}
+              >
+                {label}
+              </button>
+            ))}
+            <button
+              disabled
+              title="Em breve"
+              className="flex-1 cursor-not-allowed px-2 py-2.5 text-gray-300"
+            >
+              IA
+            </button>
+          </div>
+
+          <div className={rightTab === 'conteudo' ? 'flex-1 overflow-y-auto p-4' : 'hidden'}>
+            {selected ? (
+              <div className="space-y-4">
+                {selected.isTextLeaf ? (
+                  <div>
+                    <label className="mb-1.5 block text-xs font-medium text-gray-500">Texto (atualiza enquanto digita)</label>
+                    <textarea
+                      value={selected.text}
+                      onChange={e => applyTextEdit(e.target.value)}
+                      rows={4}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-400">
+                    Este elemento tem outros elementos dentro dele. Clique duas vezes pra entrar e selecionar um título, parágrafo ou botão específico pra editar o texto.
+                  </p>
+                )}
+                {selected.isLink && (
+                  <div>
+                    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                      <Link2 className="h-3.5 w-3.5" /> Link (href)
+                    </label>
+                    <input
+                      type="text"
+                      value={selected.href ?? ''}
+                      onChange={e => applyHrefEdit(e.target.value)}
+                      className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none"
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="text-xs text-gray-400">Selecione um elemento na página pra editar o conteúdo.</p>
+            )}
+          </div>
+
+          <div ref={styleManagerRef} className={rightTab === 'estilo' ? 'flex-1 overflow-y-auto' : 'hidden'} />
+          <div ref={layerManagerRef} className={rightTab === 'layout' ? 'flex-1 overflow-y-auto' : 'hidden'} />
+        </div>
+      </div>
     </div>
   )
 }

@@ -40,6 +40,14 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 
+# Next.js standalone output tracing (@vercel/nft) doesn't reliably pick up
+# Prisma's native query engine binary (it's dynamically resolved at
+# runtime, not a static require() the tracer can see) — copy it explicitly
+# to every path the Prisma client searches at runtime, musl-only since
+# that's the only one this Alpine-based runner image can execute.
+COPY --from=builder --chown=nextjs:nodejs /app/packages/db/node_modules/.prisma/client/libquery_engine-linux-musl-openssl-3.0.x.so.node ./packages/db/node_modules/.prisma/client/
+COPY --from=builder --chown=nextjs:nodejs /app/packages/db/node_modules/.prisma/client/libquery_engine-linux-musl-openssl-3.0.x.so.node ./apps/web/packages/db/node_modules/.prisma/client/
+
 USER nextjs
 
 EXPOSE 3000

@@ -227,6 +227,32 @@ class PlaywrightScraper:
                     }
                 }
 
+                function freezeCanvases(root) {
+                    // A <canvas> (a JS-driven starfield, particle effect,
+                    // WebGL background...) has no visual content in its
+                    // outerHTML — the pixels only exist in its backing
+                    // bitmap, and sanitize() below strips the <script> that
+                    // drew them anyway. Baking the CURRENT frame in as a
+                    // static <img> (freezing the animation, not restoring
+                    // it) beats what's there today: an empty, invisible tag
+                    // where a whole visual layer used to be.
+                    const canvases = root.tagName === 'CANVAS' ? [root] : [...root.querySelectorAll('canvas')];
+                    for (const canvas of canvases) {
+                        try {
+                            const dataUrl = canvas.toDataURL('image/png');
+                            const img = document.createElement('img');
+                            img.src = dataUrl;
+                            img.className = canvas.className;
+                            const existingStyle = canvas.getAttribute('style');
+                            if (existingStyle) img.setAttribute('style', existingStyle);
+                            canvas.replaceWith(img);
+                        } catch (e) {
+                            // Tainted canvas (drew cross-origin pixels without
+                            // CORS) — toDataURL throws, nothing recoverable.
+                        }
+                    }
+                }
+
                 function sanitize(root) {
                     root.querySelectorAll('script, noscript').forEach(n => n.remove());
                     const nodes = [root, ...root.querySelectorAll('*')];
@@ -275,6 +301,7 @@ class PlaywrightScraper:
 
                 function captureRealHtml(el) {
                     try {
+                        freezeCanvases(el);
                         sanitize(el);
                         inlineComputedStyles(el);
                         return el.outerHTML;

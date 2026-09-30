@@ -39,6 +39,45 @@ export async function POST(req: NextRequest) {
     })
   }
 
+  // Clerk's own "Delete account" button (Security tab) only deletes the
+  // auth user — it has no idea our app keeps a Workspace/Project/Page tree
+  // keyed by clerkUserId, so without this handler that data just sits
+  // there forever, orphaned, with nobody able to log back in to manage or
+  // delete it. Only cleans up a workspace when the deleted user was its
+  // SOLE member — a real multi-member workspace (via Clerk Organizations)
+  // should survive one member leaving; that case just drops the membership.
+  if (payload.type === 'user.deleted') {
+    const clerkUserId = payload.data.id as string
+    const memberships = await db.workspaceMember.findMany({
+      where: { clerkUserId },
+      include: { workspace: { include: { members: true } } },
+    })
+
+    for (const membership of memberships) {
+      if (membership.workspace.members.length > 1) continue
+
+      const projects = await db.project.findMany({
+        where: { workspaceId: membership.workspaceId },
+        select: { id: true },
+      })
+      const projectIds = projects.map(p => p.id)
+      if (projectIds.length) {
+        // Lead/AiUsageLog carry a plain projectId column, not a Prisma
+        // relation — they don't cascade with the Project like Page,
+        // ProjectTracking and PageEvent do.
+        await db.lead.deleteMany({ where: { projectId: { in: projectIds } } })
+        await db.aiUsageLog.deleteMany({ where: { projectId: { in: projectIds } } })
+      }
+      // Cascades WorkspaceMember and Project (which cascades Page,
+      // ProjectTracking, PageEvent in turn).
+      await db.workspace.delete({ where: { id: membership.workspaceId } })
+    }
+
+    // Any workspace skipped above (shared, other members remain) still
+    // needs this one membership row gone.
+    await db.workspaceMember.deleteMany({ where: { clerkUserId } })
+  }
+
   if (payload.type === 'organization.created') {
     const org = payload.data
     const slug = org.slug ?? org.id.slice(0, 20)

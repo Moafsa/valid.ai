@@ -181,8 +181,35 @@ class PlaywrightScraper:
                 // before/after is a plain, framework-agnostic way to tell
                 // "revealed more content" from "hid what was there" without
                 // needing to know anything about this site's markup.
+                //
+                // Either way (grew, or shrank-then-restored), a scrollHeight
+                // change PROVES this button is a real, working toggle on
+                // the original site — most of which, like this one, never
+                // exposed that via aria-expanded/aria-controls (no a11y
+                // markup at all). Tagging the button and its best-guess
+                // panel with our own data-vai-toggle-* pair right here, at
+                // the one moment we can actually observe cause and effect,
+                // is what lets the published clone rebuild a real
+                // open/close click — not just "force everything visible
+                // forever" — without knowing anything about this site's
+                // CSS/framework. interactive-runtime.tsx reads these tags
+                // client-side.
                 const candidates = Array.from(document.querySelectorAll('button, [role="tab"], [role="button"]'));
                 let clicked = 0;
+                let toggleIdx = 0;
+                // A LOT of accordions only ever keep ONE item's panel
+                // mounted at a time (opening item 2 unmounts item 1's
+                // answer entirely — very common FAQ behavior). Clicking
+                // through every candidate in sequence means an EARLIER
+                // item's panel can vanish from the DOM by the time this
+                // loop reaches a LATER one, taking our just-set
+                // data-vai-toggle-panel tag with it — the final capture
+                // would then only ever contain the LAST item's answer.
+                // Snapshotting each panel's HTML the moment it's tagged,
+                // then re-injecting any that went missing once the whole
+                // loop is done, is what lets every item's real answer
+                // survive into the static clone instead of just one.
+                const capturedPanels = [];
                 const MAX_CLICKS = 40;
                 for (const el of candidates) {
                     if (clicked >= MAX_CLICKS) break;
@@ -201,19 +228,59 @@ class PlaywrightScraper:
                     }
                     closeStrayOverlays();
 
-                    if (document.body.scrollHeight < beforeHeight - 5) {
+                    const grew = document.body.scrollHeight > beforeHeight + 5;
+                    const shrank = document.body.scrollHeight < beforeHeight - 5;
+                    let provenToggle = grew;
+
+                    if (shrank) {
                         try { el.click(); } catch (e) {}
                         await new Promise(r => setTimeout(r, 40));
                         closeStrayOverlays();
+                        provenToggle = true;
+                    }
+
+                    if (provenToggle) {
+                        const controlsId = el.getAttribute('aria-controls');
+                        let panel = controlsId ? document.getElementById(controlsId) : null;
+                        if (!panel) panel = el.nextElementSibling || (el.parentElement ? el.parentElement.lastElementChild : null);
+                        if (panel && panel !== el && !panel.contains(el) && !el.contains(panel)) {
+                            el.setAttribute('data-vai-toggle-btn', String(toggleIdx));
+                            panel.setAttribute('data-vai-toggle-panel', String(toggleIdx));
+                            capturedPanels.push({ idx: toggleIdx, html: panel.outerHTML });
+                            toggleIdx++;
+                        }
                     }
                 }
+
+                let restored = 0;
+                for (const { idx, html } of capturedPanels) {
+                    if (document.querySelector('[data-vai-toggle-panel="' + idx + '"]')) continue;
+                    const btn = document.querySelector('[data-vai-toggle-btn="' + idx + '"]');
+                    if (!btn || !btn.parentElement) continue;
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = html;
+                    const panel = wrapper.firstElementChild;
+                    if (!panel) continue;
+                    // Closed by default: an exclusive accordion's real
+                    // default state is "only one (or none) open", and
+                    // display:none here is exactly what a fresh click on
+                    // this same button will lift via interactive-runtime.tsx.
+                    panel.style.setProperty('display', 'none', 'important');
+                    btn.insertAdjacentElement('afterend', panel);
+                    restored++;
+                }
+
                 await new Promise(r => setTimeout(r, 150));
                 closeStrayOverlays();
-                return clicked;
+                return { clicked, tagged: toggleIdx, restored };
             }
         """)
-        if clicked:
-            logger.info(f"Expanded {clicked} accordion/tab-like element(s) before capture")
+        if clicked and clicked.get("clicked"):
+            logger.info(
+                f"Expanded {clicked['clicked']} accordion/tab-like element(s), "
+                f"tagged {clicked['tagged']} as click-to-toggle "
+                f"({clicked['restored']} panel(s) re-injected after an exclusive-accordion click unmounted them) before capture"
+            )
 
     async def _close_stray_overlays(self, page: Page):
         """Hides any position:fixed element covering most of the viewport —
@@ -329,134 +396,101 @@ class PlaywrightScraper:
                 .map(l => l.href)
         """)
 
-    async def _capture_sections(self, page: Page) -> List[dict]:
-        """
-        Splits the page into visual sections and, for each, captures its
-        REAL outerHTML with every element's computed style inlined
-        (STYLE_PROPS) — a safety net for whatever the page-level captured
-        stylesheet doesn't cleanly cover once rendered standalone.
+    _CAPTURE_SETUP_JS = """
+        () => {
+            window.__vaiStyleProps = [
+                'color', 'background-color', 'background-image', 'background-size', 'background-position',
+                'font-family', 'font-size', 'font-weight', 'font-style', 'line-height',
+                'text-align', 'text-decoration', 'text-transform', 'letter-spacing', 'text-shadow',
+                'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                'border-radius', 'border-width', 'border-style', 'border-color',
+                'display', 'flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'gap',
+                'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row',
+                'max-width', 'min-height', 'box-shadow', 'opacity', 'object-fit',
+                'position', 'top', 'right', 'bottom', 'left', 'z-index',
+                'transform', 'transform-origin', 'filter', 'backdrop-filter', 'clip-path',
+                'cursor', 'overflow', 'aspect-ratio',
+            ];
 
-        Deliberately NOT including 'width': an inline style attribute beats
-        any external stylesheet rule regardless of selector specificity,
-        including rules inside @media queries — baking in the ONE desktop
-        width computed for every element made every clone rigid at that
-        exact viewport, overriding the real (already-captured) responsive
-        CSS and breaking mobile entirely. max-width is kept (constraints
-        like Tailwind's max-w-4xl are usually intentional either way).
-        """
-        sections = await page.evaluate("""
-            () => {
-                const STYLE_PROPS = [
-                    'color', 'background-color', 'background-image', 'background-size', 'background-position',
-                    'font-family', 'font-size', 'font-weight', 'font-style', 'line-height',
-                    'text-align', 'text-decoration', 'text-transform', 'letter-spacing', 'text-shadow',
-                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
-                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
-                    'border-radius', 'border-width', 'border-style', 'border-color',
-                    'display', 'flex-direction', 'flex-wrap', 'justify-content', 'align-items', 'gap',
-                    'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row',
-                    'max-width', 'min-height', 'box-shadow', 'opacity', 'object-fit',
-                    'position', 'top', 'right', 'bottom', 'left', 'z-index',
-                    'transform', 'transform-origin', 'filter', 'backdrop-filter', 'clip-path',
-                    'cursor', 'overflow', 'aspect-ratio',
-                ];
-
-                function inlineComputedStyles(root) {
-                    const nodes = [root, ...root.querySelectorAll('*')];
-                    for (const node of nodes) {
-                        const cs = getComputedStyle(node);
-                        let styleStr = '';
-                        for (const prop of STYLE_PROPS) {
-                            const v = cs.getPropertyValue(prop);
-                            if (v) styleStr += prop + ':' + v + ';';
-                        }
-                        node.setAttribute('style', styleStr);
+            // Deliberately NOT including 'width': an inline style attribute
+            // beats any external stylesheet rule regardless of selector
+            // specificity, including rules inside @media queries — baking
+            // in the ONE desktop width computed for every element made
+            // every clone rigid at that exact viewport, breaking mobile
+            // entirely. max-width is kept (Tailwind's max-w-4xl etc. is
+            // usually intentional either way).
+            window.__vaiInlineComputedStyles = function (root) {
+                const nodes = [root, ...root.querySelectorAll('*')];
+                for (const node of nodes) {
+                    const cs = getComputedStyle(node);
+                    let styleStr = '';
+                    for (const prop of window.__vaiStyleProps) {
+                        const v = cs.getPropertyValue(prop);
+                        if (v) styleStr += prop + ':' + v + ';';
                     }
+                    node.setAttribute('style', styleStr);
                 }
+            };
 
-                function freezeCanvases(root) {
-                    // A <canvas> (a JS-driven starfield, particle effect,
-                    // WebGL background...) has no visual content in its
-                    // outerHTML — the pixels only exist in its backing
-                    // bitmap, and sanitize() below strips the <script> that
-                    // drew them anyway. Baking the CURRENT frame in as a
-                    // static <img> (freezing the animation, not restoring
-                    // it) beats what's there today: an empty, invisible tag
-                    // where a whole visual layer used to be.
-                    const canvases = root.tagName === 'CANVAS' ? [root] : [...root.querySelectorAll('canvas')];
-                    for (const canvas of canvases) {
-                        try {
-                            const dataUrl = canvas.toDataURL('image/png');
-                            const img = document.createElement('img');
-                            img.src = dataUrl;
-                            img.className = canvas.className;
-                            const existingStyle = canvas.getAttribute('style');
-                            if (existingStyle) img.setAttribute('style', existingStyle);
-                            canvas.replaceWith(img);
-                        } catch (e) {
-                            // Tainted canvas (drew cross-origin pixels without
-                            // CORS) — toDataURL throws, nothing recoverable.
-                        }
-                    }
-                }
-
-                function sanitize(root) {
-                    root.querySelectorAll('script, noscript').forEach(n => n.remove());
-                    const nodes = [root, ...root.querySelectorAll('*')];
-                    for (const node of nodes) {
-                        for (const attr of [...node.attributes]) {
-                            const name = attr.name.toLowerCase();
-                            if (name.startsWith('on')) node.removeAttribute(attr.name);
-                            if (name === 'href' && attr.value.trim().toLowerCase().startsWith('javascript:')) {
-                                node.removeAttribute('href');
-                            }
-                        }
-                    }
-                    // a.href (not getAttribute) is the browser-RESOLVED
-                    // absolute URL — writing that back means the captured
-                    // HTML's href is always absolute, never a bare
-                    // relative path like "/sobre" that would resolve
-                    // against OUR domain once hosted there instead of the
-                    // original site. This also makes the attribute match
-                    // exactly what the separately-captured `links` array
-                    // records, which the orchestrator's link-rewrite pass
-                    // depends on for exact-string replacement.
-                    root.querySelectorAll('a[href]').forEach(a => {
-                        if (a.href) a.setAttribute('href', a.href);
-                    });
-                    root.querySelectorAll('img').forEach(img => {
-                        const real = img.currentSrc || img.src;
-                        if (real) img.setAttribute('src', real);
-                        img.removeAttribute('srcset');
-                        img.removeAttribute('loading');
-                    });
-                    // Any OTHER element with a src content attribute —
-                    // <video>/<source>/<audio>/<iframe>/<embed>/<track> —
-                    // exposes a .src IDL property that resolves it to an
-                    // absolute URL the same way img.src does. Missing this
-                    // was a real bug: a page's secondary/carousel <video
-                    // src="/relative/path.mp4"> (anything other than the
-                    // ONE video _detect_video already grounds separately)
-                    // kept a relative src that resolves against OUR domain
-                    // once hosted there, breaking silently instead of
-                    // playing the original file.
-                    root.querySelectorAll('video[src], source[src], audio[src], iframe[src], embed[src], track[src]').forEach(el => {
-                        const real = el.src;
-                        if (real) el.setAttribute('src', real);
-                    });
-                }
-
-                function captureRealHtml(el) {
+            // A <canvas> (JS-driven starfield, particle effect, WebGL
+            // background...) has no visual content in its outerHTML — the
+            // pixels only exist in its backing bitmap, and sanitize() below
+            // strips the <script> that drew them anyway. Baking the CURRENT
+            // frame in as a static <img> (freezing the animation, not
+            // restoring it) beats an empty, invisible tag.
+            window.__vaiFreezeCanvases = function (root) {
+                const canvases = root.tagName === 'CANVAS' ? [root] : [...root.querySelectorAll('canvas')];
+                for (const canvas of canvases) {
                     try {
-                        freezeCanvases(el);
-                        sanitize(el);
-                        inlineComputedStyles(el);
-                        return el.outerHTML;
+                        const dataUrl = canvas.toDataURL('image/png');
+                        const img = document.createElement('img');
+                        img.src = dataUrl;
+                        img.className = canvas.className;
+                        const existingStyle = canvas.getAttribute('style');
+                        if (existingStyle) img.setAttribute('style', existingStyle);
+                        canvas.replaceWith(img);
                     } catch (e) {
-                        return '';
+                        // Tainted canvas (cross-origin pixels, no CORS) —
+                        // toDataURL throws, nothing recoverable.
                     }
                 }
+            };
 
+            window.__vaiSanitize = function (root) {
+                root.querySelectorAll('script, noscript').forEach(n => n.remove());
+                const nodes = [root, ...root.querySelectorAll('*')];
+                for (const node of nodes) {
+                    for (const attr of [...node.attributes]) {
+                        const name = attr.name.toLowerCase();
+                        if (name.startsWith('on')) node.removeAttribute(attr.name);
+                        if (name === 'href' && attr.value.trim().toLowerCase().startsWith('javascript:')) {
+                            node.removeAttribute('href');
+                        }
+                    }
+                }
+                // a.href (not getAttribute) is the browser-RESOLVED absolute
+                // URL — writing that back means the captured HTML's href is
+                // always absolute, never a bare relative path like "/sobre"
+                // that would resolve against OUR domain once hosted there.
+                // Also makes it match the separately-captured `links` array
+                // the orchestrator's link-rewrite pass depends on.
+                root.querySelectorAll('a[href]').forEach(a => {
+                    if (a.href) a.setAttribute('href', a.href);
+                });
+                root.querySelectorAll('img').forEach(img => {
+                    const real = img.currentSrc || img.src;
+                    if (real) img.setAttribute('src', real);
+                    img.removeAttribute('srcset');
+                    img.removeAttribute('loading');
+                });
+                root.querySelectorAll('video[src], source[src], audio[src], iframe[src], embed[src], track[src]').forEach(el => {
+                    const real = el.src;
+                    if (real) el.setAttribute('src', real);
+                });
+            };
+
+            window.__vaiTagSections = function () {
                 const candidates = [
                     ...document.querySelectorAll(
                         'section, [class*="section"], [class*="block"], [class*="hero"], ' +
@@ -464,40 +498,76 @@ class PlaywrightScraper:
                         '[class*="cta"], [class*="footer"], header, footer, main > div'
                     )
                 ];
+                let i = 0;
+                for (const el of candidates) {
+                    const rect = el.getBoundingClientRect();
+                    const style = window.getComputedStyle(el);
+                    if (rect.height > 100 && rect.width > 400 && style.display !== 'none' && style.visibility !== 'hidden') {
+                        el.setAttribute('data-vai-idx', String(i));
+                        i++;
+                    }
+                }
+                return i;
+            };
 
-                return candidates
-                    .filter(el => {
-                        const rect = el.getBoundingClientRect();
-                        const style = window.getComputedStyle(el);
-                        return (
-                            rect.height > 100 &&
-                            rect.width > 400 &&
-                            style.display !== 'none' &&
-                            style.visibility !== 'hidden'
-                        );
-                    })
-                    .map((el, i) => ({
-                        index: i,
-                        tag: el.tagName,
-                        className: el.className.substring(0, 100),
-                        rect: el.getBoundingClientRect(),
-                        images: Array.from(el.querySelectorAll('img')).slice(0, 20).map(img => ({
-                            src: img.currentSrc || img.src || '',
-                            alt: img.alt || '',
-                        })).filter(i => i.src),
-                        links: Array.from(el.querySelectorAll('a[href]')).slice(0, 20).map(a => ({
-                            href: a.href || '',
-                            text: (a.textContent || '').trim().slice(0, 80),
-                        })).filter(l => l.href && !l.href.startsWith('javascript:')),
-                        domHtml: captureRealHtml(el),
-                    }));
-            }
-        """)
+            window.__vaiCaptureOne = function (idx) {
+                const el = document.querySelector('[data-vai-idx="' + idx + '"]');
+                if (!el) return null;
+                const images = Array.from(el.querySelectorAll('img')).slice(0, 20).map(img => ({
+                    src: img.currentSrc || img.src || '',
+                    alt: img.alt || '',
+                })).filter(i => i.src);
+                const links = Array.from(el.querySelectorAll('a[href]')).slice(0, 20).map(a => ({
+                    href: a.href || '',
+                    text: (a.textContent || '').trim().slice(0, 80),
+                })).filter(l => l.href && !l.href.startsWith('javascript:'));
+                const tag = el.tagName;
+                const className = el.className.substring(0, 100);
+                const rect = el.getBoundingClientRect();
 
-        results = []
+                let domHtml = '';
+                try {
+                    window.__vaiFreezeCanvases(el);
+                    window.__vaiSanitize(el);
+                    window.__vaiInlineComputedStyles(el);
+                    el.removeAttribute('data-vai-idx');
+                    domHtml = el.outerHTML;
+                } catch (e) {
+                    domHtml = '';
+                }
+
+                return { tag, className, rect: { height: rect.height, width: rect.width }, images, links, domHtml };
+            };
+        }
+    """
+
+    async def _capture_sections(self, page: Page) -> List[dict]:
+        """
+        Splits the page into visual sections and, for each, captures its
+        REAL outerHTML with every element's computed style inlined — a
+        safety net for whatever the page-level captured stylesheet doesn't
+        cleanly cover once rendered standalone.
+
+        Captures EACH section right after scrolling it into view (not the
+        whole page at once, back at the top) on purpose: scroll-reveal /
+        IntersectionObserver-driven animation libraries (AOS, ScrollReveal,
+        WOW.js, and plenty of hand-rolled equivalents) only add their
+        "revealed" class once an element actually enters the viewport, and
+        by default most REMOVE it again once the element scrolls back out.
+        A single scroll-through-then-reset-to-top pass (the previous
+        approach) meant every section below the fold got captured in its
+        PRE-reveal state — translated off-screen, opacity 0 — which is
+        exactly the "efeitos/movimentos não clonam" symptom. Scrolling each
+        section into view immediately before reading its computed style
+        lets the site's own (still-live, not-yet-stripped) JS put it in its
+        real, settled end state first.
+        """
+        await page.evaluate(self._CAPTURE_SETUP_JS)
+        count = await page.evaluate("() => window.__vaiTagSections()")
         page_height = await page.evaluate("document.body.scrollHeight")
 
-        if not sections:
+        if not count:
+            results = []
             chunk_size = 900
             num_chunks = max(1, page_height // chunk_size)
             for i in range(num_chunks):
@@ -515,20 +585,27 @@ class PlaywrightScraper:
                 })
             return results
 
-        for section in sections[:20]:
+        results = []
+        for i in range(min(count, 20)):
             try:
-                rect = section["rect"]
-                if rect["height"] < 50:
-                    continue
-                results.append({
-                    "name": f"section_{section['index']+1}_{section['tag'].lower()}",
-                    "class_hint": section["className"],
-                    "images": section.get("images", []),
-                    "links": section.get("links", []),
-                    "dom_html": section.get("domHtml", ""),
-                })
+                await page.locator(f'[data-vai-idx="{i}"]').scroll_into_view_if_needed(timeout=5000)
+            except Exception:
+                pass
+            await page.wait_for_timeout(300)
+            try:
+                data = await page.evaluate("(idx) => window.__vaiCaptureOne(idx)", i)
             except Exception as e:
-                logger.warning(f"Failed to process section {section}: {e}")
+                logger.warning(f"Failed to capture section {i}: {e}")
+                continue
+            if not data or data["rect"]["height"] < 50:
+                continue
+            results.append({
+                "name": f"section_{i+1}_{data['tag'].lower()}",
+                "class_hint": data["className"],
+                "images": data.get("images", []),
+                "links": data.get("links", []),
+                "dom_html": data.get("domHtml", ""),
+            })
 
         return results
 

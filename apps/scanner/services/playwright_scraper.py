@@ -211,11 +211,29 @@ class PlaywrightScraper:
                 // survive into the static clone instead of just one.
                 const capturedPanels = [];
                 const MAX_CLICKS = 40;
+                // A hamburger/mobile-nav toggle is just a <button> too, so
+                // it's indistinguishable from an accordion trigger by the
+                // checks above — and clicking it "succeeds" by this
+                // function's own logic (it genuinely reveals more content,
+                // growing the page). But we only ever scan at ONE desktop
+                // viewport width, and a mobile nav's open state was never
+                // designed to render at that width: it leaves the header
+                // in a broken hybrid (an "open" class meant for a narrow
+                // column dropdown, applied to a full desktop-width bar),
+                // exactly what shipped a mangled, overflowing header on a
+                // real clone. The naming convention for this control is
+                // consistent enough across sites (class names, aria-label)
+                // that it's worth excluding outright rather than letting
+                // the generic reveal heuristic decide.
+                const MENU_TOGGLE = /burger|hamburger|menu-toggle|nav-toggle|mobile-menu|toggle-menu/i;
+                const MENU_LABEL = /\bmenu\b/i;
                 for (const el of candidates) {
                     if (clicked >= MAX_CLICKS) break;
                     if (el.closest('form')) continue;
                     if (el.getAttribute('type') === 'submit') continue;
                     if (el.closest('a[href]')) continue;
+                    if (MENU_TOGGLE.test(el.className)) continue;
+                    if (MENU_LABEL.test(el.getAttribute('aria-label') || '')) continue;
                     const text = (el.textContent || '').trim();
                     if (DENYLIST.test(text)) continue;
 
@@ -325,9 +343,54 @@ class PlaywrightScraper:
         """
         await page.evaluate("""
             () => {
+                // A crossfade carousel (testimonial sliders, rotating
+                // banners) typically stacks EVERY slide at the exact same
+                // position:absolute spot and hides all but the active one
+                // via opacity:0 — structurally identical to "hidden behind
+                // a timer" as far as the checks below can tell, but
+                // force-revealing all of them stacks every slide directly
+                // on top of each other into one unreadable overlapping
+                // mess instead of the single readable slide a real visitor
+                // sees. Detect sibling elements hidden this way that share
+                // a parent AND an identical bounding box, and only let the
+                // first one in each such cluster through to the reveal
+                // pass below — the rest stay hidden, which is a correct,
+                // readable single slide instead of ten stacked ones.
+                const hiddenInfo = Array.from(document.querySelectorAll('*')).map(el => {
+                    const cs = getComputedStyle(el);
+                    const isHidden = cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0';
+                    return isHidden ? { el, rect: el.getBoundingClientRect(), parent: el.parentElement } : null;
+                }).filter(Boolean);
+
+                const skip = new Set();
+                for (let i = 0; i < hiddenInfo.length; i++) {
+                    if (skip.has(hiddenInfo[i].el)) continue;
+                    const a = hiddenInfo[i].rect;
+                    if (a.width <= 0 || a.height <= 0) continue;
+                    for (let j = i + 1; j < hiddenInfo.length; j++) {
+                        if (skip.has(hiddenInfo[j].el)) continue;
+                        if (hiddenInfo[i].parent !== hiddenInfo[j].parent) continue;
+                        const b = hiddenInfo[j].rect;
+                        const samePos = Math.abs(a.left - b.left) < 4 && Math.abs(a.top - b.top) < 4 &&
+                            Math.abs(a.width - b.width) < 4 && Math.abs(a.height - b.height) < 4;
+                        if (samePos) skip.add(hiddenInfo[j].el);
+                    }
+                }
+
+                // A mobile hamburger/nav-toggle button is display:none by
+                // design at our scan viewport (always a desktop width) —
+                // that's correct, responsive behavior, not "content nobody
+                // could ever see." Forcing it visible just leaves a dead,
+                // non-functional icon floating in an otherwise-correct
+                // desktop header. Same naming heuristic _expand_accordions
+                // already uses to avoid clicking it.
+                const MENU_TOGGLE = /burger|hamburger|menu-toggle|nav-toggle|mobile-menu|toggle-menu/i;
+                const MENU_LABEL = /\\bmenu\\b/i;
+                const isMenuToggle = el => MENU_TOGGLE.test(el.className) || MENU_LABEL.test(el.getAttribute('aria-label') || '');
+
                 document.querySelectorAll('*').forEach(el => {
                     const cs = getComputedStyle(el);
-                    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') {
+                    if (!skip.has(el) && !isMenuToggle(el) && (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0')) {
                         el.style.setProperty('display', cs.display === 'none' ? 'block' : cs.display, 'important');
                         el.style.setProperty('visibility', 'visible', 'important');
                         el.style.setProperty('opacity', '1', 'important');
@@ -422,28 +485,55 @@ class PlaywrightScraper:
             // usually intentional either way).
             window.__vaiInlineComputedStyles = function (root) {
                 const nodes = [root, ...root.querySelectorAll('*')];
+                const vw = window.innerWidth, vh = window.innerHeight;
                 for (const node of nodes) {
                     const cs = getComputedStyle(node);
                     const isPositioned = cs.position === 'absolute' || cs.position === 'fixed';
+                    // getComputedStyle always resolves an unset "auto"
+                    // offset into a concrete pixel value matching the
+                    // CURRENT layout — a box anchored with only `right`
+                    // (content sizes itself, left stays auto) still
+                    // reports a real `left` value here. We don't bake
+                    // width/height, so writing BOTH left and right turns
+                    // "anchored from one side, sized by content" into
+                    // "stretched/squeezed between two fixed points" — this
+                    // shrank a "role para descobrir" hint to a 37px-wide
+                    // column of single words. But a header/overlay that's
+                    // genuinely meant to span (near) the full viewport —
+                    // rect already close to vw/vh before touching anything
+                    // — needs left AND right kept, or its own flex/grid
+                    // children (e.g. a `justify-content: space-between`
+                    // nav) lose the width they lay themselves out against
+                    // and the whole bar overflows sideways instead. Only
+                    // let small elements (the common case: a badge, a
+                    // hint, a floating button) shrink-wrap.
+                    const rect = node.getBoundingClientRect();
+                    const spansWidth = rect.width > vw * 0.6;
+                    const spansHeight = rect.height > vh * 0.6;
                     let styleStr = '';
                     for (const prop of window.__vaiStyleProps) {
                         let v = cs.getPropertyValue(prop);
-                        // getComputedStyle always resolves an unset "auto"
-                        // offset into a concrete pixel value matching the
-                        // CURRENT layout — a page that anchors a box with
-                        // only `right` (content sizes itself, left stays
-                        // auto) still reports a real `left` value here. We
-                        // don't bake width/height, so writing BOTH left
-                        // and right turns "anchored from one side, sized
-                        // by content" into "stretched/squeezed between two
-                        // fixed points" — this is exactly what shrank a
-                        // "role para descobrir" hint to a 37px-wide column
-                        // of single words. left/top alone already captures
-                        // the real on-screen position, so right/bottom
-                        // only needs to go back to auto to let the box
-                        // size itself again.
-                        if (isPositioned && (prop === 'right' || prop === 'bottom')) v = 'auto';
+                        if (isPositioned && prop === 'right' && !spansWidth) v = 'auto';
+                        if (isPositioned && prop === 'bottom' && !spansHeight) v = 'auto';
                         if (v) styleStr += prop + ':' + v + ';';
+                    }
+                    // <img> is the one element where skipping width/height
+                    // backfires: its real size often isn't set by any
+                    // single CSS rule at all — a `max-width:100%; height:
+                    // auto` reset constrains it RELATIVE to whatever space
+                    // its flex/grid container hands it, math that only
+                    // exists in the full original page layout. Outside
+                    // that context all that's left is the image's own
+                    // intrinsic file resolution — a logo exported at 4x
+                    // for retina renders 4x too big. getComputedStyle
+                    // already resolved that relative math into exact
+                    // pixels for THIS element specifically, so baking
+                    // width/height only for <img> fixes this without
+                    // reintroducing the "whole page rigid at one viewport"
+                    // regression that excluding width from every element
+                    // was meant to avoid.
+                    if (node.tagName === 'IMG') {
+                        styleStr += 'width:' + cs.width + ';height:' + cs.height + ';';
                     }
                     node.setAttribute('style', styleStr);
                 }
@@ -563,10 +653,19 @@ class PlaywrightScraper:
                 const unique = [...new Set(rawCandidates)];
                 const candidates = unique.filter(el => !unique.some(other => other !== el && other.contains(el)));
                 let i = 0;
+                // Real header/nav bars are almost always under 100px tall
+                // (a typical site's is 60-90px) — the height floor exists
+                // to skip degenerate tiny divider <div>s matched by the
+                // broad [class*="..."] selectors above, but it was ALSO
+                // silently dropping every page's actual <header>, meaning
+                // clones shipped with no top nav at all. header/footer/nav
+                // are explicit HTML5 landmarks the page author chose on
+                // purpose, so they're exempt from the height check.
+                const isLandmark = el => ['HEADER', 'FOOTER', 'NAV'].includes(el.tagName);
                 for (const el of candidates) {
                     const rect = el.getBoundingClientRect();
                     const style = window.getComputedStyle(el);
-                    if (rect.height > 100 && rect.width > 400 && style.display !== 'none' && style.visibility !== 'hidden') {
+                    if ((rect.height > 100 || isLandmark(el)) && rect.width > 400 && style.display !== 'none' && style.visibility !== 'hidden') {
                         el.setAttribute('data-vai-idx', String(i));
                         i++;
                     }

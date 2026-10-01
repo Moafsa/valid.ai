@@ -490,6 +490,38 @@ class PlaywrightScraper:
                 });
             };
 
+            // Plenty of sites put the real background (dark navy page
+            // theme, a gradient, a texture) on an outer wrapper div — or
+            // on <body> itself — and leave every individual <section>
+            // transparent, relying on it showing through. We extract each
+            // section as its own standalone element, so a transparent
+            // section loses that backdrop entirely once it's outside the
+            // original page's ancestor chain: light, readable text (e.g.
+            // a pale gray meant to sit on navy) ends up on OUR page's own
+            // background instead, often unreadable. Walking up from the
+            // section looking for the nearest real background (color or
+            // image) captures whatever it was actually inheriting.
+            window.__vaiGetEffectiveBackground = function (startEl) {
+                let node = startEl;
+                while (node) {
+                    const cs = getComputedStyle(node);
+                    const bgColor = cs.backgroundColor;
+                    const bgImage = cs.backgroundImage;
+                    const hasColor = bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent';
+                    const hasImage = bgImage && bgImage !== 'none';
+                    if (hasColor || hasImage) {
+                        return {
+                            backgroundColor: hasColor ? bgColor : null,
+                            backgroundImage: hasImage ? bgImage : null,
+                            backgroundSize: cs.backgroundSize,
+                            backgroundPosition: cs.backgroundPosition,
+                        };
+                    }
+                    node = node.parentElement;
+                }
+                return null;
+            };
+
             window.__vaiTagSections = function () {
                 const candidates = [
                     ...document.querySelectorAll(
@@ -525,11 +557,30 @@ class PlaywrightScraper:
                 const className = el.className.substring(0, 100);
                 const rect = el.getBoundingClientRect();
 
+                // Must be read BEFORE sanitize/inlineComputedStyles touch
+                // anything — needs the section's REAL (still transparent,
+                // if that's what it is) computed background and the live
+                // ancestor chain, both still intact at this point.
+                const ownCs = getComputedStyle(el);
+                const ownHasBg = (ownCs.backgroundColor && ownCs.backgroundColor !== 'rgba(0, 0, 0, 0)') ||
+                    (ownCs.backgroundImage && ownCs.backgroundImage !== 'none');
+                const inheritedBg = (!ownHasBg && el.parentElement)
+                    ? window.__vaiGetEffectiveBackground(el.parentElement)
+                    : null;
+
                 let domHtml = '';
                 try {
                     window.__vaiFreezeCanvases(el);
                     window.__vaiSanitize(el);
                     window.__vaiInlineComputedStyles(el);
+                    if (inheritedBg) {
+                        if (inheritedBg.backgroundColor) el.style.setProperty('background-color', inheritedBg.backgroundColor);
+                        if (inheritedBg.backgroundImage) {
+                            el.style.setProperty('background-image', inheritedBg.backgroundImage);
+                            el.style.setProperty('background-size', inheritedBg.backgroundSize);
+                            el.style.setProperty('background-position', inheritedBg.backgroundPosition);
+                        }
+                    }
                     el.removeAttribute('data-vai-idx');
                     domHtml = el.outerHTML;
                 } catch (e) {

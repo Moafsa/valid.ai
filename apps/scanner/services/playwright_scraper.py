@@ -387,10 +387,20 @@ class PlaywrightScraper:
                 const MENU_TOGGLE = /burger|hamburger|menu-toggle|nav-toggle|mobile-menu|toggle-menu/i;
                 const MENU_LABEL = /\\bmenu\\b/i;
                 const isMenuToggle = el => MENU_TOGGLE.test(el.className) || MENU_LABEL.test(el.getAttribute('aria-label') || '');
+                // AOS (Animate On Scroll) elements start at opacity:0 via
+                // AOS's own stylesheet by design — the whole point is a
+                // fade/slide-in that plays once scrolled into view. The
+                // published clone re-attaches real AOS from a CDN
+                // (library-auto-init.tsx) specifically so this plays for
+                // real; forcing it to opacity:1 here would bake it
+                // permanently visible before AOS ever got a chance to run,
+                // trading "real reveal animation" for "always visible" —
+                // a downgrade now that the real thing works.
+                const hasAos = el => el.hasAttribute('data-aos');
 
                 document.querySelectorAll('*').forEach(el => {
                     const cs = getComputedStyle(el);
-                    if (!skip.has(el) && !isMenuToggle(el) && (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0')) {
+                    if (!skip.has(el) && !isMenuToggle(el) && !hasAos(el) && (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0')) {
                         el.style.setProperty('display', cs.display === 'none' ? 'block' : cs.display, 'important');
                         el.style.setProperty('visibility', 'visible', 'important');
                         el.style.setProperty('opacity', '1', 'important');

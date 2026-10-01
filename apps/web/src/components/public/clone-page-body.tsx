@@ -1,6 +1,7 @@
 import { PageTracker } from '@/components/public/page-tracker'
 import { ImageLightbox } from '@/components/public/image-lightbox'
 import { InteractiveRuntime } from '@/components/public/interactive-runtime'
+import { LibraryAutoInit } from '@/components/public/library-auto-init'
 import { BackToProjectChip } from '@/components/dashboard/back-to-project-chip'
 
 interface Block {
@@ -38,6 +39,7 @@ export function ClonePageBody({
       <PageTracker projectId={projectId} pageId={pageId} />
       <ImageLightbox />
       <InteractiveRuntime />
+      <LibraryAutoInit />
       {isOwner && <BackToProjectChip projectId={projectId} />}
       <div dangerouslySetInnerHTML={{ __html: body }} />
     </>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Trash2, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -17,34 +17,20 @@ export function DeleteProjectButton({
   overlay?: boolean
 }) {
   const router = useRouter()
-  const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => () => {
-    if (resetTimer.current) clearTimeout(resetTimer.current)
-  }, [])
-
+  // A same-button two-click "arm, then confirm" pattern (what this used to
+  // be) is fragile on a 32px hover-revealed target: any state tracking
+  // between the two clicks (a timeout, onMouseLeave, anything) is a window
+  // where a real click can silently land as the wrong one, with no
+  // feedback — reported more than once as "clico e não exclui nada". A
+  // native confirm() has none of that: it's modal, blocks everything else,
+  // and there is no second click to mistime or miss.
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-
-    if (!confirming) {
-      setConfirming(true)
-      // Was onMouseLeave before — reset the instant the cursor left this
-      // 32px icon button, which real mouse movement crosses constantly
-      // between the "arm" click and the "confirm" click (re-aiming at the
-      // same tiny target almost always exits its bounding box for a frame
-      // first). The button would silently flip back to its unarmed state
-      // between clicks with no feedback, so the second click just re-armed
-      // it instead of deleting — "clico duas vezes e não funciona". A
-      // timeout gives a real click-click a stable window regardless of
-      // cursor path, while still not leaving it armed forever.
-      resetTimer.current = setTimeout(() => setConfirming(false), 3000)
-      return
-    }
-
-    if (resetTimer.current) clearTimeout(resetTimer.current)
+    if (deleting) return
+    if (!window.confirm('Excluir este projeto? Essa ação não pode ser desfeita.')) return
 
     setDeleting(true)
     try {
@@ -55,17 +41,16 @@ export function DeleteProjectButton({
     } catch {
       toast.error('Erro ao excluir projeto')
       setDeleting(false)
-      setConfirming(false)
     }
   }
 
   return (
     <button
       onClick={handleClick}
-      title={confirming ? 'Clique de novo para confirmar' : 'Excluir'}
-      className={`flex h-8 w-8 items-center justify-center rounded-lg backdrop-blur transition ${
+      title="Excluir"
+      className={`flex h-8 w-8 items-center justify-center rounded-lg backdrop-blur transition bg-black/50 text-gray-300 hover:bg-black/70 hover:text-red-400 ${
         overlay ? 'absolute right-2 top-2 z-10 opacity-0 group-hover:opacity-100' : ''
-      } ${confirming ? 'bg-red-600 text-white opacity-100' : 'bg-black/50 text-gray-300 hover:bg-black/70 hover:text-red-400'}`}
+      }`}
     >
       {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
     </button>

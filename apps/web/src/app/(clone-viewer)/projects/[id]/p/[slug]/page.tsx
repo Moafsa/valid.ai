@@ -1,10 +1,7 @@
 import { notFound } from 'next/navigation'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
-import { BackToProjectChip } from '@/components/dashboard/back-to-project-chip'
-import { PageTracker } from '@/components/public/page-tracker'
-import { ImageLightbox } from '@/components/public/image-lightbox'
-import { InteractiveRuntime } from '@/components/public/interactive-runtime'
+import { ClonePageBody } from '@/components/public/clone-page-body'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,8 +35,6 @@ export default async function ClonePageViewer({
   if (!page) notFound()
 
   const blocks = Array.isArray(page.blocks) ? (page.blocks as any[]) : []
-  const sorted = [...blocks].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-  const body = sorted.map(b => b.generatedHtml || '').join('\n')
 
   // Real visitors land here too now that this route is public — only show
   // the "back to dashboard" chip to the project's own owner, since that
@@ -48,13 +43,12 @@ export default async function ClonePageViewer({
   const isOwner = workspace?.id === project.workspaceId
 
   return (
-    <>
-      {page.customCss && <style dangerouslySetInnerHTML={{ __html: page.customCss }} />}
-      <PageTracker projectId={id} pageId={page.id} />
-      <ImageLightbox />
-      <InteractiveRuntime />
-      {isOwner && <BackToProjectChip projectId={id} />}
-      <div dangerouslySetInnerHTML={{ __html: body }} />
-    </>
+    <ClonePageBody
+      projectId={id}
+      pageId={page.id}
+      blocks={blocks}
+      customCss={page.customCss ?? null}
+      isOwner={isOwner}
+    />
   )
 }

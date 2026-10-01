@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import grapesjs, { Editor } from 'grapesjs'
 import 'grapesjs/dist/css/grapes.min.css'
-import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2, Image as ImageIcon, Upload, ChevronDown } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Undo2, Redo2, Monitor, Tablet, Smartphone, Link2, Image as ImageIcon, Upload, ChevronDown, Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { STARTER_BLOCKS } from '@/lib/visual-editor/starter-blocks'
 
@@ -41,6 +41,21 @@ interface MediaItem {
 // component with no rules of its own — strip it so we only re-embed a
 // <style> tag when the block actually defines custom CSS.
 const GJS_BASE_CSS = '* { box-sizing: border-box; } body {margin: 0;}'
+
+// Per-device visibility (Avançado tab) is a plain utility class toggled on
+// the component, not a styleManager property — it needs its own always-
+// available stylesheet, both live in the canvas iframe (so hidden-on-
+// mobile actually previews as hidden when switching device) and baked
+// into any saved block that uses one of these classes (see handleSave).
+// max-width breakpoints match this editor's own deviceManager.devices
+// (Tablet widthMedia: 992px, Mobile widthMedia: 575px) so what you see
+// while editing matches what a real visitor's screen width triggers.
+const VISIBILITY_CSS = `
+@media (min-width: 993px) { .vai-hide-desktop { display: none !important; } }
+@media (max-width: 992px) { .vai-hide-tablet { display: none !important; } }
+@media (max-width: 575px) { .vai-hide-mobile { display: none !important; } }
+`
+const VISIBILITY_CLASSES = ['vai-hide-desktop', 'vai-hide-tablet', 'vai-hide-mobile'] as const
 
 // GrapesJS ships with a dark-gray chrome by default (block/style/layer
 // panels), themed entirely through these CSS custom properties — so
@@ -86,12 +101,13 @@ const GJS_THEME_CSS = `
 .sp-picker-container { border-left-color: rgba(255, 255, 255, 0.1); }
 `
 
-type RightTab = 'conteudo' | 'estilo' | 'layout' | 'midias'
+type RightTab = 'conteudo' | 'estilo' | 'layout' | 'midias' | 'avancado'
 
 export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: VisualEditorProps) {
   const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
   const blocksPanelRef = useRef<HTMLDivElement>(null)
+  const blockSearchInputRef = useRef<HTMLInputElement>(null)
   const styleManagerRef = useRef<HTMLDivElement>(null)
   const layerManagerRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<Editor | null>(null)
@@ -109,6 +125,8 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
     isTextLeaf: boolean
     isImage: boolean
     src: string | null
+    id: string
+    hiddenOn: { desktop: boolean; tablet: boolean; mobile: boolean }
   } | null>(null)
   const selectedComponentRef = useRef<any>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
@@ -138,7 +156,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
       },
       blockManager: {
         appendTo: blocksPanelRef.current!,
-        blocks: STARTER_BLOCKS.map(b => ({ id: b.id, label: b.label, content: b.content, category: 'Blocos' })),
+        blocks: STARTER_BLOCKS.map(b => ({ id: b.id, label: b.label, media: b.media, content: b.content, category: 'Blocos' })),
       },
       styleManager: {
         appendTo: styleManagerRef.current!,
@@ -215,15 +233,13 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
     editorRef.current = editor
     if (typeof window !== 'undefined') (window as any).__vaiEditor = editor
 
-    if (pageCss) {
-      editor.on('load', () => {
-        const doc = editor.Canvas.getDocument()
-        if (!doc) return
-        const styleTag = doc.createElement('style')
-        styleTag.textContent = pageCss
-        doc.head.appendChild(styleTag)
-      })
-    }
+    editor.on('load', () => {
+      const doc = editor.Canvas.getDocument()
+      if (!doc) return
+      const styleTag = doc.createElement('style')
+      styleTag.textContent = (pageCss || '') + VISIBILITY_CSS
+      doc.head.appendChild(styleTag)
+    })
 
     editor.on('block:drag:stop', (component: any) => {
       if (!component || component.getAttributes?.()['data-vai-block-id']) return
@@ -254,6 +270,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
       // the reference UI's "Texto" field is actually meant for.
       const children = component.components?.() ?? []
       const isTextLeaf = children.length === 0 || (children.length === 1 && children.at(0)?.get('type') === 'textnode')
+      const classes: string[] = component.getClasses?.() ?? []
       setSelected({
         text: el?.innerText ?? '',
         href: isLink ? component.getAttributes()['href'] ?? '' : null,
@@ -261,6 +278,12 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
         isTextLeaf,
         isImage,
         src: isImage ? component.getAttributes()['src'] ?? '' : null,
+        id: component.getAttributes()['id'] ?? '',
+        hiddenOn: {
+          desktop: classes.includes('vai-hide-desktop'),
+          tablet: classes.includes('vai-hide-tablet'),
+          mobile: classes.includes('vai-hide-mobile'),
+        },
       })
     }
     editor.on('component:selected', readSelection)
@@ -328,6 +351,22 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
     setSelected(prev => (prev ? { ...prev, href } : prev))
   }
 
+  const applyIdEdit = (id: string) => {
+    const comp = selectedComponentRef.current
+    if (!comp) return
+    comp.addAttributes({ id })
+    setSelected(prev => (prev ? { ...prev, id } : prev))
+  }
+
+  const applyVisibilityToggle = (device: 'desktop' | 'tablet' | 'mobile', hidden: boolean) => {
+    const comp = selectedComponentRef.current
+    if (!comp) return
+    const cls = `vai-hide-${device}`
+    if (hidden) comp.addClass(cls)
+    else comp.removeClass(cls)
+    setSelected(prev => (prev ? { ...prev, hiddenOn: { ...prev.hiddenOn, [device]: hidden } } : prev))
+  }
+
   const applyImageUploadTo = async (comp: any, file: File, mediaIndex?: number) => {
     if (!comp) return
     if (mediaIndex !== undefined) setUploadingMediaIndex(mediaIndex)
@@ -382,6 +421,14 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
         let scopedCss = (editor.getCss({ component: comp } as any) || '').trim()
         if (scopedCss.startsWith(GJS_BASE_CSS)) scopedCss = scopedCss.slice(GJS_BASE_CSS.length).trim()
         const innerHtml = comp.getInnerHTML ? comp.getInnerHTML() : comp.toHTML()
+
+        // A block is saved standalone (its own generatedHtml string,
+        // rendered outside GrapesJS on the published page) — if it uses
+        // any vai-hide-* visibility class, the matching @media rule has to
+        // travel with it, not just live in the canvas iframe's own <style>.
+        if (VISIBILITY_CLASSES.some(cls => innerHtml.includes(cls))) {
+          scopedCss = (scopedCss + VISIBILITY_CSS).trim()
+        }
 
         outBlocks.push({
           id,
@@ -500,6 +547,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
         <div className="flex w-56 flex-shrink-0 flex-col border-r border-white/10 bg-[#0a0714]">
           <div className="border-b border-white/10 p-3">
             <input
+              ref={blockSearchInputRef}
               type="text"
               value={blockSearch}
               onChange={e => {
@@ -518,7 +566,25 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
         </div>
 
         {/* Center: canvas */}
-        <div className="flex-1 min-h-0" ref={containerRef} />
+        <div className="relative min-h-0 flex-1">
+          <div className="h-full" ref={containerRef} />
+          <button
+            onClick={() => {
+              const editor = editorRef.current
+              if (!editor) return
+              const comps = editor.getWrapper()?.components()
+              const last = comps && comps.length ? comps.at(comps.length - 1) : null
+              if (last) editor.select(last)
+              setRightTab('conteudo')
+              blockSearchInputRef.current?.focus()
+            }}
+            title="Selecionar a última seção e abrir a busca de blocos"
+            className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/10 bg-[#0e0a1a]/90 px-4 py-2 text-xs font-medium text-gray-200 shadow-lg shadow-black/40 backdrop-blur transition hover:border-violet-500/40 hover:text-white"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            Adicionar seção
+          </button>
+        </div>
 
         {/* Right: properties */}
         <div className="flex w-72 flex-shrink-0 flex-col border-l border-white/10 bg-[#0a0714]">
@@ -528,11 +594,12 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
               ['estilo', 'Estilo'],
               ['layout', 'Camadas'],
               ['midias', 'Mídias'],
+              ['avancado', 'Avançado'],
             ] as [RightTab, string][]).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setRightTab(key)}
-                className={`flex-1 px-2 py-2.5 ${rightTab === key ? 'border-b-2 border-violet-500 text-violet-400' : 'text-gray-500 hover:text-gray-200'}`}
+                className={`flex-1 px-1.5 py-2.5 ${rightTab === key ? 'border-b-2 border-violet-500 text-violet-400' : 'text-gray-500 hover:text-gray-200'}`}
               >
                 {label}
               </button>
@@ -540,7 +607,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
             <button
               disabled
               title="Em breve"
-              className="flex-1 cursor-not-allowed px-2 py-2.5 text-gray-600"
+              className="flex-1 cursor-not-allowed px-1.5 py-2.5 text-gray-600"
             >
               IA
             </button>
@@ -666,6 +733,53 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages }: Visu
                   </div>
                 ))}
               </div>
+            )}
+          </div>
+
+          <div className={rightTab === 'avancado' ? 'flex-1 overflow-y-auto p-4' : 'hidden'}>
+            {selected ? (
+              <div className="space-y-5">
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-gray-400">ID do elemento</label>
+                  <input
+                    type="text"
+                    value={selected.id}
+                    onChange={e => applyIdEdit(e.target.value)}
+                    placeholder="ex: secao-preco"
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:border-violet-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-gray-400">Ocultar em</label>
+                  <div className="flex gap-2">
+                    {([
+                      ['desktop', 'Desktop', Monitor],
+                      ['tablet', 'Tablet', Tablet],
+                      ['mobile', 'Celular', Smartphone],
+                    ] as [keyof typeof selected.hiddenOn, string, typeof Monitor][]).map(([device, label, Icon]) => {
+                      const active = selected.hiddenOn[device]
+                      return (
+                        <button
+                          key={device}
+                          onClick={() => applyVisibilityToggle(device, !active)}
+                          title={active ? `Oculto no ${label}` : `Visível no ${label}`}
+                          className={`flex flex-1 flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-[11px] font-medium transition ${
+                            active
+                              ? 'border-red-500/30 bg-red-500/10 text-red-300'
+                              : 'border-white/10 bg-white/5 text-gray-400 hover:border-violet-500/30 hover:text-gray-200'
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <p className="mt-1.5 text-[11px] text-gray-500">Clique pra esconder o elemento naquele tamanho de tela.</p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-xs text-gray-500">Selecione um elemento na página pra ver as opções avançadas.</p>
             )}
           </div>
         </div>

@@ -9,8 +9,10 @@ const isPublicRoute = createRouteMatcher([
   '/api/health',
   // The cloned page itself — this is what a real site visitor opens, so it
   // can't require the owner's own login. /api/track is the beacon that
-  // page posts view/lead events to, same reasoning.
+  // page posts view/lead events to, same reasoning. /s/(.*) is the same
+  // thing under the pretty published-domain alias (be-vallid.com/s/{slug}).
   '/projects/(.*)/p/(.*)',
+  '/s/(.*)',
   '/api/track',
 ])
 

@@ -17,3 +17,12 @@ export function truncateUrl(url: string, maxLength = 40): string {
   if (url.length <= maxLength) return url
   return url.substring(0, maxLength) + '...'
 }
+
+// Shared between project creation (naming only, no slug involved anymore)
+// and the publish endpoint (where a slug becomes the project's domain) —
+// lowercase, non-alphanumeric collapsed to a single "-", no leading/
+// trailing "-", so "Minha Oferta!!" and a scanner-derived slug end up in
+// the same shape.
+export function normalizeSlug(raw: string): string {
+  return raw.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}

@@ -54,21 +54,23 @@ export async function POST(req: NextRequest) {
 
     // result.pages: one entry per page the crawler actually cloned — each
     // becomes its own Page row, reachable at its own /projects/[id]/p/[slug]
-    // route (see the isolated page-viewer route), with internal <a href>s
-    // already rewritten by the scanner to point at each other.
+    // route (see the isolated page-viewer route).
     //
-    // Page slugs are derived from the domain/slug the user chose when
-    // starting the clone (project.slug): the first page IS that slug (the
-    // "home" of the project, e.g. "minha-oferta"), and every page after it
-    // gets a plain path-style number as its own slug ("1", "2", "3", ...),
-    // so a multi-page clone reads as "minha-oferta" + "/1" + "/2" — numbered
-    // steps under one domain — instead of a grab-bag of whatever path names
-    // the original site happened to use.
+    // Page.slug MUST be the scanner's own p.slug (e.g. "home",
+    // "checkout") — the scanner already bakes internal cross-page <a
+    // href="/projects/{id}/p/{slug}"> links using exactly that slug at
+    // scan time (see _rewrite_internal_links in scan_orchestrator.py).
+    // An earlier version of this route overwrote the saved slug with one
+    // derived from project.slug instead, which silently broke every
+    // internal link on any multi-page clone the moment a project had a
+    // domain assigned (the href baked into the HTML no longer matched any
+    // Page row) — project.slug is for the published domain, it has
+    // nothing to do with how pages address each other internally.
     const pages = Array.isArray(result.pages) ? result.pages : []
     const pageCreates = pages.map((p: any, i: number) => ({
       projectId,
       name: p.name || p.slug || `Página ${i + 1}`,
-      slug: project.slug ? (i === 0 ? project.slug : String(i)) : (p.slug || `page-${i + 1}`),
+      slug: p.slug || `page-${i + 1}`,
       order: i,
       blocks: toBlocks(p.sections),
       customCss: p.page_css || null,

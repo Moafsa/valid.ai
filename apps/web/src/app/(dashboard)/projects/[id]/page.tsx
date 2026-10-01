@@ -4,6 +4,8 @@ import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
 import { ArrowLeft, Globe2, FileText, AlertTriangle, ExternalLink, Pencil, Eye, Users } from 'lucide-react'
 import { DeleteProjectButton } from '@/components/dashboard/delete-project-button'
+import { ProjectNameEditor } from '@/components/dashboard/project-name-editor'
+import { PublishProjectDialog } from '@/components/dashboard/publish-project-dialog'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,7 +38,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           <ArrowLeft className="h-4 w-4" />
           Voltar
         </Link>
-        <DeleteProjectButton projectId={project.id} redirectTo="/dashboard" overlay={false} />
+        <div className="flex items-center gap-2">
+          {!isBusy && <PublishProjectDialog projectId={project.id} currentSlug={project.slug} />}
+          <DeleteProjectButton projectId={project.id} redirectTo="/dashboard" overlay={false} />
+        </div>
       </div>
 
       <div className="mb-6 flex items-center gap-3">
@@ -44,7 +49,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           <Globe2 className="h-5 w-5 text-gray-400" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold text-white">{project.name}</h1>
+          <ProjectNameEditor projectId={project.id} initialName={project.name} />
           <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-gray-500 hover:text-gray-300">
             {project.sourceUrl}
           </a>

@@ -3,10 +3,10 @@ from loguru import logger
 from typing import Optional, List
 import asyncio
 import base64
-import re
 from urllib.parse import urljoin, urlparse, urlunparse
 
 from config import settings
+from services.html_utils import iter_css_urls
 
 # File extensions that are never "another page to clone" — following these
 # would download binaries/stylesheets/etc. as if they were navigable pages.
@@ -43,21 +43,26 @@ def looks_like_page(url: str) -> bool:
     path = urlparse(url).path.lower()
     return not path.endswith(_NON_PAGE_EXTENSIONS)
 
-# Matches any url(...) inside a raw CSS blob — background images,
-# @font-face src, masks, all look identical to this: a bare url().
-CSS_URL_RE = re.compile(r'url\((["\']?)([^)"\']+)\1\)', re.IGNORECASE)
-
 
 def resolve_css_urls(css_text: str, base_url: str) -> str:
     """Rewrites relative url(...) references in a CSS blob to absolute,
     resolved against base_url — the stylesheet's own URL, or the page's URL
-    for inline <style> tags."""
-    def _sub(m: "re.Match") -> str:
-        target = m.group(2).strip()
+    for inline <style> tags. Uses iter_css_urls (see html_utils) rather than
+    a plain regex so a data: URI's own embedded `url(#id)` (an inline SVG
+    filter/gradient referencing itself — the standard way to build a noise
+    or grid texture) is treated as opaque content of the outer url(), never
+    rewritten as if it were its own separate, relative reference."""
+    out = []
+    pos = 0
+    for start, end, target in iter_css_urls(css_text):
+        out.append(css_text[pos:start])
         if target.startswith(("data:", "http://", "https://")):
-            return m.group(0)
-        return f'url("{urljoin(base_url, target)}")'
-    return CSS_URL_RE.sub(_sub, css_text)
+            out.append(css_text[start:end])
+        else:
+            out.append(f'url("{urljoin(base_url, target)}")')
+        pos = end
+    out.append(css_text[pos:])
+    return "".join(out)
 
 
 class PlaywrightScraper:
@@ -517,9 +522,28 @@ class PlaywrightScraper:
                     // and the whole bar overflows sideways instead. Only
                     // let small elements (the common case: a badge, a
                     // hint, a floating button) shrink-wrap.
+                    //
+                    // "Spans" has to be judged against the element's own
+                    // containing block, not the viewport. A `position:
+                    // fixed` box IS positioned against the viewport, so vw/
+                    // vh is right there. But a `position: absolute` decor
+                    // div (e.g. an `inset-0` grid-texture overlay sized to
+                    // fill a ~600px card) spans its card at 100% while
+                    // being nowhere near 60% of a 1440px viewport — judged
+                    // against vw it looked "small", so `right` got baked to
+                    // the card's stale on-page offset instead of staying
+                    // auto, collapsing the overlay to 0 width. Comparing to
+                    // offsetParent's box instead makes the ratio relative
+                    // to what the element actually fills.
                     const rect = node.getBoundingClientRect();
-                    const spansWidth = rect.width > vw * 0.6;
-                    const spansHeight = rect.height > vh * 0.6;
+                    let containerW = vw, containerH = vh;
+                    if (cs.position === 'absolute' && node.offsetParent) {
+                        const pRect = node.offsetParent.getBoundingClientRect();
+                        containerW = pRect.width;
+                        containerH = pRect.height;
+                    }
+                    const spansWidth = rect.width > containerW * 0.6;
+                    const spansHeight = rect.height > containerH * 0.6;
                     let styleStr = '';
                     for (const prop of window.__vaiStyleProps) {
                         let v = cs.getPropertyValue(prop);

@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from services.playwright_scraper import PlaywrightScraper, normalize_url
 from services.asset_uploader import AssetUploader
 from services.progress_store import ProgressStore
-from services.html_utils import rewrite_css_asset_urls, CSS_URL_RE
+from services.html_utils import rewrite_css_asset_urls, iter_css_urls
 
 
 class ScanOrchestrator:
@@ -102,7 +102,7 @@ class ScanOrchestrator:
         rehosted copies."""
         if not page_css:
             return ""
-        urls = {m.group(2).strip() for m in CSS_URL_RE.finditer(page_css)}
+        urls = {target for _, _, target in iter_css_urls(page_css)}
         urls = {u for u in urls if not u.startswith("data:")}
         url_map: dict[str, str] = {}
         for i, original in enumerate(urls):

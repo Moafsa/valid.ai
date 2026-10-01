@@ -424,9 +424,25 @@ class PlaywrightScraper:
                 const nodes = [root, ...root.querySelectorAll('*')];
                 for (const node of nodes) {
                     const cs = getComputedStyle(node);
+                    const isPositioned = cs.position === 'absolute' || cs.position === 'fixed';
                     let styleStr = '';
                     for (const prop of window.__vaiStyleProps) {
-                        const v = cs.getPropertyValue(prop);
+                        let v = cs.getPropertyValue(prop);
+                        // getComputedStyle always resolves an unset "auto"
+                        // offset into a concrete pixel value matching the
+                        // CURRENT layout — a page that anchors a box with
+                        // only `right` (content sizes itself, left stays
+                        // auto) still reports a real `left` value here. We
+                        // don't bake width/height, so writing BOTH left
+                        // and right turns "anchored from one side, sized
+                        // by content" into "stretched/squeezed between two
+                        // fixed points" — this is exactly what shrank a
+                        // "role para descobrir" hint to a 37px-wide column
+                        // of single words. left/top alone already captures
+                        // the real on-screen position, so right/bottom
+                        // only needs to go back to auto to let the box
+                        // size itself again.
+                        if (isPositioned && (prop === 'right' || prop === 'bottom')) v = 'auto';
                         if (v) styleStr += prop + ':' + v + ';';
                     }
                     node.setAttribute('style', styleStr);
@@ -523,13 +539,29 @@ class PlaywrightScraper:
             };
 
             window.__vaiTagSections = function () {
-                const candidates = [
+                const rawCandidates = [
                     ...document.querySelectorAll(
                         'section, [class*="section"], [class*="block"], [class*="hero"], ' +
                         '[class*="benefit"], [class*="testimonial"], [class*="faq"], ' +
                         '[class*="cta"], [class*="footer"], header, footer, main > div'
                     )
                 ];
+                // These selectors overlap by design (a "hero" section is
+                // also commonly `[class*="block"]`, etc.) — fine when they
+                // match the SAME element twice (a Set dedupes that for
+                // free), but `[class*="hero"]` also matches a CHILD div
+                // like "hero-inner" (contains the substring "hero") sitting
+                // right inside `section.hero`. Both ended up as separate
+                // candidates, and since outerHTML of the outer one already
+                // includes the inner one, capturing both duplicated that
+                // entire block in the final page — literally the same
+                // headline and CTA twice, the second copy missing
+                // whatever styling only the outer section carried. Drop
+                // any candidate that's a descendant of another candidate:
+                // its content is always already included in the ancestor's
+                // own capture, so it can never be a second real section.
+                const unique = [...new Set(rawCandidates)];
+                const candidates = unique.filter(el => !unique.some(other => other !== el && other.contains(el)));
                 let i = 0;
                 for (const el of candidates) {
                     const rect = el.getBoundingClientRect();

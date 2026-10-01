@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Trash2, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -19,6 +19,11 @@ export function DeleteProjectButton({
   const router = useRouter()
   const [confirming, setConfirming] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (resetTimer.current) clearTimeout(resetTimer.current)
+  }, [])
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -26,8 +31,20 @@ export function DeleteProjectButton({
 
     if (!confirming) {
       setConfirming(true)
+      // Was onMouseLeave before — reset the instant the cursor left this
+      // 32px icon button, which real mouse movement crosses constantly
+      // between the "arm" click and the "confirm" click (re-aiming at the
+      // same tiny target almost always exits its bounding box for a frame
+      // first). The button would silently flip back to its unarmed state
+      // between clicks with no feedback, so the second click just re-armed
+      // it instead of deleting — "clico duas vezes e não funciona". A
+      // timeout gives a real click-click a stable window regardless of
+      // cursor path, while still not leaving it armed forever.
+      resetTimer.current = setTimeout(() => setConfirming(false), 3000)
       return
     }
+
+    if (resetTimer.current) clearTimeout(resetTimer.current)
 
     setDeleting(true)
     try {
@@ -45,7 +62,6 @@ export function DeleteProjectButton({
   return (
     <button
       onClick={handleClick}
-      onMouseLeave={() => setConfirming(false)}
       title={confirming ? 'Clique de novo para confirmar' : 'Excluir'}
       className={`flex h-8 w-8 items-center justify-center rounded-lg backdrop-blur transition ${
         overlay ? 'absolute right-2 top-2 z-10 opacity-0 group-hover:opacity-100' : ''

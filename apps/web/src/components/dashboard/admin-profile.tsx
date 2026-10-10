@@ -81,7 +81,7 @@ export async function UserProfile({ id }: { id: string }) {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel title="Plano e créditos" hint="muda na hora">
-          <WorkspaceActions id={ws.id} planKey={ws.planKey} status={ws.subscriptionStatus} until={ws.planUntil ? ws.planUntil.toISOString().slice(0, 10) : ''} plans={plansList.map(p => ({ key: p.key, name: p.name, priceCents: p.priceCents, active: p.active, visible: p.visible }))} />
+          <WorkspaceActions id={ws.id} bonus={ws.bonusCredits} planKey={ws.planKey} status={ws.subscriptionStatus} until={ws.planUntil ? ws.planUntil.toISOString().slice(0, 10) : ''} plans={plansList.map(p => ({ key: p.key, name: p.name, priceCents: p.priceCents, active: p.active, visible: p.visible }))} />
           {ent.message && <p className="mt-2 rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-200">{ent.message}</p>}
           
         </Panel>

@@ -29,9 +29,8 @@ export async function POST(req: NextRequest) {
       await assignPlan(w.id, { planKey: target.key })
     }
     if (b.credits) {
-      const after = w.aiCredits + b.credits
-      await db.workspace.update({ where: { id: w.id }, data: { aiCredits: after } })
-      await db.creditTransaction.create({ data: { workspaceId: w.id, type: 'PURCHASE', amount: b.credits, balanceAfter: after, description: b.description || 'Compra registrada pelo administrador', operation: 'admin_payment' } })
+      const rows = await db.$queryRaw<{ bonusCredits: number }[]>`UPDATE workspaces SET "bonusCredits" = "bonusCredits" + ${b.credits} WHERE id = ${w.id} RETURNING "bonusCredits"`
+      await db.creditTransaction.create({ data: { workspaceId: w.id, type: 'PURCHASE', amount: b.credits, balanceAfter: rows[0]?.bonusCredits ?? b.credits, description: b.description || 'Compra registrada pelo administrador', operation: 'admin_payment' } })
     }
     return NextResponse.json({ ok: true })
   } catch {

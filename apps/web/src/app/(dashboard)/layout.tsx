@@ -4,6 +4,7 @@ import { MessageSquareHeart, ScanSearch, Settings, ShieldCheck } from 'lucide-re
 import { db } from '@funnelai/db'
 import { getAuthUser, getCurrentWorkspace } from '@/lib/auth-helper'
 import { isAdminUser } from '@/lib/admin'
+import { CreditsBadge } from '@/components/dashboard/credits-badge'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   // a dot when the administrator has answered something the user has not read yet; the admin entry only for the administrator
@@ -30,6 +31,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <img src="/logo.png" alt="be-Vallid" className="h-8 w-auto" />
             </Link>
             <div className="flex items-center gap-5">
+              <CreditsBadge />
               <Link href="/cloaker" className={link}><ScanSearch className="h-4 w-4" /><span className="hidden sm:inline">Detector de cloaker</span></Link>
               <Link href="/feedback" className={`${link} relative`}>
                 <MessageSquareHeart className="h-4 w-4" /><span className="hidden sm:inline">Feedback</span>

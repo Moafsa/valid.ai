@@ -1,6 +1,8 @@
 from loguru import logger
 from typing import Optional
 import asyncio
+import hashlib
+import hmac
 import json
 import re
 import time
@@ -19,6 +21,14 @@ from services.video_rules import describe as describe_video
 from services.behavior_probe import BehaviorProbe
 from services.clone_review import review_clone
 from config import settings
+
+
+def preview_token(project_id: str, ttl_s: int = 900) -> str:
+    """Short-lived signed link to ONE project's working copy (checked by lib/internal-auth.ts in the web app): the automatic review
+    opens the clone in a browser with no session. Bound to the project and an expiry, so the secret itself never leaves for any site."""
+    exp = str(int((time.time() + ttl_s) * 1000))
+    sig = hmac.new(settings.SCANNER_SHARED_SECRET.encode(), f"preview:{project_id}:{exp}".encode(), hashlib.sha256).hexdigest()
+    return f"{exp}.{sig}"
 
 # Chromium is heavy and a funnel walk runs several pages at once: more than a
 # couple of walks at the same time would starve each other (or the host).
@@ -732,7 +742,7 @@ class ScanOrchestrator:
         """Opens the original and the finished clone side by side (computer and phone) and records what differs."""
         try:
             await asyncio.sleep(3)
-            clone_url = f"{settings.WEB_INTERNAL_URL.rstrip('/')}/projects/{self.project_id}/p/{slug}"
+            clone_url = f"{settings.WEB_INTERNAL_URL.rstrip('/')}/projects/{self.project_id}/p/{slug}?vai_token={preview_token(self.project_id)}"
             async with PlaywrightScraper(persona=self.persona, use_proxy=False) as sc:
                 review = await asyncio.wait_for(review_clone(sc.browser, self.url, clone_url), 180)
             async with httpx.AsyncClient(timeout=30) as client:

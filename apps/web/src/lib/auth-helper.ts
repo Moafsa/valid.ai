@@ -6,14 +6,16 @@ export async function getAuthUser(): Promise<{ userId: string | null }> {
   const isClerkConfigured = key.length > 30 && !key.endsWith('xxx') && !key.endsWith('dummy')
 
   if (!isClerkConfigured) {
-    return { userId: 'user_dev_mode' }
+    // No login provider configured: a shared development user, but never in production (a missing key there must lock the app, not open it)
+    return { userId: process.env.NODE_ENV === 'production' && process.env.ALLOW_DEV_AUTH !== '1' ? null : 'user_dev_mode' }
   }
 
+  // Signed out, or Clerk failing: nobody. Falling back to the shared development user here would hand every anonymous request one account.
   try {
     const { userId } = await auth()
-    return { userId: userId || 'user_dev_mode' }
+    return { userId: userId || null }
   } catch (_e) {
-    return { userId: 'user_dev_mode' }
+    return { userId: null }
   }
 }
 

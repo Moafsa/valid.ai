@@ -24,6 +24,8 @@ model Workspace {
   /// paid through this date (a few days of grace are given after it); null = no expiry (cortesia, unlimited plan)
   planUntil DateTime?
   aiCredits Int      @default(50)
+  /// extra AI credits given by the administrator or bought: only spent once the month's plan allowance is used up (see lib/plans.ts)
+  bonusCredits Int   @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

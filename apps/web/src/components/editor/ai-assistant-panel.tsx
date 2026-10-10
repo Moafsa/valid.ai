@@ -79,7 +79,7 @@ export function AiAssistantPanel({
   const [full, setFull] = useState(false)
   const [ref, setRef] = useState<string | null>(null)
   const [scope, setScope] = useState<'page' | 'selection'>('page')
-  const [credits, setCredits] = useState<{ used: number; limit: number | null; plan: string } | null>(null)
+  const [credits, setCredits] = useState<{ used: number; limit: number | null; plan: string; bonus: number; remaining: number | null } | null>(null)
   const [steps, setSteps] = useState<StepView[]>([])
   const abortRef = useRef<AbortController | null>(null)
   /** what this conversation remembers (earlier requests and what was done), without the heavy tool traffic */
@@ -88,8 +88,18 @@ export function AiAssistantPanel({
   const feedRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
 
-  const loadCredits = useCallback(() => { fetch('/api/ai/credits').then(r => (r.ok ? r.json() : null)).then(d => d && setCredits(d)).catch(() => {}) }, [])
-  useEffect(() => { loadCredits() }, [loadCredits])
+  // the server's credit state, tolerant of an older shape (no extra credits / no "remaining" yet)
+  const asCredits = (d: any) => (d && typeof d.used === 'number' ? { used: d.used, limit: d.limit ?? null, plan: String(d.plan ?? ''), bonus: Number(d.bonus) || 0, remaining: d.remaining !== undefined ? d.remaining : d.limit == null ? null : Math.max(0, d.limit - d.used) + (Number(d.bonus) || 0) } : null)
+  const loadCredits = useCallback(() => { fetch('/api/ai/credits').then(r => (r.ok ? r.json() : null)).then(d => { const c = asCredits(d); if (c) setCredits(c) }).catch(() => {}) }, [])
+  useEffect(() => {
+    loadCredits()
+    // a plan or credit change made elsewhere (the administrator, another tab) shows up without reloading the editor
+    const again = () => { if (document.visibilityState === 'visible') loadCredits() }
+    const timer = setInterval(again, 30_000)
+    window.addEventListener('focus', again)
+    document.addEventListener('visibilitychange', again)
+    return () => { clearInterval(timer); window.removeEventListener('focus', again); document.removeEventListener('visibilitychange', again) }
+  }, [loadCredits])
   useEffect(() => { onSeed?.(t => { setDraft(t); setTimeout(() => taRef.current?.focus(), 30) }) }, [onSeed])
   useEffect(() => { setTimeout(() => taRef.current?.focus(), 250) }, [])
   useEffect(() => { feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' }) }, [msgs, busy, steps])
@@ -122,7 +132,7 @@ export function AiAssistantPanel({
       try {
         const r = await runAgent({
           ctx, selected, instruction, image, history: convoRef.current, signal: ac.signal, onSteps: setSteps,
-          callModel: async (messages, signal) => { const t = await fetchAgentTurn(messages, selected ? 'selection' : 'page', signal); if (t.credits) setCredits(t.credits); return t },
+          callModel: async (messages, signal) => { const t = await fetchAgentTurn(messages, selected ? 'selection' : 'page', signal); { const c = asCredits(t.credits); if (c) setCredits(c) } return t },
         })
         convoRef.current = [...convoRef.current, ...compactRun(instruction, r)].slice(-12)
         const changes: Change[] = r.changes.map(c => ({ label: c.label, detail: c.detail, comps: c.comps, swatch: c.swatch }))
@@ -180,7 +190,7 @@ export function AiAssistantPanel({
     if (want) setTimeout(() => flash(editor, (m.changes || []).flatMap(c => c.comps).filter(Boolean).slice(0, 60)), 200)
   }
 
-  const pct = credits && credits.limit !== null ? Math.min(100, Math.round((credits.used / Math.max(1, credits.limit)) * 100)) : null
+  const pct = credits && credits.remaining !== null ? (credits.remaining <= 0 ? 100 : Math.min(100, Math.round((credits.used / Math.max(1, credits.used + credits.remaining)) * 100))) : null
 
   return (
     <div className={`ed-ai-sheet${full ? ' full' : ''}`} role="dialog" aria-label="Assistente de IA">
@@ -198,9 +208,12 @@ export function AiAssistantPanel({
         </div>
       </div>
 
-      {credits && credits.limit !== null && pct !== null && (
-        <div className={`ed-ai-credits${pct >= 100 ? ' danger' : pct >= 80 ? ' warn' : ''}`} title={`Créditos de IA do plano ${credits.plan} neste mês. Mudar uma cor gasta cerca de 1; refazer a página inteira gasta vários.`}>
-          <span>{Math.max(0, credits.limit - credits.used).toLocaleString('pt-BR')} créditos restantes</span>
+      {credits && credits.remaining === null && (
+        <div className="ed-ai-credits" title={`Plano ${credits.plan}: sem limite de créditos de IA.`}><span>Créditos ilimitados</span></div>
+      )}
+      {credits && credits.remaining !== null && pct !== null && (
+        <div className={`ed-ai-credits${pct >= 100 ? ' danger' : pct >= 80 ? ' warn' : ''}`} title={`Créditos de IA do plano ${credits.plan} neste mês${credits.bonus > 0 ? `, mais ${credits.bonus.toLocaleString('pt-BR')} créditos extras` : ''}. Mudar uma cor gasta cerca de 1; refazer a página inteira gasta vários.`}>
+          <span>{credits.remaining.toLocaleString('pt-BR')} créditos restantes</span>
           <div className="meter"><i style={{ width: `${pct}%` }} /></div>
         </div>
       )}

@@ -204,7 +204,7 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages, shell,
   const currentPageIndex = sortedPages.findIndex(p => p.id === pageId)
   const currentPage = sortedPages[currentPageIndex]
   const wrapperDepth = shell ? (shell.wrappers ?? []).filter(w => SAFE_TAG.test(w.tag)).length : 0
-  const ctx: EngineCtx | null = useMemo(() => (editor ? { editor, wrapperDepth } : null), [editor, wrapperDepth])
+  const ctx: EngineCtx | null = useMemo(() => (editor ? { editor, wrapperDepth, pageId, legacy: !shell } : null), [editor, wrapperDepth, pageId, shell])
 
   const bump = useCallback(() => setTick(t => t + 1), [])
 

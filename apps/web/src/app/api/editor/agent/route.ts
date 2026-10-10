@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
-import { aiCreditsState, gate, gateResponse } from '@/lib/plans'
+import { aiCreditsState, chargeBonusCredits, gate, gateResponse } from '@/lib/plans'
 import { creditsFor } from '@/lib/ai-credits'
 import { ProviderError, usableProviders } from '@/lib/ai-providers'
 import { modelTurn } from '@/lib/agent-llm'
 import { STARTER_BLOCKS } from '@/lib/visual-editor/starter-blocks'
+import { skillIndex } from '@/lib/visual-editor/design-skills'
 import { AGENT_TOOLS, AgentMsgSchema } from '@/lib/visual-editor/agent-tools'
 
 export const maxDuration = 90
@@ -30,6 +31,24 @@ Como trabalhar (em ciclo):
    - get_css_rules + add_css: o que o estilo inline não faz (:hover, @media, animações, classes) e para entender por que um estilo não pega.
 3. Confira. Depois de alterar a página, chame check_page (com viewport "mobile" quando criar ou mexer em layout). Se aparecer problema, corrija e confira de novo. Se uma mudança piorou a página, use undo_last_change.
 4. Termine só quando o pedido estiver cumprido e verificado. Aí responda SEM chamar ferramentas, em 1 ou 2 frases curtas para uma pessoa leiga (sem travessão, sem jargão), dizendo o que mudou de verdade. Se algo não foi possível, diga o quê e por quê.
+
+Identidade visual (a regra mais importante):
+- A primeira mensagem traz a "IDENTIDADE VISUAL DESTE SITE", medida na própria página: tema, cores com seus papéis, fontes, estilo dos botões e dos cartões, espaçamento. TUDO que você criar ou mudar (HTML novo, CSS, temas, seções) deve usar esses valores exatos, para parecer feito pela mesma marca. Não invente paleta, não troque a fonte, não mude o raio ou o estilo dos botões, a menos que o pedido peça exatamente isso.
+- Em apply_theme, mantenha accent, background e font do site. Mude só o que o pedido pediu.
+- Antes de criar uma seção nova, leia uma parecida que já existe (get_element_html) e siga o mesmo padrão de título, texto, botão e cartão.
+- As ferramentas avisam quando algo foge da identidade ("identity_warnings"): corrija com set_styles antes de terminar.
+
+O original é a referência (regra de ouro de design):
+- O site foi clonado e o original está guardado. Antes de refazer ou mudar o layout de uma seção que já existe, leia como ela era (get_original_html). Se a versão atual perdeu o visual do original (cartão sem borda, botões ou fonte diferentes, uma fileira que virou coluna, etiqueta solta), use restore_original_block ANTES e depois aplique o pedido por cima. Não reconstrua visuais do zero.
+- Se a identidade traz um ATENÇÃO (a página atual está ilegível por edições anteriores) ou o usuário pede para voltar ao original, use restore_original_page. É drástico: descarta todas as edições; não use por conta própria em outros casos.
+- Preserve a posição e a orientação das partes (o que era fileira horizontal acima do cartão continua assim). Pense como um designer: pergunte-se se o resultado ficaria igual ao original no que o pedido não mudou.
+- A primeira mensagem traz SKILLS DE FRONTEND relevantes ao pedido; siga-as. As outras estão em get_design_skill, que você pode consultar quando o pedido tocar nesses temas. Skills disponíveis:
+${skillIndex()}
+
+Interatividade (o site clonado perdeu os scripts originais, então carrosséis, sliders e abas ficam parados):
+- Os carrosséis detectados vêm na primeira mensagem, com o id do contêiner e o estado. Para fazer um carrossel funcionar use SEMPRE make_carousel nesse contêiner. NUNCA escreva keyframes ou CSS de carrossel à mão.
+- Nunca diga que um carrossel funciona sem ter visto "gira" em check_motion (o make_carousel já devolve essa verificação). Se não girou, leia o motivo e corrija.
+- Se o pedido for sobre algo que precisa de script de verdade (calculadora, formulário que calcula, busca) e não houver ferramenta para isso, diga com clareza o que não dá para fazer aqui, em vez de simular.
 
 Regras:
 - Um resultado de ferramenta com erro é informação: leia, ajuste e tente de novo (no máximo 3 tentativas na mesma coisa). Depois explique ao usuário.
@@ -74,6 +93,7 @@ export async function POST(req: NextRequest) {
         inputTokens: turn.inTok, outputTokens: turn.outTok, creditsUsed: creditsFor(turn.inTok, turn.outTok), durationMs: Date.now() - started,
       },
     }).catch(() => {})
+    await chargeBonusCredits(workspace, creditsFor(turn.inTok, turn.outTok)).catch(() => {})
     const credits = await aiCreditsState(workspace).catch(() => null)
     return NextResponse.json({ message: turn.message, stop: turn.stop, provider: turn.provider.preset, model: turn.provider.model, credits })
   } catch (e: any) {

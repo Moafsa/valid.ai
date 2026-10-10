@@ -16,7 +16,8 @@ export type Block =
   | { type: 'tool_use'; id: string; name: string; input: Record<string, unknown> }
   | { type: 'tool_result'; tool_use_id: string; content: string; is_error?: boolean }
 
-export interface AgentMsg { role: 'user' | 'assistant'; content: Block[] }
+/** `reasoning_content`: the model's own chain of thought, kept only so providers in thinking mode (DeepSeek) get it back untouched next turn */
+export interface AgentMsg { role: 'user' | 'assistant'; content: Block[]; reasoning_content?: string }
 
 export const BlockSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('text'), text: z.string().max(60_000) }),
@@ -24,7 +25,7 @@ export const BlockSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('tool_use'), id: z.string().min(1).max(120), name: z.string().min(1).max(60), input: z.record(z.string(), z.unknown()) }),
   z.object({ type: z.literal('tool_result'), tool_use_id: z.string().min(1).max(120), content: z.string().max(40_000), is_error: z.boolean().optional() }),
 ])
-export const AgentMsgSchema = z.object({ role: z.enum(['user', 'assistant']), content: z.array(BlockSchema).min(1).max(40) })
+export const AgentMsgSchema = z.object({ role: z.enum(['user', 'assistant']), content: z.array(BlockSchema).min(1).max(40), reasoning_content: z.string().max(60_000).optional() })
 
 export interface ToolDef { name: string; description: string; parameters: Record<string, unknown> }
 
@@ -142,6 +143,56 @@ export const AGENT_TOOLS: ToolDef[] = [
       },
       required: ['css'],
     },
+  },
+  {
+    name: 'get_site_style',
+    description: 'Devolve a IDENTIDADE VISUAL medida do site clonado: tema, cores com seus papéis (fundo, texto, destaque, superfícies), fontes, estilo dos botões e cartões, ritmo de espaçamento e a paleta completa. É a mesma que veio na primeira mensagem. Tudo que você criar ou mudar deve usar esses valores.',
+    parameters: { type: 'object', properties: {} },
+  },
+  {
+    name: 'find_widgets',
+    description: 'Lista os carrosséis e sliders da página (por exemplo depoimentos que trocam sozinhos) com o id do contêiner, quantos slides têm e o estado: parado, empilhado, já animado. O site clonado perdeu os scripts originais, então a maioria está parada. A lista inicial também vem na primeira mensagem.',
+    parameters: { type: 'object', properties: {} },
+  },
+  {
+    name: 'make_carousel',
+    description: 'Faz um carrossel FUNCIONAR sem JavaScript: troca de slide automática (crossfade), pausa quando o mouse está em cima e bolinhas clicáveis, usando a identidade do site. Aponte o contêiner cujos filhos são os slides (o id vem de find_widgets). Chamar de novo no mesmo contêiner refaz com as novas opções. NÃO escreva keyframes à mão para isso. Depois chame check_motion.',
+    parameters: {
+      type: 'object',
+      properties: {
+        container_id: { type: 'string', description: 'id do contêiner dos slides (de find_widgets)' },
+        interval_s: { type: 'number', description: 'segundos por slide, de 2 a 15 (padrão 5)' },
+        dots: { type: 'boolean', description: 'bolinhas clicáveis embaixo (padrão true)' },
+        pause_on_hover: { type: 'boolean', description: 'pausa com o mouse em cima (padrão true)' },
+        label,
+      },
+      required: ['container_id'],
+    },
+  },
+  {
+    name: 'check_motion',
+    description: 'Observa um carrossel no tempo, como um visitante: quais slides aparecem, amostra por amostra, e diz se ele gira, está parado ou está empilhado. É a única prova de que um carrossel funciona. "seconds" deve cobrir pelo menos um intervalo de troca (padrão: intervalo + 1,5s).',
+    parameters: { type: 'object', properties: { container_id: { type: 'string' }, seconds: { type: 'number', description: 'de 2 a 10' } }, required: ['container_id'] },
+  },
+  {
+    name: 'get_original_html',
+    description: 'Lê o HTML de como a SEÇÃO era no site original, no momento da clonagem (antes de qualquer edição). Use para entender o visual, as classes e a estrutura que devem ser mantidos, e para ver o que foi estragado. Aponte qualquer elemento: vale a seção em que ele está.',
+    parameters: { type: 'object', properties: { id: { type: 'string', description: 'id de qualquer elemento da seção' }, around: { type: 'string', description: 'trecho a procurar (uma classe, ex. "tdots", ou um texto): devolve o HTML ao redor dele. Use quando a seção for grande.' }, max_chars: { type: 'integer', description: 'padrão 6000, máximo 12000' } }, required: ['id'] },
+  },
+  {
+    name: 'restore_original_block',
+    description: 'Devolve a SEÇÃO inteira ao visual e à estrutura do site original (como foi clonada), descartando as edições feitas nela. Use quando a seção perdeu a cara do site (cartão sem borda, botões ou fonte diferentes, fileira virou coluna) ANTES de aplicar o pedido por cima. Pode ser desfeito com undo_last_change.',
+    parameters: { type: 'object', properties: { id: { type: 'string', description: 'id de qualquer elemento da seção' }, label }, required: ['id'] },
+  },
+  {
+    name: 'restore_original_page',
+    description: 'Devolve a PÁGINA INTEIRA ao site original como foi clonada: todas as seções e o CSS voltam ao que eram, descartando TODAS as edições feitas na página (inclusive as do usuário). Use SÓ quando o usuário pediu para voltar ao original, ou quando a identidade do site traz um ATENÇÃO dizendo que a página atual está ilegível/quebrada por edições anteriores. Depois aplique o pedido por cima. Pode ser desfeito com undo_last_change.',
+    parameters: { type: 'object', properties: { label }, required: [] },
+  },
+  {
+    name: 'get_design_skill',
+    description: 'Lê skills de frontend: regras práticas de design (carrossel, cartões e depoimentos, topo, botões, FAQ, preços, formulário, responsivo, tipografia, cores, espaçamento, animações, fidelidade ao original). Sem "names" lista as disponíveis. As mais relevantes ao pedido já vêm na primeira mensagem.',
+    parameters: { type: 'object', properties: { names: { type: 'array', items: { type: 'string' }, description: 'ids das skills (até 4)' } } },
   },
   {
     name: 'check_page',

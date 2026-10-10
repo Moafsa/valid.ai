@@ -35,12 +35,13 @@ const planLabel = (p: PlanOption) => `${p.name}${p.key === 'UNLIMITED' ? ' (ocul
 const STATUS_LABEL: Record<string, string> = { none: 'Sem assinatura', active: 'Em dia', past_due: 'Em atraso', canceled: 'Cancelada' }
 
 /** The administrator moves an account to a plan, sets the state of its subscription and the paid-through date, or gives credits. */
-export function WorkspaceActions({ id, planKey, status, until, plans }: { id: string; planKey: string; status: string; until: string; plans: PlanOption[] }) {
+export function WorkspaceActions({ id, planKey, status, until, plans, bonus }: { id: string; planKey: string; status: string; until: string; plans: PlanOption[]; bonus: number }) {
   const router = useRouter()
   const [p, setP] = useState(planKey)
   const [st, setSt] = useState(status)
   const [dt, setDt] = useState(until)
   const [credits, setCredits] = useState('')
+  const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
   const dirty = p !== planKey || st !== status || dt !== until
@@ -72,10 +73,19 @@ export function WorkspaceActions({ id, planKey, status, until, plans }: { id: st
         <button disabled={busy || !dirty} onClick={() => send({ planKey: p, subscriptionStatus: st, planUntil: dt || null })} className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 disabled:opacity-40">{busy ? 'Salvando…' : 'Salvar plano'}</button>
       </div>
       <p className="text-[11px] text-gray-500">Um plano pago só vale enquanto a assinatura está em dia (e até 3 dias depois do vencimento). Sem data, vale sem prazo (cortesia).</p>
-      <div className="flex items-center gap-1.5">
-        <input className={`${box} w-24`} placeholder="+créditos" value={credits} onChange={e => setCredits(e.target.value.replace(/[^\d-]/g, ''))} />
-        <button disabled={busy || !credits || credits === '-'} onClick={async () => { if (await send({ addCredits: parseInt(credits, 10) })) setCredits('') }} className="rounded-lg bg-white/10 px-2.5 py-1.5 text-xs text-white hover:bg-white/20 disabled:opacity-40">dar créditos</button>
-        {msg && <span className="text-xs text-gray-400">{msg}</span>}
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <p className="text-xs font-semibold text-gray-200">Créditos extras de IA</p>
+          <p className="text-xs text-gray-400">Saldo agora: <span className="font-semibold text-white">{bonus.toLocaleString('pt-BR')}</span></p>
+        </div>
+        <p className="mt-1 text-[11px] text-gray-500">São gastos só depois que os créditos do mês do plano acabam. Use um número negativo (ex.: -50) para tirar créditos.</p>
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          {[100, 500, 1000].map(n => <button key={n} type="button" disabled={busy} onClick={() => setCredits(String(n))} className="rounded-lg border border-white/10 px-2 py-1 text-xs text-gray-300 hover:bg-white/10 disabled:opacity-40">+{n}</button>)}
+          <input className={`${box} w-28`} inputMode="numeric" placeholder="quantidade" value={credits} onChange={e => setCredits(e.target.value.replace(/(?!^-)[^\d]/g, ''))} />
+          <input className={`${box} min-w-[180px] flex-1`} maxLength={120} placeholder="Motivo (aparece no histórico)" value={note} onChange={e => setNote(e.target.value)} />
+          <button disabled={busy || !credits || credits === '-' || parseInt(credits, 10) === 0} onClick={async () => { if (await send({ addCredits: parseInt(credits, 10), ...(note.trim() ? { note: note.trim() } : {}) })) { setCredits(''); setNote('') } }} className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-gray-900 disabled:opacity-40">{busy ? 'Salvando…' : 'Aplicar créditos'}</button>
+        </div>
+        {msg && <p className="mt-2 text-xs text-gray-400">{msg}</p>}
       </div>
     </div>
   )

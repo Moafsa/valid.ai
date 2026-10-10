@@ -16,6 +16,10 @@ export interface EngineCtx {
   editor: Editor
   /** how many original wrapper elements sit between <body> and the page's blocks */
   wrapperDepth: number
+  /** the page being edited (to read what it looked like when it was cloned) */
+  pageId?: string
+  /** a page cloned before the native-CSS format: each block is wrapped in a <section> of the editor's own and the cloned section lives INSIDE it */
+  legacy?: boolean
 }
 
 export interface Change {

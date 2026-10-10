@@ -15,6 +15,8 @@ import {
   realChildren, runTheme, sanitizeHtml, stableId, txt, type EngineCtx, type Registry,
 } from './ai-engine'
 import { TOOL_NAMES, type AgentMsg, type Block } from './agent-tools'
+import { pickSkills, skillText } from './design-skills'
+import { buildSiteProfile, checkMotion, detectWidgets, cssDrift, identityIssues, makeCarousel, profileText, themeDrift, widgetsText, type SiteProfile } from './site-context'
 
 type Comp = any
 
@@ -41,6 +43,9 @@ export interface ToolOutcome { content: string; isError: boolean; stepLabel: str
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 const MAX_RESULT = 12_000
+/** Nothing a visitor can see (a transparent or 1px control kept only for the keyboard): it cannot "stick out". */
+const isInvisible = (el: HTMLElement, cs: CSSStyleDeclaration, r: DOMRect) => cs.opacity === '0' || cs.visibility === 'hidden' || (r.width <= 2 && r.height <= 2)
+const READ_ONLY = new Set(['get_page_outline', 'get_selection', 'inspect_element', 'find_elements', 'get_element_html', 'get_css_rules', 'find_widgets', 'get_site_style'])
 
 const STYLE_PROPS = ['font-family', 'font-size', 'font-weight', 'line-height', 'letter-spacing', 'color', 'background-color', 'background-image', 'padding', 'margin', 'border-radius', 'box-shadow', 'display', 'position', 'width', 'max-width', 'text-align', 'opacity']
 
@@ -88,6 +93,13 @@ export class AgentSession {
   private undoStack: { steps: number; change: number }[] = []
   private jsErrors: string[] = []
   private inserted: Comp[] = []
+  /** carousels made in this task (container id -> comp, seconds per slide): check_page proves they move */
+  private carousels = new Map<string, { comp: Comp; interval: number }>()
+  /** the site's identity; measured when the task starts and again after the page is sent back to the original */
+  profile: SiteProfile
+  private reads = new Map<string, number>()
+  /** elements that already stuck out past the screen before the agent touched anything: not its doing, never its job */
+  private baseStick = new WeakSet<Element>()
   private newImages = new Set<Comp>()
   private baseContrast: Set<string>
   private um: any
@@ -106,6 +118,29 @@ export class AgentSession {
       this.off = () => { win.removeEventListener('error', onErr); win.removeEventListener('unhandledrejection', onRej) }
     }
     this.baseContrast = new Set(findLowContrast(ctx, selected).map(x => stableId(x.comp)))
+    // the site's identity is measured NOW, before the first change: it is what every change is judged against
+    let profile: SiteProfile
+    try { profile = buildSiteProfile(ctx) } catch (e) { console.warn('[agent] site profile failed', e); profile = { mood: 'light', pageBg: '#ffffff', text: '#000000', surfaces: [], headingFont: 'sans-serif', bodyFont: 'sans-serif', palette: [] } }
+    this.profile = profile
+    try {
+      const doc = this.doc, cw = doc.documentElement.clientWidth
+      const root = contentRoot(ctx).getEl?.() as HTMLElement | undefined
+      if (isElement(root)) for (const e of [root, ...Array.from(root.querySelectorAll('*') as NodeListOf<HTMLElement>)].slice(0, 6000)) { const r = e.getBoundingClientRect(); if (r.width > 0 && r.right > cw + 2) this.baseStick.add(e) }
+    } catch { /* optional */ }
+  }
+
+  /** What the model reads about the site's identity and its widgets, in its first message. */
+  siteBrief(): string {
+    let w = ''
+    try { w = widgetsText(detectWidgets(this.ctx)) } catch (e) { console.warn('[agent] widget scan failed', e); w = 'Não foi possível analisar os widgets.' }
+    let topic = ''
+    try {
+      const d = this.doc
+      const h1 = clip((d.querySelector('h1')?.textContent || '').replace(/\s+/g, ' ').trim(), 110)
+      const lang = (d.documentElement.getAttribute('lang') || '').trim() || 'pt-BR'
+      topic = `CONTEÚDO DO SITE: ${h1 ? `a página principal diz "${h1}". ` : ''}Idioma: ${lang}. Todo texto novo deve falar do MESMO assunto, no mesmo idioma e no mesmo tom (formal, direto, informal) dos textos que já existem; nunca invente depoimentos de pessoas reais, preços ou números.\n\n`
+    } catch { /* optional */ }
+    return topic + `IDENTIDADE VISUAL DESTE SITE (medida na página; tudo que você criar ou mudar deve parecer feito pela mesma marca):\n${profileText(this.profile)}\n\nCARROSSÉIS E SLIDERS DETECTADOS (o site perdeu os scripts originais ao ser clonado):\n${w}`
   }
 
   dispose() { this.off() }
@@ -234,6 +269,12 @@ export class AgentSession {
     this.toolCalls++
     if (!TOOL_NAMES.has(name)) return { content: `Ferramenta desconhecida "${name}". Use só estas: ${[...TOOL_NAMES].join(', ')}.`, isError: true, stepLabel: 'Ferramenta inválida' }
     if (input && input.__invalid_json) return { content: 'Os argumentos da chamada não eram um JSON válido. Envie de novo com JSON correto.', isError: true, stepLabel: 'Pedido mal formado' }
+    if (READ_ONLY.has(name)) {
+      const key = `${name}|${JSON.stringify(input || {})}|${this.changes.length}`
+      const n = (this.reads.get(key) || 0) + 1
+      this.reads.set(key, n)
+      if (n >= 2) return { content: JSON.stringify({ aviso: 'Você já fez exatamente esta leitura e nada mudou na página desde então: o resultado seria o mesmo. Não repita. Decida: faça a mudança (set_styles, replace_element, make_carousel...) ou explique ao usuário o que não dá para fazer.' }), isError: false, stepLabel: 'Leitura repetida, pulei' }
+    }
     const before = this.um.getStack().length
     freezeMotion(this.doc, true)
     try {
@@ -330,7 +371,8 @@ export class AgentSession {
           return { id: stableId(c), changed: Object.fromEntries(props.filter(p => before[p] !== after[p]).map(p => [p, `${clip(before[p], 40)} -> ${clip(after[p], 40)}`])) }
         })
         if (!r.changed) return { data: `Nada mudou na tela para ${comps.length} elemento(s). O CSS original da página provavelmente tem prioridade ou o valor não faz efeito nesse elemento. Use inspect_element ou get_css_rules para entender e tente add_css com um seletor mais específico.`, error: true, stepLabel: i.label || 'Ajustando estilos', stepDetail: 'sem efeito' }
-        return { data: this.withQuick({ changed_elements: r.changed, requested_elements: comps.length, sample }), modifies: true, label: i.label, detail: `${r.changed} ${r.changed === 1 ? 'elemento' : 'elementos'}`, comps: r.touched, stepLabel: i.label || 'Ajustando estilos', stepDetail: `${r.changed} elementos` }
+        const drift = cssDrift(this.profile, JSON.stringify(css))
+        return { data: this.withQuick({ changed_elements: r.changed, requested_elements: comps.length, sample, ...(drift ? { identity_note: drift } : {}) }), modifies: true, label: i.label, detail: `${r.changed} ${r.changed === 1 ? 'elemento' : 'elementos'}`, comps: r.touched, stepLabel: i.label || 'Ajustando estilos', stepDetail: `${r.changed} elementos` }
       }
 
       case 'apply_theme': {
@@ -339,7 +381,8 @@ export class AgentSession {
         const reg = describePage(this.ctx, this.selected, { stable: true }).registry
         const res = runTheme(this.ctx, reg, parsed.data, this.selected)
         if (!res.changed) return { data: 'O tema não mudou nada na tela. A página já está assim ou o CSS original impede. Tente set_styles em elementos específicos.', error: true, stepLabel: i.label || 'Repaginando a página', stepDetail: 'sem efeito' }
-        return { data: this.withQuick({ changed_elements: res.changed, parts: res.parts }), modifies: true, label: i.label || 'Repaginei o visual', detail: res.parts.slice(0, 5).join(', '), comps: res.touched, stepLabel: i.label || 'Repaginando a página', stepDetail: res.parts.slice(0, 3).join(', '), layout: !!parsed.data.density }
+        const drift = themeDrift(this.profile, parsed.data)
+        return { data: this.withQuick({ changed_elements: res.changed, parts: res.parts, ...(drift ? { identity_note: drift } : {}) }), modifies: true, label: i.label || 'Repaginei o visual', detail: res.parts.slice(0, 5).join(', '), comps: res.touched, stepLabel: i.label || 'Repaginando a página', stepDetail: res.parts.slice(0, 3).join(', '), layout: !!parsed.data.density }
       }
 
       case 'set_text': {
@@ -382,7 +425,7 @@ export class AgentSession {
         this.inserted.push(nc)
         const fit = ['before', 'after', 'page-start', 'page-end'].includes(i.where || 'page-end') ? this.fitWidth(nc, /(^|;)\s*width\s*:/i.test(el.getAttribute('style') || '')) : null
         const fixedContrast = this.autoContrast(nc)
-        const info = this.withQuick({ ...this.describeNew(nc), ...(fit ? { adjusted: `a seção ocupava ${fit.from}px e foi esticada para a largura das outras (${fit.to}px)` } : {}), ...(fixedContrast ? { auto_fixed_contrast: `${fixedContrast} textos difíceis de ler foram ajustados sozinhos` } : {}) })
+        const info = this.withQuick({ ...this.describeNew(nc), ...(fit ? { adjusted: `a seção ocupava ${fit.from}px e foi esticada para a largura das outras (${fit.to}px)` } : {}), ...(fixedContrast ? { auto_fixed_contrast: `${fixedContrast} textos difíceis de ler foram ajustados sozinhos` } : {}) }, [nc])
         nc.getEl?.()?.scrollIntoView?.({ block: 'center' })
         return { data: info, modifies: true, label: i.label, comps: [nc], stepLabel: i.label || 'Criando uma seção nova', layout: true }
       }
@@ -397,7 +440,7 @@ export class AgentSession {
         this.inserted.push(nc)
         this.fitWidth(nc, false)
         this.autoContrast(nc)
-        return { data: this.withQuick(this.describeNew(nc)), modifies: true, label: i.label || `Adicionei a seção "${b.label}"`, comps: [nc], stepLabel: i.label || `Adicionando "${b.label}"`, layout: true }
+        return { data: this.withQuick(this.describeNew(nc), [nc]), modifies: true, label: i.label || `Adicionei a seção "${b.label}"`, comps: [nc], stepLabel: i.label || `Adicionando "${b.label}"`, layout: true }
       }
 
       case 'replace_element': {
@@ -414,7 +457,7 @@ export class AgentSession {
         this.inserted.push(nc)
         this.fitWidth(nc, /(^|;)\s*width\s*:/i.test(el.getAttribute('style') || ''))
         const fixedContrast = this.autoContrast(nc)
-        return { data: this.withQuick({ replaced: oldId, ...this.describeNew(nc), ...(fixedContrast ? { auto_fixed_contrast: `${fixedContrast} textos difíceis de ler foram ajustados sozinhos` } : {}) }), modifies: true, label: i.label, comps: [nc], stepLabel: i.label || 'Refazendo um elemento', layout: true }
+        return { data: this.withQuick({ replaced: oldId, ...this.describeNew(nc), ...(fixedContrast ? { auto_fixed_contrast: `${fixedContrast} textos difíceis de ler foram ajustados sozinhos` } : {}) }, [nc]), modifies: true, label: i.label, comps: [nc], stepLabel: i.label || 'Refazendo um elemento', layout: true }
       }
 
       case 'remove_elements': {
@@ -495,7 +538,114 @@ export class AgentSession {
         }
         if (added <= 0) return { data: 'O editor não registrou nenhuma regra nova. Confira a sintaxe do CSS.', error: true, stepLabel: i.label || 'Escrevendo CSS', stepDetail: 'sem efeito' }
         const silent = selectors.length > 0 && selectors.every(s => s.matches === 0)
-        return { data: { rules_in_text: parsedRules, rules_added: added, selectors, ...(verified ? { verified } : {}), ...(silent ? { warning: 'Nenhum seletor encontrou elementos da página agora. A regra só é salva junto com a página se algum elemento usar a classe (por exemplo uma seção nova com class="..."); regras em body, html ou contêineres externos não são salvas.' } : {}) }, modifies: true, label: i.label || 'Acrescentei CSS à página', detail: `${added} regras`, comps: [], stepLabel: i.label || 'Escrevendo CSS', stepDetail: `${added} regras`, layout: true }
+        const cdrift = cssDrift(this.profile, i.css)
+        return { data: { rules_in_text: parsedRules, rules_added: added, selectors, ...(cdrift ? { identity_note: cdrift } : {}), ...(verified ? { verified } : {}), ...(silent ? { warning: 'Nenhum seletor encontrou elementos da página agora. A regra só é salva junto com a página se algum elemento usar a classe (por exemplo uma seção nova com class="..."); regras em body, html ou contêineres externos não são salvas.' } : {}) }, modifies: true, label: i.label || 'Acrescentei CSS à página', detail: `${added} regras`, comps: [], stepLabel: i.label || 'Escrevendo CSS', stepDetail: `${added} regras`, layout: true }
+      }
+
+      case 'get_site_style':
+        return { data: { identidade: this.profile, resumo: profileText(this.profile) }, stepLabel: 'Lendo a identidade visual do site' }
+
+      case 'find_widgets': {
+        const list = detectWidgets(this.ctx)
+        return { data: { carrosseis: list, resumo: widgetsText(list) }, stepLabel: 'Procurando carrosséis', stepDetail: list.length ? `${list.length} encontrado${list.length > 1 ? 's' : ''}` : 'nenhum' }
+      }
+
+      case 'make_carousel': {
+        const c = this.scoped([this.comp(i.container_id)], 'O contêiner')[0]
+        this.protectedComp(c)
+        const hexRgb = (h: string) => { const m = /^#([0-9a-f]{6})$/i.exec(h); return m ? [0, 2, 4].map(k => parseInt(m[1].slice(k, k + 2), 16)) : null }
+        const t = hexRgb(this.profile.text)
+        let made: ReturnType<typeof makeCarousel>
+        try {
+          made = makeCarousel(this.ctx, c, {
+            interval: typeof i.interval_s === 'number' ? i.interval_s : 5, dots: i.dots !== false, pauseOnHover: i.pause_on_hover !== false,
+            accent: this.profile.accent || this.profile.text, muted: t ? `rgba(${t[0]},${t[1]},${t[2]},.35)` : undefined,
+          })
+        } catch (e: any) { throw new ToolError(String(e?.message || e)) }
+        this.carousels.set(i.container_id, { comp: c, interval: made.interval })
+        if (made.dotsMode === 'originais') { try { const cw = this.doc.documentElement.clientWidth; for (const e of Array.from(this.doc.querySelectorAll('.vaic-dot')) as HTMLElement[]) if (e.getBoundingClientRect().right > cw + 2) this.baseStick.add(e) } catch { /* optional */ } }
+        const mot = await checkMotion(this.ctx, c, Math.min(10, made.interval + 1.5))
+        return {
+          data: { carrossel: { slides: made.slides, segundos_por_slide: made.interval, bolinhas: made.dotsMode === 'originais' ? 'as bolinhas originais do site foram religadas' : made.dotsMode === 'novas' ? 'bolinhas novas criadas' : 'sem bolinhas', setas_mortas_escondidas: made.hiddenControls, id: i.container_id }, verificacao: mot, ...(mot.verdict === 'gira' ? {} : { hint: 'O carrossel não girou na observação. Veja find_widgets e check_motion e corrija antes de terminar.' }) },
+          modifies: true, label: i.label || `Carrossel de ${made.slides} slides funcionando`, comps: [c], stepLabel: i.label || 'Montando o carrossel', stepDetail: `${made.slides} slides, ${made.interval}s cada`, layout: true, error: mot.verdict !== 'gira',
+        }
+      }
+
+      case 'check_motion': {
+        const c = this.comp(i.container_id)
+        const known = this.carousels.get(i.container_id)
+        const secs = typeof i.seconds === 'number' ? i.seconds : (known ? known.interval + 1.5 : 6)
+        const mot = await checkMotion(this.ctx, c, secs)
+        return { data: mot, stepLabel: 'Observando o carrossel', stepDetail: mot.verdict === 'gira' ? 'está girando' : mot.verdict, error: mot.verdict !== 'gira' }
+      }
+
+      case 'restore_original_page': {
+        if (this.selected) throw new ToolError('O pedido é só para o elemento selecionado: restaurar a página inteira mexeria fora dele.')
+        const pageId = this.ctx.pageId
+        if (!pageId) throw new ToolError('Não há como ler o original desta página aqui.')
+        const root = contentRoot(this.ctx)
+        const blocks = (root.components().models as Comp[]).filter(m => m.get?.('type') !== 'textnode')
+        // First every edit the editor holds as a CSS rule goes (what is left is the page's own CSS, i.e. the original look); only THEN
+        // the original sections go in: their inline styles (the dark section backgrounds) become rules of the editor as they are added
+        const css = this.ctx.editor.Css as any
+        const before = css.getAll().length
+        try { css.clear() } catch { for (const r of [...css.getAll().models]) css.remove(r) }
+        try { (this.ctx.editor.getWrapper?.() as any)?.setStyle?.({}) } catch { /* optional */ }
+        let restored = 0
+        const skipped: string[] = []
+        for (let k = 0; k < blocks.length; k++) {
+          const blk = blocks[k]
+          try {
+            const o = await this.originalOf(blk)
+            const el = sanitizeHtml(o.html.replace(/^\s*(<link[^>]*>\s*)+/i, ''))
+            if (!el) { skipped.push(String(o.blockId || k)); continue }
+            const bid = blk.getAttributes?.()['data-vai-block-id'] || o.blockId
+            if (bid) el.setAttribute('data-vai-block-id', String(bid))
+            if (this.ctx.legacy) blk.components(el.outerHTML); else blk.replaceWith(el.outerHTML)
+            restored++
+          } catch (e: any) { skipped.push(`${k}`) }
+        }
+        if (!restored) throw new ToolError('Não consegui restaurar nenhuma seção a partir do original.')
+        this.carousels.clear()
+        try { this.profile = buildSiteProfile(this.ctx) } catch { /* keep the earlier one */ }
+        try { const cw = this.doc.documentElement.clientWidth; const r = root.getEl?.() as HTMLElement | undefined; if (isElement(r)) for (const e of [r, ...Array.from(r.querySelectorAll('*') as NodeListOf<HTMLElement>)].slice(0, 6000)) if (e.getBoundingClientRect().right > cw + 2) this.baseStick.add(e) } catch { /* optional */ }
+        return { data: this.withQuick({ secoes_restauradas: restored, de: blocks.length, ...(skipped.length ? { nao_restauradas: skipped } : {}), regras_de_css_descartadas: before, proximo_passo: 'A página voltou ao original. Leia get_site_style de novo (a identidade agora é a do original) e aplique o pedido do usuário por cima.' }), modifies: true, label: i.label || 'Devolvi a página inteira ao visual do original', comps: [], stepLabel: i.label || 'Restaurando a página original', stepDetail: `${restored} seções`, layout: true }
+      }
+
+      case 'get_design_skill':
+        return { data: skillText(i.names), stepLabel: 'Lendo uma skill de frontend', stepDetail: Array.isArray(i.names) ? i.names.join(', ') : 'lista' }
+
+      case 'get_original_html': {
+        const blk = this.topBlock(this.comp(i.id))
+        const o = await this.originalOf(blk)
+        const max = Math.min(12_000, Math.max(500, Number(i.max_chars) || 6000))
+        const needle = typeof i.around === 'string' ? i.around.trim() : ''
+        const at = needle ? o.html.toLowerCase().indexOf(needle.toLowerCase()) : -1
+        if (needle && at < 0) throw new ToolError(`"${clip(needle, 40)}" não aparece no original desta seção (${o.html.length} caracteres). Leia sem "around" ou use outro trecho.`)
+        const from = at < 0 ? 0 : Math.max(0, at - Math.min(900, Math.floor(max / 4)))
+        return { data: { secao: o.blockId, tamanho_total: o.html.length, ...(at >= 0 ? { a_partir_do_caractere: from, ao_redor_de: needle } : {}), html: o.html.slice(from, from + max), ...(o.html.length > from + max ? { cortado: true } : {}) }, stepLabel: 'Lendo como a seção era no original', stepDetail: needle || undefined }
+      }
+
+      case 'restore_original_block': {
+        const c = this.comp(i.id)
+        const blk = this.topBlock(c)
+        if (this.selected && blk !== this.selected && !inside(this.selected, blk)) throw new ToolError('O pedido é só para o elemento selecionado: restaurar a seção inteira mexeria fora dele.')
+        this.protectedComp(blk)
+        const o = await this.originalOf(blk)
+        const el = sanitizeHtml(o.html.replace(/^\s*(<link[^>]*>\s*)+/i, ''))
+        if (!el) throw new ToolError('O original dessa seção não pôde ser carregado (precisa ter um único elemento no topo).')
+        const bid = blk.getAttributes?.()['data-vai-block-id'] || o.blockId
+        if (bid) el.setAttribute('data-vai-block-id', String(bid))
+        const oldId = stableId(blk)
+        // legacy pages: the block is the editor's own <section> wrapper and the cloned section lives inside it (saving keeps only the inside),
+        // so the wrapper stays and its content is swapped; with a shell the block IS the cloned section and is replaced whole
+        let nc: Comp
+        if (this.ctx.legacy) { blk.components(el.outerHTML); nc = blk } else { const res = blk.replaceWith(el.outerHTML); nc = Array.isArray(res) ? res[0] : res }
+        if (!nc) throw new ToolError('O editor não conseguiu restaurar a seção.')
+        const droppedRules = (() => { try { const r = nc.getEl?.(); return isElement(r) ? this.dropEditsOnlyFor(r) : 0 } catch { return 0 } })()
+        // whatever the ORIGINAL already had sticking out is not a problem of this restore
+        try { const cw = this.doc.documentElement.clientWidth; const r = nc.getEl?.() as HTMLElement | undefined; if (isElement(r)) for (const e of [r, ...Array.from(r.querySelectorAll('*') as NodeListOf<HTMLElement>)]) if (e.getBoundingClientRect().right > cw + 2) this.baseStick.add(e) } catch { /* optional */ }
+        return { data: this.withQuick({ restaurada: oldId, novo_id: stableId(nc), edicoes_de_css_descartadas: droppedRules, ...this.describeNew(nc), proximo_passo: 'A seção voltou ao visual do original. Agora aplique o pedido por cima (por exemplo find_widgets e make_carousel), mantendo esse visual.' }), modifies: true, label: i.label || 'Restaurei a seção como era no site original', comps: [nc], stepLabel: i.label || 'Restaurando a seção original', layout: true }
       }
 
       case 'check_page':
@@ -506,11 +656,95 @@ export class AgentSession {
         if (!last) throw new ToolError('Não há nenhuma mudança feita nesta tarefa para desfazer.')
         for (let k = 0; k < last.steps; k++) this.um.undo()
         const ch = this.changes.splice(last.change, 1)[0]
+        if (ch?.tool === 'make_carousel') for (const [id, c] of [...this.carousels]) if (ch.comps.includes(c.comp)) this.carousels.delete(id)
         this.modifiedSinceCheck = true
         return { data: { undone: ch?.label || 'último passo', steps: last.steps }, stepLabel: 'Desfazendo o último passo', stepDetail: ch?.label }
       }
     }
     throw new ToolError(`Ferramenta "${name}" sem implementação.`)
+  }
+
+  /* ───────── the page as it was cloned ───────── */
+
+  /**
+   * The editor keeps every edit as a rule in its CSS composer, on top of the page's own CSS. When a block goes back to the original,
+   * the edits aimed at classes that only that block uses must go too, or they dress the restored block in the old (wrong) colors.
+   * Classes shared with the rest of the page stay: restoring one section must not undo edits made elsewhere.
+   */
+  private dropEditsOnlyFor(root: HTMLElement) {
+    const css = this.ctx.editor.Css as any
+    const used = new Set<string>(), outside = new Set<string>()
+    const add = (e: Element, into: Set<string>) => e.classList.forEach(c => into.add(c))
+    add(root, used); root.querySelectorAll('*').forEach(e => add(e, used))
+    this.doc.body.querySelectorAll('*').forEach(e => { if (e !== root && !root.contains(e)) add(e, outside) })
+    const mine = new Set([...used].filter(c => !outside.has(c) && !/^vaic/.test(c)))
+    let n = 0
+    for (const r of [...css.getAll().models] as any[]) {
+      let text = ''
+      try { text = String(r.selectorsToString?.() || '') } catch { /* ignore */ }
+      const classes = [...text.matchAll(/\.([A-Za-z_][\w-]*)/g)].map(m => m[1])
+      if (classes.length && classes.every(c => mine.has(c))) { css.remove(r); n++ }
+    }
+    return n
+  }
+
+
+  /** The top-level block (a saved section) an element lives in. */
+  private topBlock(c: Comp): Comp {
+    const root = contentRoot(this.ctx)
+    let b = c
+    while (b?.parent?.() && b.parent() !== root) b = b.parent()
+    if (!b || b.parent?.() !== root) throw new ToolError('Esse elemento não está dentro de uma seção da página.')
+    return b
+  }
+
+  private async originalOf(block: Comp): Promise<{ html: string; blockId: string }> {
+    const pageId = this.ctx.pageId
+    if (!pageId) throw new ToolError('Não há como ler o original desta página aqui.')
+    const root = contentRoot(this.ctx)
+    const index = (root.components().models as Comp[]).filter(m => m.get?.('type') !== 'textnode').indexOf(block)
+    const attr = block.getAttributes?.()['data-vai-block-id']
+    const q = new URLSearchParams({ pageId, ...(attr ? { blockId: String(attr) } : { index: String(index) }) })
+    let res = await fetch(`/api/editor/original?${q}`, { cache: 'no-store' })
+    // a block added or renamed after the clone has no id in the original: the same position is the best guess
+    if (res.status === 404 && attr && index >= 0) res = await fetch(`/api/editor/original?${new URLSearchParams({ pageId, index: String(index) })}`, { cache: 'no-store' })
+    if (!res.ok) { const j = await res.json().catch(() => ({})); throw new ToolError(j.error || 'Não consegui ler o original desta seção.') }
+    const j = await res.json()
+    if (typeof j.html !== 'string' || !j.html.trim()) throw new ToolError('O original desta seção está vazio.')
+    return { html: j.html, blockId: String(j.id || attr || '') }
+  }
+
+  /**
+   * Which sections of the page no longer look like the ORIGINAL: measured by how many of the original section's CSS classes still exist
+   * in it. A section rebuilt by an earlier edit keeps almost none of them, and has lost the site's look with them. The model is told up
+   * front, so it restores instead of patching a section that is already off.
+   */
+  async originalDiff(): Promise<string> {
+    const pageId = this.ctx.pageId
+    if (!pageId) return ''
+    const res = await fetch(`/api/editor/original?${new URLSearchParams({ pageId, digest: '1' })}`, { cache: 'no-store' })
+    if (!res.ok) return ''
+    const sections: { id: string; index: number; classes: string[] }[] = (await res.json()).sections || []
+    const root = contentRoot(this.ctx)
+    const blocks = (root.components().models as Comp[]).filter(m => m.get?.('type') !== 'textnode')
+    const lines: string[] = []
+    blocks.forEach((blk, i) => {
+      const el = blk.getEl?.() as HTMLElement | undefined
+      if (!isElement(el)) return
+      const attr = blk.getAttributes?.()['data-vai-block-id']
+      const orig = sections.find(s => s.id === attr) || sections[i]
+      if (!orig || orig.classes.length < 5) return
+      const now = new Set<string>()
+      for (const e of [el, ...Array.from(el.querySelectorAll('*') as NodeListOf<HTMLElement>)]) e.classList.forEach(c => { if (!/^(vaic|gjs-)/.test(c)) now.add(c) })
+      const gone = orig.classes.filter(c => !now.has(c))
+      const kept = 1 - gone.length / orig.classes.length
+      // a whole part rebuilt (its classes gone) shows as a few missing names even when the rest of the section is untouched
+      if (kept < 0.5 || gone.length >= 4) {
+        const title = clip(txt(el.querySelector('h1,h2,h3') as HTMLElement | null) || txt(el), 50)
+        lines.push(`- seção ${attr || `#${i + 1}`} ("${title}", id ${stableId(blk)}): sumiram ${gone.length} classes do original (${gone.slice(0, 6).join(', ')}${gone.length > 6 ? '…' : ''}). Parte dela foi reconstruída e perdeu o visual do site. Use restore_original_block(${stableId(blk)}) antes de aplicar o pedido.`)
+      }
+    })
+    return lines.join('\n')
   }
 
   /* ───────── reading ───────── */
@@ -549,15 +783,15 @@ export class AgentSession {
         const cs = win.getComputedStyle(el)
         if (cs.display === 'none' || cs.position === 'fixed') continue
         const r = el.getBoundingClientRect()
-        if (r.width > 0 && r.right > cw + 2) bad.push(el)
+        if (r.width > 0 && r.right > cw + 2 && !isInvisible(el, cs, r)) bad.push(el)
       }
       const outer = bad.filter(el => !bad.some(o => o !== el && o.contains(el))).slice(0, 5)
       for (const el of outer) {
         const comp = (this.ctx.editor.Components as any).allById?.()[el.id]
-        const ours = !!comp && this.inserted.some(x => inside(x, comp))
-        issues.push({ type: 'horizontal_overflow', id: el.id || undefined, ours, ...this.culprit(el, cw), message: `<${el.tagName.toLowerCase()}> passa ${Math.round(el.getBoundingClientRect().right - cw)}px da largura da tela (${cw}px)${ours ? '' : ' (pode já existir na página original)'}` })
+        const ours = !this.baseStick.has(el) && !!comp && [...this.inserted, ...this.changes.flatMap(c => c.comps)].some(x => inside(x, comp))
+        issues.push({ type: 'horizontal_overflow', id: el.id || undefined, ours, ...(ours ? {} : { preexisting: true }), ...this.culprit(el, cw), message: `<${el.tagName.toLowerCase()}> passa ${Math.round(el.getBoundingClientRect().right - cw)}px da largura da tela (${cw}px)${ours ? '' : ' (pode já existir na página original)'}` })
       }
-      if (!outer.length) issues.push({ type: 'horizontal_overflow', message: `A página rola para o lado (${de.scrollWidth}px de conteúdo para ${cw}px de tela).` })
+      if (!outer.length) issues.push({ type: 'horizontal_overflow', preexisting: !this.inserted.length && !this.changes.length, message: `A página rola para o lado (${de.scrollWidth}px de conteúdo para ${cw}px de tela).` })
     }
 
     // pages often clip the overflow of their containers (overflow: hidden/clip): the document does not scroll, but the content is cut off
@@ -611,9 +845,13 @@ export class AgentSession {
   }
 
   /** Problems in what the agent just made, attached to the tool's own answer so the model does not need an extra call to find out. */
-  private withQuick<T extends object>(data: T): T | (T & { issues_after: any[]; hint: string }) {
+  private withQuick<T extends object>(data: T, made?: Comp[]): T | (T & { issues_after: any[]; hint: string }) {
     const q = this.collectIssues(false).filter(x => x.type !== 'horizontal_overflow' || x.ours).slice(0, 4)
-    return q.length ? { ...data, issues_after: q, hint: 'Corrija esses problemas (se vieram das suas mudanças) antes de terminar.' } : data
+    let out: any = q.length ? { ...data, issues_after: q, hint: 'Corrija esses problemas (se vieram das suas mudanças) antes de terminar.' } : data
+    // what was just made must still look like THIS site (colors and fonts outside its palette are reported right away)
+    const off = made?.length ? identityIssues(this.ctx, this.profile, made) : []
+    if (off.length) out = { ...out, identity_warnings: off, identity_hint: `Isso foge da identidade visual do site. Corrija com set_styles usando as cores e fontes da identidade (get_site_style) antes de terminar.` }
+    return out
   }
 
   /** Text the agent put on a background it cannot read is fixed on the spot: it is mechanical, not a decision. */
@@ -627,13 +865,13 @@ export class AgentSession {
     const out: HTMLElement[] = []
     for (const e of [root, ...Array.from(root.querySelectorAll('*') as NodeListOf<HTMLElement>)].slice(0, 500)) {
       const r = e.getBoundingClientRect()
-      if (r.width <= 0 || r.right <= cw + 2) continue
+      if (r.width <= 0 || r.right <= cw + 2 || isInvisible(e, this.win.getComputedStyle(e), r)) continue
       let scrolls = false
       for (let n: HTMLElement | null = e.parentElement; n && n !== this.doc.body; n = n.parentElement) {
         const ox = this.win.getComputedStyle(n).overflowX
         if (ox === 'auto' || ox === 'scroll') { scrolls = true; break }
       }
-      if (!scrolls && this.win.getComputedStyle(e).position !== 'fixed') out.push(e)
+      if (!scrolls && !this.baseStick.has(e) && this.win.getComputedStyle(e).position !== 'fixed') out.push(e)
     }
     return out
   }
@@ -655,10 +893,19 @@ export class AgentSession {
     let issues: any[]
     let width = 0
     try { issues = this.collectIssues(); width = this.doc.documentElement.clientWidth } finally { if (switched) { ed.setDevice(prev); await sleep(200) } }
+    for (const [id, c] of this.carousels) {
+      if (!c.comp?.getEl?.()?.isConnected) continue
+      const mot = await checkMotion(this.ctx, c.comp, Math.min(10, c.interval + 1.5))
+      if (mot.verdict !== 'gira') issues.push({ type: 'carousel_not_moving', id, message: `carrossel ${id}: ${mot.message}` })
+    }
+    // what the page already had before the agent touched it (the original site's own overflow, a nav that only fits a phone...) is
+    // not the agent's to fix: it is mentioned once and never counted, so the task does not end as "problems left" or spend steps on it
+    const inherited = issues.filter(x => x.preexisting).length
+    issues = issues.filter(x => !x.preexisting)
     this.modifiedSinceCheck = false
     this.checkedAny = true
     this.lastIssueCount = issues.length
-    return { data: { ok: issues.length === 0, viewport: viewport || 'desktop', page_width: width, issues }, stepLabel: viewport === 'mobile' ? 'Verificando no celular' : viewport === 'tablet' ? 'Verificando no tablet' : 'Verificando a página', stepDetail: issues.length ? `${issues.length} ${issues.length === 1 ? 'problema' : 'problemas'}` : 'tudo certo', error: false }
+    return { data: { ok: issues.length === 0, viewport: viewport || 'desktop', page_width: width, issues, ...(inherited ? { ignorados_ja_existiam: inherited, nota: `${inherited} problema(s) de largura já existiam na página original e não vieram das suas mudanças: ignore-os, não tente consertar.` } : {}) }, stepLabel: viewport === 'mobile' ? 'Verificando no celular' : viewport === 'tablet' ? 'Verificando no tablet' : 'Verificando a página', stepDetail: issues.length ? `${issues.length} ${issues.length === 1 ? 'problema' : 'problemas'}` : 'tudo certo', error: false }
   }
 }
 
@@ -720,7 +967,7 @@ export function parseDataUrl(url: string): { media_type: string; data: string } 
 }
 
 export async function runAgent(o: AgentRunOptions): Promise<AgentRunResult> {
-  const lim = { iterations: 14, toolCalls: 80, ms: 4 * 60_000, verifyRounds: 2, ...o.limits }
+  const lim = { iterations: 26, toolCalls: 130, ms: 7 * 60_000, verifyRounds: 2, ...o.limits }
   const session = new AgentSession(o.ctx, o.selected)
   const t0 = Date.now()
   const steps: StepView[] = []
@@ -735,10 +982,12 @@ export async function runAgent(o: AgentRunOptions): Promise<AgentRunResult> {
       : 'a página inteira.'
     const summary = session.outline(undefined, 9000)
     patch('read', { status: 'ok' })
+    let drift = ''
+    try { drift = await session.originalDiff() } catch { /* the original may not be stored */ }
     const first: Block[] = []
     const img = o.image ? parseDataUrl(o.image) : null
     if (img) first.push({ type: 'image', media_type: img.media_type, data: img.data })
-    first.push({ type: 'text', text: `PEDIDO: ${o.instruction}\n\nESCOPO: ${scopeLine}\n\nRESUMO DA PÁGINA (ids estáveis, valem em todas as ferramentas):\n${summary}` })
+    first.push({ type: 'text', text: `PEDIDO: ${o.instruction}\n\nESCOPO: ${scopeLine}\n\n${session.siteBrief()}${drift ? `\n\nSEÇÕES QUE JÁ NÃO PARECEM COM O ORIGINAL (edições anteriores as reconstruíram):\n${drift}` : ''}\n\nSKILLS DE FRONTEND PARA ESTE PEDIDO (boas práticas; o visual do SITE e do original sempre vale mais que estas regras gerais):\n${pickSkills(o.instruction).map(k => `## ${k.title}\n${k.body}`).join('\n\n')}\n\nRESUMO DA PÁGINA (ids estáveis, valem em todas as ferramentas):\n${summary}` })
     const messages: AgentMsg[] = [...o.history, { role: 'user', content: first }]
 
     // Free plans of AI providers accept only a few requests per minute and every step of the agent is one request. So: when the
@@ -840,6 +1089,7 @@ export async function runAgent(o: AgentRunOptions): Promise<AgentRunResult> {
       }
       // every tool_use needs its tool_result, even when the run is being cut short
       for (const u of uses) if (!results.some(r => r.type === 'tool_result' && r.tool_use_id === u.id)) results.push({ type: 'tool_result', tool_use_id: u.id, content: 'Não executado: a tarefa foi interrompida.', is_error: true })
+      if (iterations + 1 === Math.floor(lim.iterations * 0.7)) results.push({ type: 'text', text: `AVISO DE ORÇAMENTO: você já usou ${iterations + 1} dos ${lim.iterations} passos desta tarefa. Pare de explorar: faça agora as mudanças que faltam (várias ferramentas na mesma resposta), confira uma vez e termine. Se algo não for possível, diga o que e por quê.` })
       messages.push({ role: 'user', content: results })
       if (ended !== 'done') break
     }

@@ -40,7 +40,7 @@ export function toAnthropicMessages(messages: AgentMsg[]) {
   })
 }
 
-export function toOpenAIMessages(system: string, messages: AgentMsg[], opts: { emptyAssistant?: string | null } = {}) {
+export function toOpenAIMessages(system: string, messages: AgentMsg[], opts: { emptyAssistant?: string | null; reasoning?: boolean } = {}) {
   const out: any[] = [{ role: 'system', content: system }]
   for (const m of messages) {
     if (m.role === 'assistant') {
@@ -49,6 +49,7 @@ export function toOpenAIMessages(system: string, messages: AgentMsg[], opts: { e
       out.push({
         role: 'assistant',
         content: t || (calls.length ? opts.emptyAssistant ?? null : '(vazio)'),
+        ...(opts.reasoning && m.reasoning_content ? { reasoning_content: m.reasoning_content } : {}),
         ...(calls.length ? { tool_calls: calls.map(c => ({ id: c.id, type: 'function', function: { name: c.name, arguments: JSON.stringify(c.input) } })) } : {}),
       })
       continue
@@ -96,7 +97,8 @@ export function fromOpenAI(data: any): Pick<ModelTurn, 'message' | 'stop' | 'inT
   }
   const hasCalls = content.some(b => b.type === 'tool_use')
   const stop = hasCalls ? 'tool_use' : choice?.finish_reason === 'length' ? 'length' : 'end'
-  return { message: { role: 'assistant', content: content.length ? content : [{ type: 'text', text: '' }] }, stop, inTok: data?.usage?.prompt_tokens ?? 0, outTok: data?.usage?.completion_tokens ?? 0 }
+  const reasoning = typeof msg.reasoning_content === 'string' && msg.reasoning_content ? msg.reasoning_content : undefined
+  return { message: { role: 'assistant', content: content.length ? content : [{ type: 'text', text: '' }], ...(reasoning ? { reasoning_content: reasoning } : {}) }, stop, inTok: data?.usage?.prompt_tokens ?? 0, outTok: data?.usage?.completion_tokens ?? 0 }
 }
 
 /* ───────── one turn, with failover ───────── */
@@ -113,7 +115,7 @@ export async function modelTurn(providers: StoredProvider[], opts: { system: str
       } else {
         const data = await postJson(p, {
           model: p.model, [p.preset === 'openai' ? 'max_completion_tokens' : 'max_tokens']: maxTokens,
-          messages: toOpenAIMessages(opts.system, opts.messages, { emptyAssistant: p.preset === 'gemini' ? '' : null }),
+          messages: toOpenAIMessages(opts.system, opts.messages, { emptyAssistant: p.preset === 'gemini' ? '' : null, reasoning: p.preset === 'deepseek' }),
           tools: openaiTools(opts.tools), tool_choice: 'auto',
         }, opts.timeoutMs ?? 85_000)
         parsed = fromOpenAI(data)

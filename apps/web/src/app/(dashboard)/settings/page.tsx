@@ -17,7 +17,7 @@ export default async function SettingsPage() {
 
       <WorkspaceSettingsForm name={workspace.name} />
 
-      <PlanCard ent={ent} usage={usage} credits={workspace.aiCredits} until={workspace.planUntil} plans={plans} />
+      <PlanCard ent={ent} usage={usage} credits={workspace.bonusCredits} until={workspace.planUntil} plans={plans} />
     </div>
   )
 }

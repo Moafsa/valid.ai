@@ -157,10 +157,32 @@ async function aiCreditsUsed(workspaceId: string, since: Date): Promise<number> 
   return (sum._sum.creditsUsed ?? 0) + legacy
 }
 
-/** What the account has spent this month and what its plan allows (null limit = unlimited). */
+/** Extra credits (given by the administrator or bought) still unspent: they cover what goes past the month's plan allowance. */
+async function bonusOf(workspaceId: string): Promise<number> {
+  const w = await db.workspace.findUnique({ where: { id: workspaceId }, select: { bonusCredits: true } })
+  return Math.max(0, w?.bonusCredits ?? 0)
+}
+
+/** What the account has spent this month, what its plan allows (null limit = unlimited) and its extra credits. */
 export async function aiCreditsState(account: AccountPlanFields & { id: string }) {
-  const [e, used] = await Promise.all([entitlementsOf(account), aiCreditsUsed(account.id, monthStart())])
-  return { used, limit: e.limits.aiCalls ?? null, plan: e.plan.name }
+  const [e, used, bonus] = await Promise.all([entitlementsOf(account), aiCreditsUsed(account.id, monthStart()), bonusOf(account.id)])
+  const limit = e.limits.aiCalls ?? null
+  return { used, limit, plan: e.plan.name, bonus, remaining: limit === null ? null : Math.max(0, limit - used) + bonus }
+}
+
+/**
+ * Call right AFTER an AI turn was logged: the part of its cost that went past the month's plan allowance is taken from the
+ * account's extra credits (never below zero). Inside the allowance nothing is taken, so extra credits are only spent once the plan runs out.
+ */
+export async function chargeBonusCredits(account: AccountPlanFields & { id: string }, credits: number): Promise<void> {
+  if (credits <= 0) return
+  const e = await entitlementsOf(account)
+  const limit = e.limits.aiCalls
+  if (limit === null || limit === undefined) return
+  const used = await aiCreditsUsed(account.id, monthStart())
+  const over = Math.min(credits, Math.max(0, used - limit))
+  if (over <= 0) return
+  await db.$executeRaw`UPDATE workspaces SET "bonusCredits" = GREATEST(0, "bonusCredits" - ${over}) WHERE id = ${account.id}`
 }
 
 export async function usageOf(workspaceId: string, opts: { storage?: boolean } = {}): Promise<Usage> {
@@ -182,6 +204,8 @@ export async function gate(account: AccountPlanFields & { id: string }, key: Lim
   if (limit === null || limit === undefined) return { ok: true }
   const u = await usageOf(account.id, { storage: key === 'storageMb' })
   const used = u[key]
+  // AI credits: once the plan's monthly allowance is spent, extra credits (if any) keep the account going
+  if (used + extra > limit && key === 'aiCalls' && (await bonusOf(account.id)) > 0) return { ok: true }
   if (used + extra > limit) return { ok: false, code: 'plan_limit', message: limitMessage(key, e.plan, limit, used, e.state === 'lapsed'), limit, used }
   return { ok: true }
 }

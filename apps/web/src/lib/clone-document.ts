@@ -1,6 +1,8 @@
 import { createHash } from 'crypto'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
+import { currentAdmin } from '@/lib/admin'
+import { previewTokenOk } from '@/lib/internal-auth'
 import { LEGACY_BASE_CSS } from '@/lib/legacy-base-css'
 import { pageCssFor } from '@/lib/page-css'
 import { readSettings } from '@/lib/analytics/goals'
@@ -177,6 +179,8 @@ export interface RenderOpts {
   view?: string | null
   /** ?vai_preview=1: render for a thumbnail */
   preview?: boolean
+  /** ?vai_token=: our scanner's signed, short-lived link to the working copy (see lib/internal-auth.ts) */
+  token?: string | null
   /** served on <sub>.be-vallid.com: the site lives at the root of that host instead of under /s/<slug> */
   sub?: string | null
   /** the visitor's cookies: an A/B test keeps each person on the version they were first given */
@@ -191,7 +195,7 @@ const PHONE_UA = /Android.+Mobile|iPhone|iPod|Windows Phone|BlackBerry|Opera Min
 const isPhone = (o: RenderOpts) => o.chMobile === '?1' || (!!o.ua && PHONE_UA.test(o.ua) && !/iPad|Tablet/i.test(o.ua))
 
 export function requestOpts(req: { headers: Headers; method?: string; nextUrl: { searchParams: URLSearchParams; href?: string } }): RenderOpts {
-  return { ua: req.headers.get('user-agent'), chMobile: req.headers.get('sec-ch-ua-mobile'), view: req.nextUrl.searchParams.get('v'), preview: req.nextUrl.searchParams.get('vai_preview') === '1', sub: req.headers.get('x-vai-sub'), cookie: req.headers.get('cookie'), headers: req.headers, method: req.method, href: req.nextUrl.href }
+  return { ua: req.headers.get('user-agent'), chMobile: req.headers.get('sec-ch-ua-mobile'), view: req.nextUrl.searchParams.get('v'), preview: req.nextUrl.searchParams.get('vai_preview') === '1', token: req.nextUrl.searchParams.get('vai_token'), sub: req.headers.get('x-vai-sub'), cookie: req.headers.get('cookie'), headers: req.headers, method: req.method, href: req.nextUrl.href }
 }
 
 const notFoundResponse = () => new Response('Not found', { status: 404, headers: { 'content-type': 'text/plain' } })
@@ -299,10 +303,11 @@ export async function renderClonePage(lookup: PageLookup, opts: RenderOpts = {})
     if (phone) page = phone
   }
 
-  // Public route — real visitors are anonymous. Only the owner gets the
-  // "back to dashboard" chip.
+  // The working copy (by id) is what the editor shows, possibly unfinished: only its owner, the administrator, or our own scanner
+  // (signed, short-lived link) may open it. The visitor-facing site is the published snapshot, served elsewhere (by 'slug' / 'published').
   const workspace = await getCurrentWorkspace().catch(() => null)
   const isOwner = workspace?.id === project.workspaceId
+  if (lookup.by === 'id' && !isOwner && !previewTokenOk(project.id, opts.token) && !(await currentAdmin().catch(() => null))) return notFound()
 
   const html = buildCloneDocument({
     projectId: project.id,

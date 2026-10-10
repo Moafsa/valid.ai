@@ -210,6 +210,28 @@ async def api(route):
     elif "/api/editor/save-page" in url:
         CUR["saved"] = json.loads(route.request.post_data or "{}")
         await route.fulfill(status=200, content_type="application/json", body=json.dumps({"ok": True}))
+    elif "/api/editor/original" in url:
+        from urllib.parse import urlparse, parse_qs
+        q = parse_qs(urlparse(url).query)
+        try: orig = json.load(open("/ui/fixtures/original_" + FIX + ".json"))
+        except Exception: orig = []
+        if q.get("digest"):
+            import re as _re
+            def _classes(h):
+                out = []
+                for m in _re.finditer(r'class="([^"]*)"', h):
+                    for c in m.group(1).split():
+                        if c not in out: out.append(c)
+                return out[:400]
+            await route.fulfill(status=200, content_type="application/json", body=json.dumps({"sections": [{"id": o["id"], "index": k, "classes": _classes(o["html"])} for k, o in enumerate(orig)]}))
+            return
+        hit = None
+        if q.get("blockId"): hit = next((o for o in orig if o["id"] == q["blockId"][0]), None)
+        if hit is None and q.get("index"):
+            k = int(q["index"][0]); hit = orig[k] if 0 <= k < len(orig) else None
+        CUR.setdefault("orig_calls", []).append(q)
+        if hit: await route.fulfill(status=200, content_type="application/json", body=json.dumps({"id": hit["id"], "html": hit["html"]}))
+        else: await route.fulfill(status=404, content_type="application/json", body=json.dumps({"error": "Esta seção não existia no original."}))
     elif "/api/ai/credits" in url:
         await route.fulfill(status=200, content_type="application/json", body=json.dumps({"used": 12, "limit": 300, "plan": "Basic"}))
     else:
@@ -430,7 +452,7 @@ async def sc_LOOP(p):
     await ask(pg, "loop infinito", 1)
     n = len(CUR["log"])
     info = await panel_info(pg)
-    check("LIMITES: o ciclo parou sozinho no limite de passos (14)", n == 14, f"{n} chamadas ao modelo")
+    check("LIMITES: o ciclo parou sozinho no limite de passos (26)", n == 26, f"{n} chamadas ao modelo")
     check("LIMITES: o usuário recebe uma explicação clara", "limite de passos" in info["reply"], info["reply"][:100])
     await b.close()
 
@@ -594,7 +616,313 @@ async def sc_PACE(p):
     check("RITMO: com provedor de plano grátis há pelo menos 2,4s entre dois pedidos ao modelo", len(gaps) >= 3 and min(gaps) >= 2.3, str([round(g, 1) for g in gaps]))
     await b.close()
 
-SC = {"A": sc_A, "B": sc_B, "C": sc_C, "D": sc_D, "E1": sc_E1, "E2": sc_E2, "UNDO": sc_UNDO, "SCOPE": sc_SCOPE, "BAD": sc_BAD, "LOOP": sc_LOOP, "ABORT": sc_ABORT, "SAVE": sc_SAVE, "CONTRAST": sc_CONTRAST, "QUICK": sc_QUICK, "RATE": sc_RATE, "PACE": sc_PACE}
+
+# ───────────────────────── site identity + carousels ─────────────────────────
+def first_text(log):
+    return " ".join(b.get("text", "") for b in log[0][-1]["content"] if b.get("type") == "text")
+
+def scen_CAROUSEL(m):
+    n = run_index(m)
+    if n == 0: return turn(tu("find_widgets"))
+    rs = results(m)
+    if n == 1:
+        lst = (rs[0] or {}).get("carrosseis", []) if rs and isinstance(rs[0], dict) else []
+        CUR["widgets"] = lst
+        best = max(lst, key=lambda w: w["slides"]) if lst else None
+        if not best: return turn(text="Não achei carrossel.")
+        CUR["cid"] = best["id"]
+        return turn(tu("make_carousel", container_id=best["id"], interval_s=2, label="Carrossel de depoimentos"))
+    if n == 2:
+        CUR["made"] = rs[0] if rs else None
+        return turn(tu("check_page"))
+    CUR["check"] = rs[0] if rs else None
+    return turn(text="O carrossel de depoimentos agora troca sozinho a cada 2 segundos.")
+
+JS_MOTION = """async (cid) => {
+  const d = window.__vaiEditor.Canvas.getDocument(), w = d.defaultView
+  const box = d.querySelector('.vaic'); if (!box) return {err: 'no .vaic container'}
+  const sl = [...box.querySelectorAll(':scope > .vaic-s')]
+  const seen = [], overlap = []
+  for (let k = 0; k < 14; k++) {
+    const v = sl.map((e, i) => { const c = w.getComputedStyle(e), r = e.getBoundingClientRect(); return c.visibility !== 'hidden' && parseFloat(c.opacity) > .5 && r.height > 0 ? i : -1 }).filter(i => i >= 0)
+    seen.push(v.join('+') || '-')
+    await new Promise(r => setTimeout(r, 300))
+  }
+  return {slides: sl.length, seen, height: Math.round(box.getBoundingClientRect().height)}
+}"""
+
+async def sc_CAROUSEL(p):
+    if FIX != "gpy": print("\n[CARROSSEL] (pulado: usa o fixture gpy)"); return
+    print("\n[CARROSSEL] a IA já começa sabendo da identidade e dos carrosséis; monta um que gira de verdade e a prova sobrevive ao salvar")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_CAROUSEL
+    CUR["widgets"] = None; CUR["made"] = None; CUR["check"] = None
+    await ask(pg, "Faça o carrossel de depoimentos funcionar", 1)
+    ft = first_text(CUR["log"])
+    check("IDENTIDADE: a primeira mensagem traz a identidade visual do site", "IDENTIDADE VISUAL DESTE SITE" in ft and "Cor de destaque" in ft and "Fontes:" in ft, ft[:300])
+    check("FIDELIDADE: num clone saudável nenhuma seção é apontada como reconstruída (sem falso alarme)", "SEÇÕES QUE JÁ NÃO PARECEM COM O ORIGINAL" not in ft, ft[ft.find("SEÇÕES"):][:240])
+    check("IDENTIDADE: a primeira mensagem lista os carrosséis detectados", "CARROSSÉIS E SLIDERS DETECTADOS" in ft and "carrossel id" in ft, ft[ft.find("CARROSSÉIS"):][:300])
+    w = CUR["widgets"] or []
+    check("DETECÇÃO: achou o carrossel de depoimentos (10 slides empilhados)", any(x["slides"] >= 8 for x in w), json.dumps(w)[:300])
+    mk = CUR["made"] or {}
+    ver = (mk.get("verificacao") if isinstance(mk, dict) else None) or {}
+    check("MAKE_CAROUSEL: a verificação da própria ferramenta diz que gira", ver.get("verdict") == "gira", json.dumps(mk)[:300])
+    info = await pg.evaluate(JS_MOTION, CUR.get("cid"))
+    shown = {x for x in info.get("seen", []) if x.isdigit()}
+    check("MOVIMENTO (medido por fora, no canvas): vários slides aparecem, um de cada vez", len(shown) >= 2 and all('+' not in x for x in info.get("seen", [])), json.dumps(info)[:300])
+    try:
+        await pg.evaluate("() => { const d = window.__vaiEditor.Canvas.getDocument(); d.querySelector('.vaic').scrollIntoView({block: 'center'}) }")
+        await pg.wait_for_timeout(900)
+        await pg.screenshot(path=OUT + '/carousel_editor.png')
+    except Exception: pass
+    chk = CUR["check"] or {}
+    check("CHECK_PAGE: depois do carrossel a página não tem problema aberto", isinstance(chk, dict) and not [i for i in chk.get("issues", []) if i.get("type") == "carousel_not_moving"], json.dumps(chk)[:300])
+    saved, n = await save_and_read(pg)
+    check("SALVAR: as regras do carrossel estão no que é gravado", "vaic-" in saved and "@keyframes" in saved and ":has(" in saved, saved[:120])
+    # the saved block, opened in a plain page (no editor): it must still turn
+    page2 = await b.new_page(viewport={"width": 1100, "height": 800})
+    html = "<!doctype html><html><body style='margin:0;background:#0a1628'>" + saved + "</body></html>"
+    await page2.set_content(html)
+    out = await page2.evaluate("""async () => {
+      const box = document.querySelector('.vaic'); if (!box) return {err: 'sem .vaic no HTML salvo'}
+      const sl = [...box.querySelectorAll(':scope > .vaic-s')], seen = []
+      for (let k = 0; k < 14; k++) { seen.push(sl.map((e, i) => { const c = getComputedStyle(e); return c.visibility !== 'hidden' && parseFloat(c.opacity) > .5 && e.getBoundingClientRect().height > 0 ? i : -1 }).filter(i => i >= 0).join('+') || '-'); await new Promise(r => setTimeout(r, 300)) }
+      return {slides: sl.length, seen}
+    }""")
+    shown2 = {x for x in out.get("seen", []) if x.isdigit()}
+    check("SALVAR: o bloco gravado, aberto fora do editor, continua girando", len(shown2) >= 2, json.dumps(out)[:300])
+    try:
+        await page2.screenshot(path=OUT + '/carousel_saved.png')
+    except Exception: pass
+    dots = await page2.evaluate("""async () => {
+      const all = [...document.querySelectorAll('.vaic-dot')]
+      const inOriginal = [...document.querySelectorAll('.tdots .vaic-dot')].length
+      const act = []
+      for (let k = 0; k < 14; k++) {
+        const bgs = all.map(d => getComputedStyle(d).backgroundColor)
+        const common = bgs.sort ? [...bgs].sort((a, b) => bgs.filter(x => x === a).length - bgs.filter(x => x === b).length).pop() : ''
+        const cur = all.map(d => getComputedStyle(d).backgroundColor)
+        act.push(cur.findIndex(c => c !== common))
+        await new Promise(r => setTimeout(r, 300))
+      }
+      return {count: all.length, inOriginal, act, arrows: document.querySelectorAll('[class*=vaic-gone]').length}
+    }""")
+    check("BOLINHAS ORIGINAIS: uma única fileira, com as 10 bolinhas do site (sem fileira nova duplicada)", dots["count"] == 10 and dots["inOriginal"] == 10, json.dumps(dots))
+    check("BOLINHAS ORIGINAIS: a bolinha ativa acompanha o slide (muda sozinha)", len({x for x in dots["act"] if x >= 0}) >= 2, json.dumps(dots))
+    dots_ok = dots["count"] >= 2
+    check("SALVAR: as bolinhas clicáveis foram gravadas", dots_ok, "")
+    # clicking a dot shows exactly that slide
+    await page2.evaluate("() => document.querySelector('.vaic-dot.vaic-d-3').click()")
+    await page2.wait_for_timeout(400)
+    pick = await page2.evaluate("""() => { const sl = [...document.querySelectorAll('.vaic > .vaic-s')]; return sl.map((e, i) => { const c = getComputedStyle(e); return c.visibility !== 'hidden' && parseFloat(c.opacity) > .5 ? i : -1 }).filter(i => i >= 0) }""")
+    check("BOLINHA: clicar na bolinha 4 mostra só o slide 4", pick == [3], str(pick))
+    await b.close()
+
+def scen_IDENT(m):
+    n = run_index(m)
+    if n == 0:
+        return turn(tu("insert_html", where="page-end", label="Faixa de aviso",
+            html='<section style="background:#ff00ff;padding:48px 24px;text-align:center;font-family:Comic Sans MS"><h2 style="color:#00ff00;font-size:32px;margin:0">Oferta especial</h2><p style="color:#ffff00">Só hoje</p></section>'))
+    rs = results(m)
+    CUR.setdefault("ident", []).append(rs[0] if rs else None)
+    if n == 1: return turn(tu("check_page"))
+    return turn(text="Criei a faixa de aviso.")
+
+async def sc_IDENT(p):
+    if FIX != "gpy": print("\n[IDENTIDADE] (pulado: usa o fixture gpy)"); return
+    print("\n[IDENTIDADE] algo criado fora da identidade do site é apontado na hora, com a cor certa para trocar")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_IDENT; CUR["ident"] = []
+    await ask(pg, "Crie uma faixa de aviso no fim da página", 1)
+    first = CUR["ident"][0] if CUR["ident"] else None
+    warn = (first.get("identity_warnings") if isinstance(first, dict) else None) or []
+    check("IDENTIDADE: a ferramenta avisa que as cores e a fonte fogem do site", len(warn) >= 2, json.dumps(first)[:300])
+    check("IDENTIDADE: o aviso sugere a cor mais parecida da paleta do site", any(re.search(r"mais parecida é #[0-9a-f]{6}", w) for w in warn), "; ".join(warn)[:200])
+    check("IDENTIDADE: o aviso aponta a fonte errada", any("fonte" in w for w in warn), "; ".join(warn)[:200])
+    ft = first_text(CUR["log"])
+    m = re.search(r"Cor de destaque[^#]*(#[0-9a-f]{6})", ft)
+    r = (int(m.group(1)[1:3], 16), int(m.group(1)[3:5], 16), int(m.group(1)[5:7], 16)) if m else (0, 0, 0)
+    check("IDENTIDADE: o destaque medido é o laranja do golpay", bool(m) and r[0] > 200 and r[1] < 150 and r[2] < 90, ft[ft.find("Cor de destaque"):][:120])
+    await b.close()
+
+
+def scen_REPAIR(m):
+    n = run_index(m)
+    if n == 0: return turn(tu("find_widgets"))
+    rs = results(m)
+    if n == 1:
+        lst = (rs[0] or {}).get("carrosseis", []) if rs and isinstance(rs[0], dict) else []
+        CUR["widgets"] = lst
+        if not lst: return turn(text="Não achei carrossel.")
+        CUR["cid"] = lst[0]["id"]
+        return turn(tu("make_carousel", container_id=lst[0]["id"], interval_s=2))
+    if n == 2:
+        CUR["made"] = rs[0] if rs else None
+        return turn(tu("check_page"))
+    CUR["check"] = rs[0] if rs else None
+    return turn(text="O carrossel de depoimentos troca sozinho agora.")
+
+async def sc_REPAIR(p):
+    if FIX != "gpy2": print("\n[REPARO] (pulado: usa o fixture gpy2)"); return
+    print("\n[REPARO] página já estragada por tentativas anteriores: a IA acha o carrossel, faz girar apesar do CSS antigo, e problemas herdados não contam")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_REPAIR; CUR["widgets"] = None; CUR["made"] = None; CUR["check"] = None
+    await ask(pg, "Faça o carrossel funcionar", 1)
+    ft = first_text(CUR["log"])
+    check("REPARO: a identidade lê o tema escuro real da página (sem falso alarme de página ilegível)", "Tema ESCURO" in ft and "ATENÇÃO" not in ft, ft[ft.find("IDENTIDADE"):][:260])
+    check("REPARO: a primeira mensagem aponta a seção dos depoimentos como reconstruída (não parece mais o original)", "SEÇÕES QUE JÁ NÃO PARECEM COM O ORIGINAL" in ft and "restore_original_block" in ft, ft[ft.find("SEÇÕES"):][:300])
+    check("REPARO: o carrossel feito à mão antes é reconhecido", bool(CUR["widgets"]), json.dumps(CUR["widgets"])[:200])
+    mk = CUR["made"] or {}
+    ver = (mk.get("verificacao") if isinstance(mk, dict) else None) or {}
+    check("REPARO: a verificação diz que gira, mesmo com as regras antigas (animation:none !important) ainda no CSS", ver.get("verdict") == "gira", json.dumps(mk)[:300])
+    info = await pg.evaluate(JS_MOTION, CUR.get("cid"))
+    shown = {x for x in info.get("seen", []) if x.isdigit()}
+    check("REPARO: medido por fora no canvas, os slides trocam um de cada vez", len(shown) >= 2 and all('+' not in x for x in info.get("seen", [])), json.dumps(info)[:300])
+    dots = await pg.evaluate("() => { const d = window.__vaiEditor.Canvas.getDocument(); return {all: d.querySelectorAll('.vaic-dot').length, nav: d.querySelectorAll('.vaic-nav').length} }")
+    check("REPARO: as bolinhas que já existiam foram religadas (sem uma segunda fileira)", dots["all"] == 10 and dots["nav"] == 0, json.dumps(dots))
+    chk = CUR["check"] or {}
+    check("REPARO: a conferência não conta como pendência o que já existia na página", isinstance(chk, dict) and chk.get("ok") is True and (chk.get("ignorados_ja_existiam") or 0) >= 1, json.dumps(chk)[:300])
+    pan = await panel_info(pg)
+    check("REPARO: o painel mostra a conferência sem problemas em aberto", pan.get("verified") is True, json.dumps(pan)[:200])
+    await b.close()
+
+
+def scen_RESTORE(m):
+    n = run_index(m)
+    rs = results(m)
+    if n == 0: return turn(tu("find_widgets"), tu("get_design_skill", names=["carrossel-e-sliders"]))
+    if n == 1:
+        lst = (rs[0] or {}).get("carrosseis", []) if rs and isinstance(rs[0], dict) else []
+        CUR["w0"] = lst; CUR["skill_text"] = rs[1] if len(rs) > 1 else ""
+        if not lst: return turn(text="Não achei carrossel.")
+        CUR["cid"] = lst[0]["id"]
+        return turn(tu("get_original_html", id=lst[0]["id"], around="tdots", max_chars=3000), tu("restore_original_block", id=lst[0]["id"], label="Voltar ao visual do original"))
+    if n == 2:
+        CUR["orig_html"] = rs[0] if rs else None; CUR["restored"] = rs[1] if len(rs) > 1 else None
+        return turn(tu("find_widgets"))
+    if n == 3:
+        lst = (rs[0] or {}).get("carrosseis", []) if rs and isinstance(rs[0], dict) else []
+        CUR["w1"] = lst
+        best = max(lst, key=lambda w: w["slides"]) if lst else None
+        if not best: return turn(text="Sem carrossel depois de restaurar.")
+        CUR["cid"] = best["id"]
+        return turn(tu("make_carousel", container_id=best["id"], interval_s=2, label="Carrossel funcionando"))
+    if n == 4:
+        CUR["made"] = rs[0] if rs else None
+        return turn(tu("check_page"))
+    CUR["check"] = rs[0] if rs else None
+    return turn(text="Restaurei o visual original dos depoimentos e fiz o carrossel trocar sozinho.")
+
+async def sc_RESTORE(p):
+    if FIX != "gpy2": print("\n[RESTAURAR] (pulado: usa o fixture gpy2)"); return
+    print("\n[RESTAURAR] seção estragada por tentativas antigas: a IA lê o original, restaura e só então faz o carrossel, mantendo a cara do site")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_RESTORE
+    for k in ("w0", "w1", "skill_text", "orig_html", "restored", "made", "check"): CUR[k] = None
+    CUR["orig_calls"] = []
+    await ask(pg, "Faça o carrossel de depoimentos funcionar, mantendo o visual que ele tinha no site original", 1)
+    ft = first_text(CUR["log"])
+    check("SKILLS: a primeira mensagem já traz a skill de fidelidade ao original e a de carrossel", "Fidelidade ao site original" in ft and "Carrossel e slider" in ft, ft[ft.find("SKILLS"):][:200])
+    check("SKILLS: get_design_skill devolve o guia pedido", isinstance(CUR["skill_text"], str) and "make_carousel" in CUR["skill_text"], str(CUR["skill_text"])[:160])
+    oh = CUR["orig_html"] if isinstance(CUR["orig_html"], dict) else {}
+    check("ORIGINAL: get_original_html entrega o HTML original da seção (com o pager .tdots)", "tdots" in (oh.get("html") or "") or "tcarousel" in (oh.get("html") or ""), json.dumps(oh)[:200])
+    rt = CUR["restored"] if isinstance(CUR["restored"], dict) else {}
+    check("RESTAURAR: restore_original_block trocou a seção e devolveu o id novo", bool(rt.get("restaurada")) and bool(rt.get("novo_id")), json.dumps(rt)[:240])
+    look = await pg.evaluate("""() => {
+      const d = window.__vaiEditor.Canvas.getDocument(), w = d.defaultView
+      const dots = d.querySelector('.tdots'); if (!dots) return {err: 'sem .tdots'}
+      const items = [...dots.children]
+      const tops = items.map(e => Math.round(e.getBoundingClientRect().top)), lefts = items.map(e => Math.round(e.getBoundingClientRect().left))
+      const sl = d.querySelector('.tslide') ; const c = w.getComputedStyle(sl)
+      const color = c.backgroundColor, rad = parseFloat(c.borderTopLeftRadius), bw = parseFloat(c.borderTopWidth), pad = parseFloat(c.paddingTop)
+      const dc = w.getComputedStyle(dots)
+      return {n: items.length, sameRow: new Set(tops).size === 1, increasing: lefts.every((x, i) => i === 0 || x > lefts[i-1]), dotsDisplay: dc.display, dir: dc.flexDirection, radius: rad, border: bw, padding: pad, bg: color}
+    }""")
+    check("VISUAL ORIGINAL: as bolinhas voltaram a ser uma fileira horizontal", look.get("sameRow") is True and look.get("increasing") is True and look.get("dotsDisplay") == "flex", json.dumps(look))
+    check("VISUAL ORIGINAL: o slide voltou a ser um cartão (borda, raio e padding do original)", (look.get("border") or 0) >= 1 and (look.get("radius") or 0) >= 10 and (look.get("padding") or 0) >= 14, json.dumps(look))
+    mk = CUR["made"] if isinstance(CUR["made"], dict) else {}
+    check("CARROSSEL: depois de restaurar, make_carousel religa as bolinhas originais e gira", (mk.get("verificacao") or {}).get("verdict") == "gira" and "religadas" in str((mk.get("carrossel") or {}).get("bolinhas", "")), json.dumps(mk)[:300])
+    info = await pg.evaluate(JS_MOTION, CUR.get("cid"))
+    shown = {x for x in info.get("seen", []) if x.isdigit()}
+    check("CARROSSEL: medido por fora, os slides trocam um de cada vez", len(shown) >= 2 and all('+' not in x for x in info.get("seen", [])), json.dumps(info)[:240])
+    after = await pg.evaluate("""() => { const d = window.__vaiEditor.Canvas.getDocument(); const dots = d.querySelector('.tdots'); const items = dots ? [...dots.children] : []; const tops = new Set(items.map(e => Math.round(e.getBoundingClientRect().top))); return {n: items.length, labels: items.filter(e => e.tagName === 'LABEL').length, oneRow: tops.size === 1, extraNav: d.querySelectorAll('.vaic-nav').length} }""")
+    check("CARROSSEL: continua uma única fileira horizontal, as 10 bolinhas do site, sem fileira duplicada", after["n"] == 10 and after["labels"] == 10 and after["oneRow"] and after["extraNav"] == 0, json.dumps(after))
+    chk = CUR["check"] if isinstance(CUR["check"], dict) else {}
+    check("CONFERÊNCIA: sem problemas em aberto", chk.get("ok") is True, json.dumps(chk)[:240])
+    try:
+        await pg.evaluate("() => { const d = window.__vaiEditor.Canvas.getDocument(); d.querySelector('.tcarousel, .vaic').scrollIntoView({block: 'center'}) }")
+        await pg.wait_for_timeout(900)
+        await pg.screenshot(path=OUT + '/restore_editor.png')
+    except Exception: pass
+    saved, n = await save_and_read(pg)
+    check("SALVAR: o que é gravado tem o carrossel e o cartão restaurado", "vaic-" in saved and "tslide" in saved and "tdots" in saved, saved[:100])
+    await b.close()
+
+
+def scen_PAGE(m):
+    n = run_index(m)
+    rs = results(m)
+    if n == 0: return turn(tu("get_site_style"))
+    if n == 1:
+        CUR["style0"] = rs[0] if rs else None
+        return turn(tu("restore_original_page", label="Voltar a página ao visual do original"))
+    if n == 2:
+        CUR["page_res"] = rs[0] if rs else None
+        return turn(tu("get_site_style"), tu("find_widgets"))
+    if n == 3:
+        CUR["style1"] = rs[0] if rs else None
+        lst = (rs[1] or {}).get("carrosseis", []) if len(rs) > 1 and isinstance(rs[1], dict) else []
+        CUR["w1"] = lst
+        best = max(lst, key=lambda w: w["slides"]) if lst else None
+        if not best: return turn(text="Sem carrossel.")
+        CUR["cid"] = best["id"]
+        return turn(tu("make_carousel", container_id=best["id"], interval_s=2))
+    if n == 4:
+        CUR["made"] = rs[0] if rs else None
+        return turn(tu("check_page"))
+    CUR["check"] = rs[0] if rs else None
+    return turn(text="Devolvi a página ao visual do original e fiz o carrossel trocar sozinho.")
+
+async def sc_PAGE(p):
+    if FIX != "gpy2": print("\n[PÁGINA ORIGINAL] (pulado: usa o fixture gpy2)"); return
+    print("\n[PÁGINA ORIGINAL] página inteira quebrada por edições antigas: a IA vê o ATENÇÃO, restaura tudo e a identidade volta a ser a do original")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_PAGE
+    for k in ("style0", "style1", "page_res", "w1", "made", "check"): CUR[k] = None
+    CUR["orig_calls"] = []
+    await ask(pg, "Faça o carrossel funcionar com a cara do site original", 1)
+    s0 = (CUR["style0"] or {}) if isinstance(CUR["style0"], dict) else {}
+    check("PÁGINA: a identidade medida antes de restaurar já é a escura do site", (s0.get("identidade") or {}).get("mood") == "dark" and "ATENÇÃO" not in str(s0.get("resumo", "")), str(s0)[:200])
+    pr = CUR["page_res"] if isinstance(CUR["page_res"], dict) else {}
+    check("PÁGINA: restore_original_page restaurou as 9 seções do original", pr.get("secoes_restauradas") == 9, json.dumps(pr)[:240])
+    s1 = (CUR["style1"] or {}) if isinstance(CUR["style1"], dict) else {}
+    idt = s1.get("identidade") or {}
+    check("PÁGINA: depois de restaurar, a identidade medida é a do original (escura, sem aviso de quebrada)", idt.get("mood") == "dark" and not idt.get("note"), "mood=%s pageBg=%s text=%s note=%s" % (idt.get("mood"), idt.get("pageBg"), idt.get("text"), str(idt.get("note"))[:200]))
+    look = await pg.evaluate("""() => {
+      const d = window.__vaiEditor.Canvas.getDocument(), w = d.defaultView
+      const lum = c => { const m = c.match(/[\d.]+/g).map(Number); const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4) }; return .2126 * f(m[0]) + .7152 * f(m[1]) + .0722 * f(m[2]) }
+      const back = el => { for (let n = el; n; n = n.parentElement) { const c = w.getComputedStyle(n).backgroundColor; const m = c.match(/[\d.]+/g); if (m && (m.length < 4 || parseFloat(m[3]) > .5)) return c } return 'rgb(255, 255, 255)' }
+      const sl = d.querySelector('.tslide'), hero = d.querySelector('.hero') || d.querySelector('section'); const h1 = d.querySelector('h1,h2')
+      const ink = w.getComputedStyle(h1).color
+      return {cardBack: lum(back(sl)), heroBack: lum(back(hero)), headingInk: lum(ink), slideInk: lum(w.getComputedStyle(sl.querySelector('p') || sl).color)}
+    }""")
+    check("PÁGINA: o fundo voltou a ser escuro e o texto claro (legível), como no original", look["heroBack"] < 0.12 and look["headingInk"] > 0.5 and look["cardBack"] < 0.2, json.dumps(look))
+    mk = CUR["made"] if isinstance(CUR["made"], dict) else {}
+    check("PÁGINA: o carrossel gira depois de restaurar", (mk.get("verificacao") or {}).get("verdict") == "gira", json.dumps(mk)[:260])
+    chk = CUR["check"] if isinstance(CUR["check"], dict) else {}
+    check("PÁGINA: conferência sem problemas em aberto", chk.get("ok") is True, json.dumps(chk)[:260])
+    saved, n = await save_and_read(pg)
+    flat = saved.replace(" ", "")
+    check("PÁGINA: o que é gravado mantém as seções originais, com a classe e o fundo escuro de cada uma", n == 9 and 'class="hero"' in saved and "background-color:rgb(10,22,40)" in flat, "n=%s hero=%s" % (n, 'class="hero"' in saved))
+    check("PÁGINA: o que é gravado mantém o carrossel e as bolinhas originais", "vaic-" in saved and "tdots" in saved and "tslide" in saved, saved[:80])
+    try:
+        await pg.evaluate("() => { const d = window.__vaiEditor.Canvas.getDocument(); d.querySelector('.tcarousel, .vaic').scrollIntoView({block: 'center'}) }")
+        await pg.wait_for_timeout(900)
+        await pg.screenshot(path=OUT + '/page_restore_editor.png')
+    except Exception: pass
+    await b.close()
+
+SC = {"PAGE": sc_PAGE, "RESTORE": sc_RESTORE, "REPAIR": sc_REPAIR, "CAROUSEL": sc_CAROUSEL, "IDENT": sc_IDENT, "A": sc_A, "B": sc_B, "C": sc_C, "D": sc_D, "E1": sc_E1, "E2": sc_E2, "UNDO": sc_UNDO, "SCOPE": sc_SCOPE, "BAD": sc_BAD, "LOOP": sc_LOOP, "ABORT": sc_ABORT, "SAVE": sc_SAVE, "CONTRAST": sc_CONTRAST, "QUICK": sc_QUICK, "RATE": sc_RATE, "PACE": sc_PACE}
 
 async def main():
     srv = serve()

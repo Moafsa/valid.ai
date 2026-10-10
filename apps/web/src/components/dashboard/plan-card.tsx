@@ -31,7 +31,7 @@ export function PlanCard({ ent, usage, credits, until, plans }: { ent: Entitleme
               </div>
             )
           })}
-          <div className="flex justify-between gap-3 text-sm"><span className="text-gray-300">Créditos de IA</span><span className="text-gray-400">{credits.toLocaleString('pt-BR')} disponíveis</span></div>
+          <div className="flex justify-between gap-3 text-sm"><span className="text-gray-300">Créditos extras de IA</span><span className="text-gray-400">{credits.toLocaleString('pt-BR')} disponíveis</span></div>
         </div>
         <ul className="mt-4 grid gap-1.5 sm:grid-cols-2">
           {FEATURE_KEYS.map(k => (

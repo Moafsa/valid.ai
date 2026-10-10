@@ -17,7 +17,7 @@ import { buildInsights } from '@/lib/analytics/insights'
 import { aiReport, AiUnavailable } from '@/lib/analytics/ai'
 import { forgetProject, readSettings } from '@/lib/analytics/goals'
 import { currentAdmin } from '@/lib/admin'
-import { gate, gateResponse } from '@/lib/plans'
+import { chargeBonusCredits, gate, gateResponse } from '@/lib/plans'
 
 /**
  * Everything the Métricas screens read, one URL per view: /api/projects/<id>/analytics/<view>?period=7d&source=facebook...
@@ -216,7 +216,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       }
       try {
         const report = await aiReport(snap, rules)
-        if (ws) db.aiUsageLog.create({ data: { workspaceId: ws.id, projectId: id, operation: 'analytics_ai', model: report.model, provider: report.provider, inputTokens: report.tokens?.in ?? 0, outputTokens: report.tokens?.out ?? 0, creditsUsed: creditsFor(report.tokens?.in ?? 0, report.tokens?.out ?? 0) } }).catch(() => {})
+        if (ws) db.aiUsageLog.create({ data: { workspaceId: ws.id, projectId: id, operation: 'analytics_ai', model: report.model, provider: report.provider, inputTokens: report.tokens?.in ?? 0, outputTokens: report.tokens?.out ?? 0, creditsUsed: creditsFor(report.tokens?.in ?? 0, report.tokens?.out ?? 0) } }).then(() => chargeBonusCredits(ws, creditsFor(report.tokens?.in ?? 0, report.tokens?.out ?? 0))).catch(() => {})
         return json({ report, insights: rules })
       } catch (e) {
         if (e instanceof AiUnavailable) return json({ error: e.code === 'no_ai_key' ? 'A IA ainda não foi conectada neste projeto.' : e.code === 'timeout' ? 'A IA demorou demais. Tente de novo.' : 'A IA não conseguiu responder agora. Tente de novo.', code: e.code, insights: rules }, 503)

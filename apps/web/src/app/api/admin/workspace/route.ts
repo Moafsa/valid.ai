@@ -12,7 +12,9 @@ const schema = z.object({
   subscriptionStatus: z.enum(['none', 'active', 'past_due', 'canceled']).optional(),
   /** paid through (YYYY-MM-DD); empty = no expiry */
   planUntil: z.string().max(10).nullable().optional(),
-  addCredits: z.number().int().min(-100000).max(100000).optional(),
+  addCredits: z.number().int().min(-1000000).max(1000000).optional(),
+  /** shown in the account's credit history */
+  note: z.string().trim().max(120).optional(),
 })
 
 /** The administrator changes a customer's plan and subscription, or gives (or takes) credits; every credit change is written to the ledger. */
@@ -31,9 +33,10 @@ export async function POST(req: NextRequest) {
       await db.workspace.update({ where: { id: w.id }, data: { ...(b.subscriptionStatus !== undefined ? { subscriptionStatus: b.subscriptionStatus } : {}), ...(until !== undefined ? { planUntil: until } : {}) } })
     }
     if (b.addCredits) {
-      const after = Math.max(0, w.aiCredits + b.addCredits)
-      await db.workspace.update({ where: { id: w.id }, data: { aiCredits: after } })
-      await db.creditTransaction.create({ data: { workspaceId: w.id, type: b.addCredits > 0 ? 'GRANT' : 'CONSUME', amount: b.addCredits, balanceAfter: after, description: 'Ajuste feito pelo administrador', operation: 'admin_adjust' } })
+      // atomic, so two administrators (or a customer using the AI at the same moment) never overwrite each other
+      const rows = await db.$queryRaw<{ bonusCredits: number }[]>`UPDATE workspaces SET "bonusCredits" = GREATEST(0, "bonusCredits" + ${b.addCredits}) WHERE id = ${w.id} RETURNING "bonusCredits"`
+      const after = rows[0]?.bonusCredits ?? 0
+      await db.creditTransaction.create({ data: { workspaceId: w.id, type: b.addCredits > 0 ? 'GRANT' : 'CONSUME', amount: b.addCredits, balanceAfter: after, description: b.note ? `Administrador: ${b.note}` : 'Ajuste feito pelo administrador', operation: 'admin_adjust' } })
     }
     return NextResponse.json({ ok: true })
   } catch (e: any) {

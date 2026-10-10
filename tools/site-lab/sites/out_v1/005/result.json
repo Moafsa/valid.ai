@@ -1,0 +1,204 @@
+{
+ "idx": 5,
+ "cat": "app",
+ "url": "https://www.airbnb.com.br/",
+ "projectId": "cmuw0kj4g000dyin5kz0t0usq",
+ "slug": "home",
+ "scan": {
+  "seconds": 257,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 1667,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.597,
+   "missing": [],
+   "heightRatio": 4.352,
+   "overflowX": true,
+   "tiles": [
+    24.7
+   ],
+   "diffTop": 24.7,
+   "diffAll": 24.7,
+   "imgVis": [
+    8,
+    124
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    146,
+    286
+   ],
+   "buttons": [
+    27,
+    149
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    3572,
+    4339
+   ],
+   "requests": [
+    149,
+    158
+   ],
+   "loadSec": [
+    8.3,
+    12.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Airbnb Cereal VF\", Circular, -apple-sys",
+    "\"Airbnb Cereal VF\", Circular, -apple-sys"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.842,
+   "extra": 0.609,
+   "missing": [
+    "use",
+    "aplicativo",
+    "acesso",
+    "r\u00e1pido",
+    "f\u00e1cil",
+    "usar",
+    "inicie",
+    "busca",
+    "filtros",
+    "aplicados",
+    "momento",
+    "qualquer",
+    "dia",
+    "alterar",
+    "ref\u00fagios",
+    "recife",
+    "boa",
+    "vista",
+    "503",
+    "620",
+    "554",
+    "498",
+    "493",
+    "672",
+    "549"
+   ],
+   "heightRatio": 2.547,
+   "overflowX": true,
+   "tiles": [
+    52.7,
+    67.7
+   ],
+   "diffTop": 60.2,
+   "diffAll": 60.2,
+   "imgVis": [
+    64,
+    124
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    80,
+    286
+   ],
+   "buttons": [
+    61,
+    149
+   ],
+   "inputs": [
+    0,
+    1
+   ],
+   "kb": [
+    3928,
+    4339
+   ],
+   "requests": [
+    252,
+    158
+   ],
+   "loadSec": [
+    8.7,
+    11.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded",
+    "Airbnb Cereal VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Airbnb Cereal VF\", Circular, -apple-sys",
+    "\"Airbnb Cereal VF\", Circular, -apple-sys"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Ref\u00fagios com piscina \u00b7 Recife"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0kj4g000dyin5kz0t0usq/p/home"
+}

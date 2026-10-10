@@ -1,0 +1,17 @@
+project cmuvex9ze0001tjxp9gi7r6e9 slug home scan 192s pages 7
+http://172.18.0.1:8099/q_label_options/: 7 screens, exits=['https://example.com/checkout'] errors=0 total=16.5s bytes=18831
+
+http://web:3000/projects/cmuvex9ze0001tjxp9gi7r6e9/p/home: 7 screens, exits=['https://example.com/checkout'] errors=0 total=19.3s bytes=41392
+
+original: 7 screens in 16.5s, 18KB | clone: 7 screens in 19.3s, 40KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Descubra seu plano ideal            Descubra seu plano ideal            OK     0.0    0.32   1.96
+  2  Qual é o seu objetivo?              Qual é o seu objetivo?              OK     0.0    2.57   4.23
+  3  Quais são seus maiores desafios?    Quais são seus maiores desafios?    OK     0.0    4.68   6.38
+  4  O que você quer melhorar?           O que você quer melhorar?           OK     0.0    6.96   8.57
+  5  Você já treinou antes?              Você já treinou antes?              OK     0.0    9.19  10.89
+  6  Montando seu plano…                 Montando seu plano…                 OK    0.12   11.31  13.07
+  7  Seu plano está pronto!              Seu plano está pronto!              OK     0.0   14.33   17.2
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 7->7 same-title 7/7 | mean pixel diff 0.02% max 0.12% | weight 18KB -> 40KB | longtasks 2 -> 1
+

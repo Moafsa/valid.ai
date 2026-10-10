@@ -1,0 +1,6 @@
+project cmuvj8ges00012dmlbi4d6ont slug vsl-timer-redirect scan 143s pages=2
+ t(s)  diff%   original text | clone text
+  2.0     0.0  'Oferta única Você será levado ao checkout em ins' | 'Oferta única Você será levado ao checkout em ins'
+  6.0     0.0  'Oferta única Você será levado ao checkout em ins' | 'Oferta única Você será levado ao checkout em ins'
+ 12.0    2.03  'Oferta 2 (para onde o tempo leva) COMPRAR' | 'Oferta 2 (para onde o tempo leva) COMPRAR'
+errors orig/clone: [] [] | worst diff 2.03

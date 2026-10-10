@@ -1,0 +1,259 @@
+{
+ "idx": 140,
+ "cat": "shop-br",
+ "url": "https://shoppingstore35.lojavirtualnuvem.com.br/",
+ "projectId": "cmux3y8v7006abr8ce8toci7i",
+ "slug": "home",
+ "scan": {
+  "seconds": 328,
+  "pages": 4,
+  "blocks": 2,
+  "cssKB": 56,
+  "notes": [
+   "Etapa 4: 2 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Deixei o site mais leve: o estilo caiu de 316KB para 56KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.776,
+   "extra": 0.182,
+   "missing": [
+    "navegar",
+    "por",
+    "site",
+    "voc\u00ea",
+    "aceita",
+    "uso",
+    "cookies",
+    "para",
+    "agilizar",
+    "sua",
+    "experi\u00eancia",
+    "compra",
+    "entendi"
+   ],
+   "heightRatio": 2.123,
+   "overflowX": false,
+   "tiles": [
+    40.8,
+    88.1
+   ],
+   "diffTop": 64.4,
+   "diffAll": 64.4,
+   "imgVis": [
+    3,
+    4
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    44,
+    31
+   ],
+   "buttons": [
+    14,
+    14
+   ],
+   "inputs": [
+    21,
+    14
+   ],
+   "kb": [
+    1210,
+    320
+   ],
+   "requests": [
+    29,
+    14
+   ],
+   "loadSec": [
+    3.8,
+    6.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "a",
+      1440,
+      810,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux3y8v7006abr8ce8toci7i/assets/home_section_0_1.png"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Montserrat, sans-serif",
+    "Montserrat, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.759,
+   "extra": 0.212,
+   "missing": [
+    "navegar",
+    "por",
+    "site",
+    "voc\u00ea",
+    "aceita",
+    "uso",
+    "cookies",
+    "para",
+    "agilizar",
+    "sua",
+    "experi\u00eancia",
+    "compra",
+    "entendi"
+   ],
+   "heightRatio": 1.545,
+   "overflowX": false,
+   "tiles": [
+    48.9,
+    82.3
+   ],
+   "diffTop": 65.6,
+   "diffAll": 65.6,
+   "imgVis": [
+    3,
+    3
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    44,
+    31
+   ],
+   "buttons": [
+    14,
+    14
+   ],
+   "inputs": [
+    22,
+    14
+   ],
+   "kb": [
+    1135,
+    315
+   ],
+   "requests": [
+    30,
+    13
+   ],
+   "loadSec": [
+    3.2,
+    3.1
+   ],
+   "videoArea": 5.56,
+   "videoRect": [
+    [
+     320,
+     684,
+     256,
+     60
+    ],
+    [
+     0,
+     2128,
+     390,
+     219
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      256,
+      60
+     ]
+    ],
+    [
+     [
+      "a",
+      390,
+      219,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux3y8v7006abr8ce8toci7i/assets/home_section_0_1.png"
+   ],
+   "origErrors": 4,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Montserrat, sans-serif",
+    "Montserrat, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux3y8v7006abr8ce8toci7i/p/home"
+}

@@ -1,0 +1,376 @@
+{
+ "idx": 177,
+ "cat": "app",
+ "url": "https://wise.com/",
+ "projectId": "cmux49pcq0077br8c52zvpbkz",
+ "slug": "home",
+ "scan": {
+  "seconds": 460,
+  "pages": 2,
+  "blocks": 14,
+  "cssKB": 1892,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.613,
+   "extra": 0.253,
+   "missing": [
+    "fazer",
+    "baixas",
+    "ultrarr\u00e1pido",
+    "transparente",
+    "minutos",
+    "baixo",
+    "custo",
+    "seguras",
+    "realmente",
+    "instant\u00e2neas",
+    "horas",
+    "das",
+    "chegam",
+    "1261",
+    "convers\u00e3o",
+    "estivesse",
+    "depositados",
+    "dia",
+    "habilite",
+    "diariamente",
+    "mesma",
+    "hora",
+    "diminuir",
+    "houver",
+    "inadimpl\u00eancia"
+   ],
+   "heightRatio": 1.028,
+   "overflowX": false,
+   "tiles": [
+    67.4,
+    50.9,
+    64.8,
+    28.3,
+    60.1,
+    48.7,
+    37.7
+   ],
+   "diffTop": 61.0,
+   "diffAll": 51.1,
+   "imgVis": [
+    47,
+    58
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    5,
+    5
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    164,
+    158
+   ],
+   "buttons": [
+    42,
+    47
+   ],
+   "inputs": [
+    3,
+    2
+   ],
+   "kb": [
+    6675,
+    8409
+   ],
+   "requests": [
+    107,
+    62
+   ],
+   "loadSec": [
+    48.6,
+    27.2
+   ],
+   "videoArea": 1.14,
+   "videoRect": [
+    [
+     0,
+     9746,
+     1440,
+     979
+    ],
+    [
+     0,
+     10121,
+     1440,
+     1113
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      558,
+      335
+     ],
+     [
+      "video",
+      1440,
+      747
+     ],
+     [
+      "video",
+      589,
+      589
+     ],
+     [
+      "video",
+      395,
+      395
+     ]
+    ],
+    [
+     [
+      "video",
+      992,
+      595,
+      false
+     ],
+     [
+      "video",
+      545,
+      672,
+      false
+     ],
+     [
+      "video",
+      545,
+      727,
+      false
+     ],
+     [
+      "video",
+      555,
+      740,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "wise.com": [
+     4,
+     3842262
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 7,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "Inter, Helvetica, Arial, sans-serif",
+    "Inter, Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "A conta internacional que ajuda voc\u00ea a economizar",
+    "Movimentamos bilh\u00f5es para milh\u00f5es de pessoas no mundo inteiro todos os anos",
+    "A conta que acompanha voc\u00ea em todo o mundo",
+    "Bancos e empresas do mundo todo operam com a Wise",
+    "Mais de 18,9 milh\u00f5es de clientes confiam na Wise"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.963,
+   "extra": 0.004,
+   "missing": [
+    "118",
+    "aceita",
+    "opcionais",
+    "eles",
+    "permitem",
+    "oferecer",
+    "melhor",
+    "experi\u00eancia",
+    "aprimorar",
+    "manter",
+    "custos",
+    "baixos",
+    "iremos",
+    "ativ\u00e1",
+    "los",
+    "aceite",
+    "aceitar",
+    "recusar"
+   ],
+   "heightRatio": 1.009,
+   "overflowX": false,
+   "tiles": [
+    88.4,
+    1.2,
+    7.7,
+    0.5,
+    0.5,
+    0.4,
+    66.8,
+    62.7
+   ],
+   "diffTop": 32.4,
+   "diffAll": 28.5,
+   "imgVis": [
+    43,
+    46
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    5,
+    5
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    160,
+    161
+   ],
+   "buttons": [
+    45,
+    45
+   ],
+   "inputs": [
+    3,
+    3
+   ],
+   "kb": [
+    5760,
+    8029
+   ],
+   "requests": [
+    94,
+    45
+   ],
+   "loadSec": [
+    48.6,
+    21.4
+   ],
+   "videoArea": 1.22,
+   "videoRect": [
+    [
+     0,
+     5258,
+     390,
+     693
+    ],
+    [
+     0,
+     5258,
+     390,
+     844
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      468,
+      281
+     ],
+     [
+      "video",
+      390,
+      693
+     ],
+     [
+      "video",
+      354,
+      354
+     ],
+     [
+      "video",
+      358,
+      358
+     ]
+    ],
+    [
+     [
+      "div",
+      390,
+      844,
+      true
+     ],
+     [
+      "video",
+      390,
+      844,
+      false
+     ],
+     [
+      "video",
+      354,
+      354,
+      false
+     ],
+     [
+      "video",
+      358,
+      358,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "wise.com": [
+     4,
+     5890334
+    ]
+   },
+   "cloneErrors": [
+    "console: Error: <g> attribute transform: Expected ')', \"translate(2px, 0)\".",
+    "console: Error: <g> attribute transform: Expected ')', \"translate(2px, 0)\"."
+   ],
+   "cloneFailed": [],
+   "origErrors": 7,
+   "cloneNErrors": 2,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "Inter, Helvetica, Arial, sans-serif",
+    "Inter, Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux49pcq0077br8c52zvpbkz/p/home"
+}

@@ -1,0 +1,255 @@
+{
+ "idx": 161,
+ "cat": "local-us",
+ "url": "https://alldayplumber.com/areas-served/atlanta-georgia/",
+ "projectId": "cmux4840g006sbr8cjog2jq6j",
+ "slug": "areas-served-atlanta-georgia",
+ "scan": {
+  "seconds": 60,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 395,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "alldayplumber",
+    "com",
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a46757f089cfa93b",
+    "desempenho"
+   ],
+   "heightRatio": 4.491,
+   "overflowX": false,
+   "tiles": [
+    49.4
+   ],
+   "diffTop": 49.4,
+   "diffAll": 49.4,
+   "imgVis": [
+    0,
+    7
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    1
+   ],
+   "links": [
+    2,
+    56
+   ],
+   "buttons": [
+    0,
+    3
+   ],
+   "inputs": [
+    1,
+    8
+   ],
+   "kb": [
+    213,
+    1160
+   ],
+   "requests": [
+    8,
+    57
+   ],
+   "loadSec": [
+    4.7,
+    8.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      600,
+      450,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+   ],
+   "cloneFailed": [
+    "https://alldayplumber.com/wp-content/uploads/iStock-929070920-sm.jpg"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "Lato, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "alldayplumber.com",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "alldayplumber",
+    "com",
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a4675846f8cdd201",
+    "desempenho"
+   ],
+   "heightRatio": 7.928,
+   "overflowX": true,
+   "tiles": [
+    37.4
+   ],
+   "diffTop": 37.4,
+   "diffAll": 37.4,
+   "imgVis": [
+    0,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    1
+   ],
+   "links": [
+    2,
+    56
+   ],
+   "buttons": [
+    0,
+    3
+   ],
+   "inputs": [
+    1,
+    8
+   ],
+   "kb": [
+    212,
+    1137
+   ],
+   "requests": [
+    8,
+    57
+   ],
+   "loadSec": [
+    2.9,
+    5.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      600,
+      450,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+   ],
+   "cloneFailed": [
+    "https://alldayplumber.com/wp-content/uploads/iStock-929070920-sm.jpg"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "Lato, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "alldayplumber.com",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4840g006sbr8cjog2jq6j/p/areas-served-atlanta-georgia"
+}

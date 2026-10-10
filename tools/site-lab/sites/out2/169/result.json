@@ -1,0 +1,245 @@
+{
+ "idx": 169,
+ "cat": "dtc",
+ "url": "https://rhodeskin.com/",
+ "projectId": "cmux48u47006ybr8c1cotr6h8",
+ "slug": "home",
+ "scan": {
+  "seconds": 263,
+  "pages": 1,
+  "blocks": 12,
+  "cssKB": 967,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.079,
+   "overflowX": false,
+   "tiles": [
+    92.4,
+    41.3,
+    70.0,
+    36.2,
+    51.5,
+    39.6
+   ],
+   "diffTop": 67.9,
+   "diffAll": 55.2,
+   "imgVis": [
+    81,
+    81
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    223,
+    223
+   ],
+   "buttons": [
+    58,
+    112
+   ],
+   "inputs": [
+    269,
+    269
+   ],
+   "kb": [
+    9945,
+    4497
+   ],
+   "requests": [
+    325,
+    83
+   ],
+   "loadSec": [
+    48.9,
+    28.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      1375,
+      154,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.rhodeskin.com": [
+     14,
+     943991
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x0.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x1.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x3.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x2.png;);"
+   ],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 10,
+   "facesClone": [
+    "oke-widget-icons:unloaded",
+    "oke-widget-icons:unloaded",
+    "Font Awesome 5 Pro:unloaded",
+    "Font Awesome 5 Pro:unloaded"
+   ],
+   "fontOC": [
+    "Swiss, -apple-system, BlinkMacSystemFont",
+    "Swiss, -apple-system, BlinkMacSystemFont"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.83,
+   "extra": 0.0,
+   "missing": [
+    "improve",
+    "experience",
+    "partners",
+    "store",
+    "access",
+    "terminal",
+    "equivalent",
+    "consent",
+    "all",
+    "websites",
+    "applications",
+    "connected",
+    "terminals",
+    "website",
+    "may",
+    "use",
+    "these",
+    "cookies",
+    "measure",
+    "audience",
+    "advertising",
+    "without",
+    "profiling",
+    "display",
+    "personalized"
+   ],
+   "heightRatio": 0.997,
+   "overflowX": false,
+   "tiles": [
+    57.0,
+    79.3,
+    60.9,
+    47.7,
+    29.0,
+    13.4
+   ],
+   "diffTop": 65.7,
+   "diffAll": 47.9,
+   "imgVis": [
+    44,
+    44
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    225,
+    223
+   ],
+   "buttons": [
+    103,
+    112
+   ],
+   "inputs": [
+    269,
+    269
+   ],
+   "kb": [
+    5623,
+    4554
+   ],
+   "requests": [
+    361,
+    81
+   ],
+   "loadSec": [
+    46.2,
+    16.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      358,
+      154,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.rhodeskin.com": [
+     13,
+     906999
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x0.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x1.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x2.png;);",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux48u47006ybr8c1cotr6h8/assets/home_section_5_x3.png;);"
+   ],
+   "origErrors": 12,
+   "cloneNErrors": 0,
+   "cloneNFailed": 10,
+   "facesClone": [
+    "swiper-icons:unloaded",
+    "oke-widget-icons:unloaded",
+    "oke-widget-icons:unloaded",
+    "Font Awesome 5 Pro:unloaded"
+   ],
+   "fontOC": [
+    "Swiss, -apple-system, BlinkMacSystemFont",
+    "Swiss, -apple-system, BlinkMacSystemFont"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux48u47006ybr8c1cotr6h8/p/home"
+}

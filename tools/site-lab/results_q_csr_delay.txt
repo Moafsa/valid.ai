@@ -1,0 +1,18 @@
+project cmv1kj889000111u11y4baq26 slug home scan 114s pages 8
+http://172.18.0.1:8099/q_csr_delay/: 8 screens, exits=['https://example.com/checkout'] errors=0 total=19.9s bytes=18762
+
+http://web:3000/projects/cmv1kj889000111u11y4baq26/p/home: 8 screens, exits=['https://example.com/checkout'] errors=0 total=22.9s bytes=62843
+
+original: 8 screens in 19.9s, 18KB | clone: 8 screens in 22.9s, 61KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Quiz q_csr_delay                    Quiz q_csr_delay                    OK     0.0    0.19   1.31
+  2  Descubra seu plano ideal            Descubra seu plano ideal            OK     0.0    4.26   7.01
+  3  Qual é o seu objetivo?              Qual é o seu objetivo?              OK     0.0    6.41   9.17
+  4  Como é sua rotina?                  Como é sua rotina?                  OK     0.0    8.57  11.26
+  5  Quanto tempo você tem?              Quanto tempo você tem?              OK     0.0   10.66  13.33
+  6  Você já treinou antes?              Você já treinou antes?              OK     0.0   12.78  15.42
+  7  Montando seu plano…                 Montando seu plano…                 OK     0.1   14.84   17.5
+  8  Seu plano está pronto!              Seu plano está pronto!              OK     0.0   17.85  20.83
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 8->8 same-title 8/8 | mean pixel diff 0.01% max 0.1% | weight 18KB -> 61KB | longtasks 0 -> 0
+

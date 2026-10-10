@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Inline grid set by script</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+.g{display:grid;gap:16px;grid-template-columns:1fr}@media(min-width:768px){.g{grid-template-columns:repeat(2,1fr)}}@media(min-width:1100px){.g{grid-template-columns:repeat(3,1fr)}}</style></head><body><header class="top"><div class="wrap"><div class="logo">Brand</div></div></header><section class="blk"><div class="wrap"><h2>Cards</h2><div class="g" id="g"><div class="card">One</div><div class="card">Two</div><div class="card">Three</div><div class="card">Four</div><div class="card">Five</div><div class="card">Six</div></div></div></section><script>function fit(){var g=document.getElementById('g');var w=innerWidth;g.style.gridTemplateColumns='repeat('+(w>=1100?3:w>=768?2:1)+',1fr)';g.style.gridTemplateRows='auto'}fit();addEventListener('resize',fit)</script></body></html>

@@ -1,0 +1,19 @@
+project cmuvelgq00001ae7uevegwbcq slug home scan 148s pages 9
+http://172.18.0.1:8099/q_same_titles/: 9 screens, exits=['https://example.com/x'] errors=0 total=20.3s bytes=18510
+
+http://web:3000/projects/cmuvelgq00001ae7uevegwbcq/p/home: 9 screens, exits=['https://example.com/x'] errors=0 total=23.7s bytes=36976
+
+original: 9 screens in 20.3s, 18KB | clone: 9 screens in 23.7s, 36KB | exits ['https://example.com/x'] vs ['https://example.com/x']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Pergunta                            Pergunta                            OK     0.0    0.28   2.51
+  2  Pergunta                            Pergunta                            OK     0.0    2.49   5.57
+  3  Pergunta                            Pergunta                            OK     0.0    4.63   7.77
+  4  Pergunta                            Pergunta                            OK     0.0    6.72  10.27
+  5  Pergunta                            Pergunta                            OK     0.0    8.79  12.75
+  6  Pergunta                            Pergunta                            OK     0.0   10.96  14.91
+  7  Pergunta                            Pergunta                            OK     0.0   13.53   17.1
+  8  Pergunta                            Pergunta                            OK     0.0   15.96  19.31
+  9  Fim                                 Fim                                 OK     0.0   18.18  21.54
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 9->9 same-title 9/9 | mean pixel diff 0.0% max 0.0% | weight 18KB -> 36KB | longtasks 2 -> 6
+

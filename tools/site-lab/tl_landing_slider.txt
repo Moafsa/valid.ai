@@ -1,0 +1,6 @@
+project cmuvjdt7x0001149p6twybpbx slug home scan 82s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Depoimentos "Perdi 8kg em 30 dias!" — Ana "Mudou' | 'Depoimentos "Perdi 8kg em 30 dias!" — Ana QUERO '
+  3.0     0.0  'Depoimentos "Perdi 8kg em 30 dias!" — Ana "Mudou' | 'Depoimentos "Perdi 8kg em 30 dias!" — Ana "Mudou'
+  6.0     0.0  'Depoimentos "Perdi 8kg em 30 dias!" — Ana "Mudou' | 'Depoimentos "Perdi 8kg em 30 dias!" — Ana "Mudou'
+errors orig/clone: [] [] | worst diff 0

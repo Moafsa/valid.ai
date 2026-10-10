@@ -1,0 +1,298 @@
+{
+ "idx": 41,
+ "cat": "local-us",
+ "url": "https://dptexas.com/free-plumbing-quotes-plumber-estimates-in-san-antonio-tx/",
+ "projectId": "cmuw2xt4k0034n7r8o2zjaeyu",
+ "slug": "free-plumbing-quotes-plumber-estimates-in-san-antonio-tx",
+ "scan": {
+  "seconds": 223,
+  "pages": 1,
+  "blocks": 8,
+  "cssKB": 644,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.8,
+    28.5,
+    9.2,
+    0.0,
+    0.3
+   ],
+   "diffTop": 12.8,
+   "diffAll": 7.8,
+   "imgVis": [
+    11,
+    11
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    5,
+    4
+   ],
+   "links": [
+    103,
+    71
+   ],
+   "buttons": [
+    9,
+    8
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    2147,
+    1564
+   ],
+   "requests": [
+    135,
+    72
+   ],
+   "loadSec": [
+    16.4,
+    8.9
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     1024,
+     1826,
+     325,
+     1270
+    ],
+    [
+     1024,
+     1826,
+     325,
+     1270
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      325,
+      1270
+     ],
+     [
+      "iframe",
+      316,
+      539
+     ]
+    ],
+    [
+     [
+      "iframe",
+      325,
+      1270,
+      false
+     ],
+     [
+      "iframe",
+      316,
+      539,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "dptexas.com": [
+     1,
+     254249
+    ]
+   },
+   "cloneErrors": [
+    "JotForm is not defined",
+    "JotForm is not defined",
+    "JotForm is not defined",
+    "JotForm is not defined"
+   ],
+   "cloneFailed": [
+    "https://cdn.jotfor.ms/stylebuilder/static/form-common.css?v=909739a",
+    "https://cdn.jotfor.ms/s/static/772a1982daf/js/errorNavigation.js",
+    "https://cdn.jotfor.ms/s/static/772a1982daf/static/jotform.forms.js",
+    "https://cdn.jotfor.ms/s/static/772a1982daf/js/vendor/smoothscroll.min.js"
+   ],
+   "origErrors": 17,
+   "cloneNErrors": 14,
+   "cloneNFailed": 32,
+   "facesClone": [
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.988,
+   "extra": 0.0,
+   "missing": [
+    "home",
+    "join",
+    "review"
+   ],
+   "heightRatio": 0.886,
+   "overflowX": false,
+   "tiles": [
+    81.3,
+    26.6,
+    20.3,
+    18.8,
+    15.4,
+    3.3,
+    36.2,
+    79.4
+   ],
+   "diffTop": 42.7,
+   "diffAll": 35.2,
+   "imgVis": [
+    11,
+    4
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    5,
+    4
+   ],
+   "links": [
+    103,
+    71
+   ],
+   "buttons": [
+    9,
+    8
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    2464,
+    1295
+   ],
+   "requests": [
+    122,
+    64
+   ],
+   "loadSec": [
+    15.5,
+    4.9
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     31,
+     4130,
+     328,
+     1200
+    ],
+    [
+     31,
+     3960,
+     328,
+     1200
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      328,
+      1200
+     ],
+     [
+      "iframe",
+      356,
+      539
+     ]
+    ],
+    [
+     [
+      "iframe",
+      328,
+      1200,
+      false
+     ],
+     [
+      "iframe",
+      356,
+      539,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "dptexas.com": [
+     1,
+     254249
+    ]
+   },
+   "cloneErrors": [
+    "JotForm is not defined",
+    "JotForm is not defined",
+    "JotForm is not defined",
+    "JotForm is not defined"
+   ],
+   "cloneFailed": [
+    "https://cdn.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?v=4.1.3660&themeRevisionID=5eb3b4ae85bd2e1e2966db96",
+    "https://cdn.jotfor.ms/stylebuilder/static/form-common.css?v=909739a",
+    "https://cdn.jotfor.ms/s/static/772a1982daf/css/styles/payment/payment_styles.css?4.1.3660",
+    "https://cdn.jotfor.ms/s/static/772a1982daf/css/styles/payment/payment_feature.css?4.1.3660"
+   ],
+   "origErrors": 17,
+   "cloneNErrors": 14,
+   "cloneNFailed": 41,
+   "facesClone": [
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw2xt4k0034n7r8o2zjaeyu/p/free-plumbing-quotes-plumber-estimates-in-san-antonio-tx"
+}

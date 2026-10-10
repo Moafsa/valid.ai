@@ -1,0 +1,12 @@
+project cmv1kygl00001f9ckn9gzwtlo slug home scan 42s pages 2
+http://172.18.0.1:8099/wait_only/: 2 screens, exits=['https://example.com/entrar'] errors=0 total=8.6s bytes=17855
+
+http://web:3000/projects/cmv1kygl00001f9ckn9gzwtlo/p/home: 2 screens, exits=['https://example.com/entrar'] errors=0 total=9.8s bytes=25244
+
+original: 2 screens in 8.6s, 17KB | clone: 2 screens in 9.8s, 24KB | exits ['https://example.com/entrar'] vs ['https://example.com/entrar']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Estamos preparando tudo…            Estamos preparando tudo…            OK    0.06     0.1   1.06
+  2  Acesso liberado                     Acesso liberado                     OK     0.0     6.5    7.7
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 2->2 same-title 2/2 | mean pixel diff 0.03% max 0.06% | weight 17KB -> 24KB | longtasks 0 -> 0
+

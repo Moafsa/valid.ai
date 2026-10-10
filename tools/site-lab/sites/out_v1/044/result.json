@@ -1,0 +1,180 @@
+{
+ "idx": 44,
+ "cat": "edu",
+ "url": "https://www.mit.edu/",
+ "projectId": "cmuw30dnd003dn7r844lgt1e1",
+ "slug": "home",
+ "scan": {
+  "seconds": 93,
+  "pages": 1,
+  "blocks": 7,
+  "cssKB": 470,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.004,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    2.0,
+    0.0,
+    23.5
+   ],
+   "diffTop": 8.5,
+   "diffAll": 8.5,
+   "imgVis": [
+    7,
+    7
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    75,
+    75
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    1697,
+    612
+   ],
+   "requests": [
+    26,
+    18
+   ],
+   "loadSec": [
+    3.7,
+    3.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded"
+   ],
+   "fontOC": [
+    "neue-haas-grotesk-text, sans-serif",
+    "neue-haas-grotesk-text, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.004,
+   "overflowX": false,
+   "tiles": [
+    69.1,
+    66.5,
+    69.0,
+    75.6
+   ],
+   "diffTop": 68.2,
+   "diffAll": 70.0,
+   "imgVis": [
+    7,
+    7
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    75,
+    75
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    1697,
+    612
+   ],
+   "requests": [
+    26,
+    18
+   ],
+   "loadSec": [
+    3.4,
+    2.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded",
+    "neue-haas-grotesk-display:unloaded"
+   ],
+   "fontOC": [
+    "neue-haas-grotesk-text, sans-serif",
+    "neue-haas-grotesk-text, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw30dnd003dn7r844lgt1e1/p/home"
+}

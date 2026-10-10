@@ -1,0 +1,291 @@
+{
+ "idx": 244,
+ "cat": "media",
+ "url": "https://www.folha.uol.com.br/",
+ "projectId": "cmux5p7us009vbr8c2y8a8xyq",
+ "slug": "home",
+ "scan": {
+  "seconds": 170,
+  "pages": 1,
+  "blocks": 1,
+  "cssKB": 533,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.909,
+   "extra": 0.044,
+   "missing": [
+    "baixe",
+    "gra\u00e7a",
+    "baixar",
+    "ingresso",
+    "uol",
+    "host",
+    "pagbank",
+    "cursos",
+    "ads",
+    "papo",
+    "email",
+    "debate",
+    "sinalizar",
+    "ida",
+    "sabatinas",
+    "candidatos",
+    "cerca",
+    "eliminados",
+    "esse",
+    "come\u00e7ou",
+    "agora",
+    "paim",
+    "jornada",
+    "andan\u00e7as",
+    "metr\u00f3pole"
+   ],
+   "heightRatio": 0.993,
+   "overflowX": false,
+   "tiles": [
+    31.2,
+    28.5,
+    25.7,
+    21.6,
+    17.7,
+    77.3,
+    23.3
+   ],
+   "diffTop": 28.5,
+   "diffAll": 32.2,
+   "imgVis": [
+    91,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    13,
+    0
+   ],
+   "links": [
+    847,
+    759
+   ],
+   "buttons": [
+    354,
+    338
+   ],
+   "inputs": [
+    44,
+    44
+   ],
+   "kb": [
+    7953,
+    1060
+   ],
+   "requests": [
+    389,
+    19
+   ],
+   "loadSec": [
+    38.1,
+    10.9
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      970,
+      250
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ],
+     [
+      "iframe",
+      970,
+      250
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded"
+   ],
+   "fontOC": [
+    "FolhaGrafico, Georgia, serif",
+    "FolhaGrafico, Georgia, serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Senador diz que vai a debate ap\u00f3s Lula sinalizar ida",
+    "Globo adia sabatinas com candidatos no 2\u00ba turno",
+    "Lula precisa de cerca de 62% dos votos dos candidatos eliminados para virada no segundo turno"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.919,
+   "extra": 0.035,
+   "missing": [
+    "baixe",
+    "gra\u00e7a",
+    "baixar",
+    "debate",
+    "sinalizar",
+    "ida",
+    "sabatinas",
+    "candidatos",
+    "esse",
+    "come\u00e7ou",
+    "agora",
+    "paim",
+    "jornada",
+    "outro",
+    "canal",
+    "gabriela",
+    "medvedovsky",
+    "protagonizar",
+    "s\u00e9rie",
+    "disney",
+    "camila",
+    "queiroz",
+    "jairo",
+    "indiferen\u00e7a",
+    "ouro"
+   ],
+   "heightRatio": 0.979,
+   "overflowX": false,
+   "tiles": [
+    47.1,
+    34.4,
+    44.1,
+    30.1,
+    9.0,
+    26.4,
+    41.4,
+    55.2
+   ],
+   "diffTop": 41.9,
+   "diffAll": 36.0,
+   "imgVis": [
+    61,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    13,
+    0
+   ],
+   "links": [
+    800,
+    759
+   ],
+   "buttons": [
+    350,
+    338
+   ],
+   "inputs": [
+    44,
+    44
+   ],
+   "kb": [
+    4112,
+    1060
+   ],
+   "requests": [
+    335,
+    19
+   ],
+   "loadSec": [
+    23.6,
+    6.6
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      300,
+      600
+     ],
+     [
+      "iframe",
+      336,
+      280
+     ],
+     [
+      "iframe",
+      336,
+      280
+     ],
+     [
+      "iframe",
+      336,
+      280
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded",
+    "FolhaGrafico:unloaded"
+   ],
+   "fontOC": [
+    "FolhaGrafico, Georgia, serif",
+    "FolhaGrafico, Georgia, serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Senador diz que vai a debate ap\u00f3s Lula sinalizar ida",
+    "Globo adia sabatinas com candidatos no 2\u00ba turno"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5p7us009vbr8c2y8a8xyq/p/home"
+}

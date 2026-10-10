@@ -1,0 +1,186 @@
+{
+ "idx": 43,
+ "cat": "github",
+ "url": "https://s5sajid.github.io/",
+ "projectId": "cmuw302j2003an7r8fzmhk0zn",
+ "slug": "home",
+ "scan": {
+  "seconds": 78,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 31,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.5,
+    0.0,
+    0.0,
+    1.6
+   ],
+   "diffTop": 0.2,
+   "diffAll": 0.4,
+   "imgVis": [
+    3,
+    3
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    28,
+    28
+   ],
+   "buttons": [
+    6,
+    6
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    7652,
+    610
+   ],
+   "requests": [
+    19,
+    15
+   ],
+   "loadSec": [
+    5.1,
+    4.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded"
+   ],
+   "fontOC": [
+    "\"Bricolage Grotesque\", sans-serif",
+    "\"Bricolage Grotesque\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.7,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.3,
+   "diffAll": 0.1,
+   "imgVis": [
+    3,
+    3
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    28,
+    28
+   ],
+   "buttons": [
+    6,
+    6
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    7396,
+    353
+   ],
+   "requests": [
+    15,
+    11
+   ],
+   "loadSec": [
+    4.7,
+    3.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded",
+    "Bricolage Grotesque:unloaded"
+   ],
+   "fontOC": [
+    "\"Bricolage Grotesque\", sans-serif",
+    "\"Bricolage Grotesque\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw302j2003an7r8fzmhk0zn/p/home"
+}

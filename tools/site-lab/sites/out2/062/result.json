@@ -1,0 +1,368 @@
+{
+ "idx": 62,
+ "cat": "br-saas",
+ "url": "https://www.nuvemshop.com.br/",
+ "projectId": "cmux2arxb002sbr8c65v5q9ro",
+ "slug": "home",
+ "scan": {
+  "seconds": 275,
+  "pages": 2,
+  "blocks": 11,
+  "cssKB": 633,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.914,
+   "extra": 0.086,
+   "missing": [
+    "expans\u00e3o",
+    "solu\u00e7\u00e3o",
+    "financeira",
+    "completa",
+    "checkout",
+    "taxa",
+    "aprova\u00e7\u00e3o",
+    "centralizada",
+    "impulsionar",
+    "entregue",
+    "estrutura",
+    "pr\u00f3pria",
+    "intelig\u00eancia",
+    "integra\u00e7\u00e3o",
+    "total",
+    "atenda",
+    "usando",
+    "atende",
+    "qualquer",
+    "hora",
+    "conversas",
+    "sempre",
+    "resposta",
+    "vendendo",
+    "conhece"
+   ],
+   "heightRatio": 0.738,
+   "overflowX": false,
+   "tiles": [
+    92.8,
+    35.7,
+    59.7,
+    48.7,
+    18.8,
+    3.0,
+    3.6
+   ],
+   "diffTop": 62.7,
+   "diffAll": 37.5,
+   "imgVis": [
+    122,
+    122
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    4,
+    3
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    162,
+    157
+   ],
+   "buttons": [
+    41,
+    34
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    10276,
+    5870
+   ],
+   "requests": [
+    100,
+    67
+   ],
+   "loadSec": [
+    32.4,
+    9.6
+   ],
+   "videoArea": 0.14,
+   "videoRect": [
+    [
+     -1044,
+     10856,
+     3528,
+     1764
+    ],
+    [
+     108,
+     11325,
+     1224,
+     689
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      900,
+      584
+     ],
+     [
+      "video",
+      3528,
+      1764
+     ],
+     [
+      "video",
+      1163,
+      654
+     ],
+     [
+      "video",
+      1440,
+      900
+     ]
+    ],
+    [
+     [
+      "video",
+      140,
+      150,
+      false
+     ],
+     [
+      "div",
+      900,
+      794,
+      true
+     ],
+     [
+      "div",
+      1224,
+      689,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "app-insti-cdn.nuvemshop.com.br": [
+     10,
+     1784479
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://d4avy5zjiurvu.cloudfront.net/content/2026/05/HomeAnimationsBR-final2.webm"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [],
+   "fontOC": [
+    "\"Plus Jakarta Sans\", -apple-system, Blin",
+    "\"Plus Jakarta Sans\", -apple-system, Blin"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Do pagamento \u00e0 expans\u00e3o do neg\u00f3cio com Nuvem Pago",
+    "Log\u00edstica com infraestrutura completa com o Nuvem Envio",
+    "Atenda 24h usando a IA do Nuvem Chat",
+    "Venda mais para quem j\u00e1 te conhece com o Nuvem Marketing",
+    "Mais do que loja online. A base para sua marca r|"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.909,
+   "extra": 0.091,
+   "missing": [
+    "hora",
+    "expans\u00e3o",
+    "solu\u00e7\u00e3o",
+    "financeira",
+    "completa",
+    "checkout",
+    "taxa",
+    "aprova\u00e7\u00e3o",
+    "centralizada",
+    "impulsionar",
+    "entregue",
+    "estrutura",
+    "pr\u00f3pria",
+    "intelig\u00eancia",
+    "integra\u00e7\u00e3o",
+    "total",
+    "atenda",
+    "24h",
+    "usando",
+    "atende",
+    "qualquer",
+    "conversas",
+    "sempre",
+    "resposta",
+    "vendendo"
+   ],
+   "heightRatio": 0.846,
+   "overflowX": false,
+   "tiles": [
+    6.3,
+    9.9,
+    47.0,
+    1.4,
+    22.5,
+    45.2,
+    23.3,
+    63.2
+   ],
+   "diffTop": 21.1,
+   "diffAll": 27.4,
+   "imgVis": [
+    73,
+    71
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    3,
+    3
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    161,
+    156
+   ],
+   "buttons": [
+    50,
+    43
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    7053,
+    3095
+   ],
+   "requests": [
+    84,
+    47
+   ],
+   "loadSec": [
+    35.0,
+    7.6
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     0,
+     390,
+     876
+    ],
+    [
+     0,
+     0,
+     390,
+     876
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      390,
+      876
+     ],
+     [
+      "video",
+      366,
+      237
+     ],
+     [
+      "video",
+      366,
+      206
+     ]
+    ],
+    [
+     [
+      "video",
+      390,
+      876,
+      false
+     ],
+     [
+      "div",
+      366,
+      237,
+      true
+     ],
+     [
+      "div",
+      366,
+      206,
+      true
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.nuvemshop.com.br": [
+     1,
+     1028
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://d4avy5zjiurvu.cloudfront.net/content/2026/05/HomeAnimationsBR-final2.webm"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [],
+   "fontOC": [
+    "\"Plus Jakarta Sans\", -apple-system, Blin",
+    "\"Plus Jakarta Sans\", -apple-system, Blin"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Do pagamento \u00e0 expans\u00e3o do neg\u00f3cio com Nuvem Pago",
+    "Log\u00edstica com infraestrutura completa com o Nuvem Envio",
+    "Atenda 24h usando a IA do Nuvem Chat",
+    "Venda mais para quem j\u00e1 te conhece com o Nuvem Marketing"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2arxb002sbr8c65v5q9ro/p/home"
+}

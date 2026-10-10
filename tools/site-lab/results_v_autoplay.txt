@@ -1,0 +1,11 @@
+project cmv1kq4sw0001mkwo95hzrqeo slug home scan 68s pages 1
+http://172.18.0.1:8099/v_autoplay/: 1 screens, exits=['https://example.com/comprar'] errors=0 total=11.4s bytes=572005
+
+http://web:3000/projects/cmv1kq4sw0001mkwo95hzrqeo/p/home: 1 screens, exits=['https://example.com/comprar'] errors=0 total=12.6s bytes=451686
+
+original: 1 screens in 11.4s, 558KB | clone: 1 screens in 12.6s, 441KB | exits ['https://example.com/comprar'] vs ['https://example.com/comprar']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Vídeo que começa sozinho            Vídeo que começa sozinho            OK   20.76    0.17    1.3
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 1->1 same-title 1/1 | mean pixel diff 20.76% max 20.76% | weight 558KB -> 441KB | longtasks 0 -> 1
+

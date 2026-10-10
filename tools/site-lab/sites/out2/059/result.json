@@ -1,0 +1,183 @@
+{
+ "idx": 59,
+ "cat": "wix-psi",
+ "url": "https://brenonegreirospsi.wixsite.com/psicologia",
+ "projectId": "cmux27x6q002jbr8ctmziy6v0",
+ "slug": "psicologia",
+ "scan": {
+  "seconds": 128,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 214,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    6,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    16,
+    16
+   ],
+   "buttons": [
+    4,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1370,
+    364
+   ],
+   "requests": [
+    149,
+    18
+   ],
+   "loadSec": [
+    8.8,
+    5.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    10.1,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 3.4,
+   "diffAll": 2.5,
+   "imgVis": [
+    6,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    17,
+    17
+   ],
+   "buttons": [
+    6,
+    6
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1382,
+    338
+   ],
+   "requests": [
+    150,
+    19
+   ],
+   "loadSec": [
+    8.5,
+    6.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux27x6q002jbr8ctmziy6v0/p/psicologia"
+}

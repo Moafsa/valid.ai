@@ -1,0 +1,187 @@
+{
+ "idx": 47,
+ "cat": "imob",
+ "url": "https://appmeuimovel.com/apartamentos?estagio=lancamento",
+ "projectId": "cmuw32l90003mn7r8e0zco5h2",
+ "slug": "apartamentos",
+ "scan": {
+  "seconds": 167,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 163,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    21,
+    21
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    68,
+    68
+   ],
+   "buttons": [
+    7,
+    7
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    1419,
+    325
+   ],
+   "requests": [
+    101,
+    24
+   ],
+   "loadSec": [
+    6.4,
+    3.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 11,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded"
+   ],
+   "fontOC": [
+    "Nunito, sans-serif",
+    "Nunito, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    21,
+    21
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    68,
+    68
+   ],
+   "buttons": [
+    7,
+    7
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    1411,
+    325
+   ],
+   "requests": [
+    98,
+    24
+   ],
+   "loadSec": [
+    1.4,
+    3.1
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 10,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded"
+   ],
+   "fontOC": [
+    "Nunito, sans-serif",
+    "Nunito, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw32l90003mn7r8e0zco5h2/p/apartamentos"
+}

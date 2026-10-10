@@ -1,0 +1,4 @@
+project cmuvjh91o0001htqs7q4dpaen slug landing-long scan 65s pages=1
+ t(s)  diff%   original text | clone text
+  1.0    6.89  'MarcaLab FAQ Transforme sua rotina em 21 dias Mé' | 'MarcaLab FAQ Transforme sua rotina em 21 dias Mé'
+errors orig/clone: [] [] | worst diff 6.89

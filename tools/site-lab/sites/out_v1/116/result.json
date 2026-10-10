@@ -1,0 +1,324 @@
+{
+ "idx": 116,
+ "cat": "shop-br",
+ "url": "https://lojavirtualbr3.lojavirtualnuvem.com.br/",
+ "projectId": "cmuw8f77t009dn7r8hjdmplpc",
+ "slug": "home",
+ "scan": {
+  "seconds": 398,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 250,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.897,
+   "extra": 0.188,
+   "missing": [
+    "navegar",
+    "por",
+    "site",
+    "aceita",
+    "uso",
+    "cookies",
+    "agilizar",
+    "experi\u00eancia",
+    "entendi"
+   ],
+   "heightRatio": 1.345,
+   "overflowX": false,
+   "tiles": [
+    2.8,
+    44.8,
+    3.3,
+    46.3,
+    64.0,
+    54.2,
+    3.1
+   ],
+   "diffTop": 17.0,
+   "diffAll": 31.2,
+   "imgVis": [
+    0,
+    2
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    128,
+    110
+   ],
+   "buttons": [
+    21,
+    25
+   ],
+   "inputs": [
+    16,
+    7
+   ],
+   "kb": [
+    1128,
+    322
+   ],
+   "requests": [
+    28,
+    15
+   ],
+   "loadSec": [
+    1.7,
+    4.8
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     5162,
+     1440,
+     810
+    ],
+    [
+     0,
+     5700,
+     1440,
+     810
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "div",
+      1440,
+      810
+     ],
+     [
+      "div",
+      80,
+      80
+     ],
+     [
+      "iframe",
+      256,
+      60
+     ]
+    ],
+    [
+     [
+      "div",
+      1440,
+      810,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ],
+     [
+      "a",
+      1440,
+      810,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw8f77t009dn7r8hjdmplpc/assets/home_section_0_0.png"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded"
+   ],
+   "fontOC": [
+    "\"Droid Sans\", sans-serif",
+    "\"Droid Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.892,
+   "extra": 0.204,
+   "missing": [
+    "navegar",
+    "por",
+    "site",
+    "aceita",
+    "uso",
+    "cookies",
+    "agilizar",
+    "experi\u00eancia",
+    "entendi"
+   ],
+   "heightRatio": 1.157,
+   "overflowX": false,
+   "tiles": [
+    5.9,
+    54.2,
+    41.7,
+    18.1,
+    35.3,
+    23.2,
+    54.7,
+    75.1
+   ],
+   "diffTop": 33.9,
+   "diffAll": 38.5,
+   "imgVis": [
+    0,
+    2
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    104,
+    110
+   ],
+   "buttons": [
+    21,
+    25
+   ],
+   "inputs": [
+    16,
+    7
+   ],
+   "kb": [
+    1102,
+    300
+   ],
+   "requests": [
+    29,
+    14
+   ],
+   "loadSec": [
+    3.1,
+    3.0
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     6893,
+     390,
+     219
+    ],
+    [
+     0,
+     7523,
+     390,
+     219
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "div",
+      390,
+      219
+     ],
+     [
+      "div",
+      80,
+      80
+     ],
+     [
+      "iframe",
+      256,
+      60
+     ]
+    ],
+    [
+     [
+      "div",
+      390,
+      219,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ],
+     [
+      "a",
+      390,
+      219,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw8f77t009dn7r8hjdmplpc/assets/home_section_0_0.png"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded",
+    "Nunito:unloaded"
+   ],
+   "fontOC": [
+    "\"Droid Sans\", sans-serif",
+    "\"Droid Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw8f77t009dn7r8hjdmplpc/p/home"
+}

@@ -1,0 +1,8 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>form_onepage</title></head><body><style>body{margin:0;font-family:system-ui;background:#faf7f2}form{max-width:520px;margin:0 auto;padding:20px}fieldset{border:0;margin:20px 0;padding:0}legend{font-weight:700;font-size:20px;margin-bottom:8px}label{display:block;padding:10px;border:2px solid #e2d9cb;border-radius:12px;margin:6px 0;background:#fff;cursor:pointer}input[type=text],input[type=email]{width:100%;padding:12px;border:2px solid #e2d9cb;border-radius:10px;font-size:16px}button{width:100%;background:#d0541f;color:#fff;border:0;padding:16px;border-radius:99px;font-size:18px;font-weight:700}</style>
+<form id="f"><h1>Pesquisa rápida</h1>
+<fieldset><legend>1. Qual é o seu objetivo?</legend><label><input type="radio" name="a" value="1"> Emagrecer</label><label><input type="radio" name="a" value="2"> Ganhar massa</label></fieldset>
+<fieldset><legend>2. Como é sua rotina?</legend><label><input type="radio" name="b" value="1"> Sedentária</label><label><input type="radio" name="b" value="2"> Ativa</label></fieldset>
+<fieldset><legend>3. Seus dados</legend><input type="text" name="nome" placeholder="Seu nome" required><br><br><input type="email" name="email" placeholder="Seu e-mail" required></fieldset>
+<button type="submit">RECEBER MEU PLANO</button></form>
+<script>document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();fetch('/api/lead',{method:'POST',body:new FormData(e.target)}).finally(function(){document.getElementById('f').innerHTML='<h1>Obrigado! Enviamos para o seu e-mail.</h1>'})})</script></body></html>

@@ -1,0 +1,301 @@
+{
+ "idx": 220,
+ "cat": "media",
+ "url": "https://www.uol.com.br/",
+ "projectId": "cmux5295c008vbr8ckjglsofp",
+ "slug": "home",
+ "scan": {
+  "seconds": 296,
+  "pages": 1,
+  "blocks": 1,
+  "cssKB": 120,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.982,
+   "extra": 0.117,
+   "missing": [
+    "entre",
+    "d\u00f3lar4",
+    "976euro5",
+    "602",
+    "c17",
+    "encerrado",
+    "d\u00f3lar",
+    "comercial20",
+    "976",
+    "euro20",
+    "peso",
+    "argentino20",
+    "003",
+    "bitcoin17",
+    "427",
+    "587",
+    "aqui"
+   ],
+   "heightRatio": 1.008,
+   "overflowX": false,
+   "tiles": [
+    23.7,
+    29.9,
+    26.9,
+    23.1,
+    23.6,
+    19.0,
+    17.2
+   ],
+   "diffTop": 26.8,
+   "diffAll": 23.3,
+   "imgVis": [
+    154,
+    149
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    0
+   ],
+   "iframes": [
+    18,
+    0
+   ],
+   "links": [
+    471,
+    454
+   ],
+   "buttons": [
+    39,
+    14
+   ],
+   "inputs": [
+    6,
+    2
+   ],
+   "kb": [
+    6487,
+    2131
+   ],
+   "requests": [
+    437,
+    163
+   ],
+   "loadSec": [
+    48.6,
+    11.2
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      224,
+      399
+     ],
+     [
+      "iframe",
+      580,
+      390
+     ],
+     [
+      "iframe",
+      580,
+      390
+     ],
+     [
+      "iframe",
+      1190,
+      390
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "conteudo.imguol.com.br": [
+     105,
+     977557
+    ],
+    "me.jsuol.com.br": [
+     1,
+     8852
+    ],
+    "tm.jsuol.com.br": [
+     1,
+     3727
+    ],
+    "conteudo.jsuol.com.br": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to script at 'https://conteudo.jsuol.com.br/p/perfil/js/widgetNotify.v3.js' from origin 'http",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://conteudo.jsuol.com.br/p/perfil/js/widgetNotify.v3.js"
+   ],
+   "origErrors": 7,
+   "cloneNErrors": 2,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "UOLText, Arial, sans-serif",
+    "UOLText, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.859,
+   "extra": 0.131,
+   "missing": [
+    "pesquisar",
+    "home",
+    "outros",
+    "canais",
+    "universal",
+    "champions",
+    "league",
+    "drive",
+    "virtual",
+    "uoltenha",
+    "acesso",
+    "ilimitado",
+    "conte\u00fado",
+    "exclusivo",
+    "compre",
+    "whatsapp",
+    "ligue",
+    "4003",
+    "6118",
+    "capitais",
+    "0800",
+    "703",
+    "3000",
+    "localidades",
+    "hosto"
+   ],
+   "heightRatio": 1.037,
+   "overflowX": true,
+   "tiles": [
+    30.7,
+    43.4,
+    46.0,
+    25.1,
+    29.2,
+    55.5,
+    69.6,
+    56.6
+   ],
+   "diffTop": 40.0,
+   "diffAll": 44.5,
+   "imgVis": [
+    166,
+    149
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    0
+   ],
+   "iframes": [
+    13,
+    0
+   ],
+   "links": [
+    438,
+    454
+   ],
+   "buttons": [
+    62,
+    14
+   ],
+   "inputs": [
+    5,
+    2
+   ],
+   "kb": [
+    5704,
+    2130
+   ],
+   "requests": [
+    364,
+    163
+   ],
+   "loadSec": [
+    42.5,
+    8.1
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      300,
+      533
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "conteudo.imguol.com.br": [
+     105,
+     976301
+    ],
+    "me.jsuol.com.br": [
+     1,
+     8925
+    ],
+    "tm.jsuol.com.br": [
+     1,
+     3732
+    ],
+    "conteudo.jsuol.com.br": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to script at 'https://conteudo.jsuol.com.br/p/perfil/js/widgetNotify.v3.js' from origin 'http",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://conteudo.jsuol.com.br/p/perfil/js/widgetNotify.v3.js"
+   ],
+   "origErrors": 9,
+   "cloneNErrors": 2,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "UOLText, Arial, sans-serif",
+    "UOLText, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(242, 242, 242)",
+    "rgb(242, 242, 242)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5295c008vbr8ckjglsofp/p/home"
+}

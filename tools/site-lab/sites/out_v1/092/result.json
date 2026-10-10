@@ -1,0 +1,178 @@
+{
+ "idx": 92,
+ "cat": "saas",
+ "url": "https://plausible.io/",
+ "projectId": "cmuw6esth007dn7r80imuzihz",
+ "slug": "home",
+ "scan": {
+  "seconds": 342,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 54,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.004,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.1,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "diffTop": 0.1,
+   "diffAll": 0.1,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    123,
+    123
+   ],
+   "buttons": [
+    2,
+    2
+   ],
+   "inputs": [
+    3,
+    3
+   ],
+   "kb": [
+    126,
+    163
+   ],
+   "requests": [
+    16,
+    14
+   ],
+   "loadSec": [
+    1.8,
+    2.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "system-ui, -apple-system, BlinkMacSystem"
+   ],
+   "bgOC": [
+    "rgb(249, 250, 251)",
+    "rgb(249, 250, 251)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.004,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.3,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.2,
+   "diffAll": 0.1,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    123,
+    123
+   ],
+   "buttons": [
+    2,
+    2
+   ],
+   "inputs": [
+    3,
+    3
+   ],
+   "kb": [
+    79,
+    163
+   ],
+   "requests": [
+    16,
+    14
+   ],
+   "loadSec": [
+    1.5,
+    2.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "system-ui, -apple-system, BlinkMacSystem"
+   ],
+   "bgOC": [
+    "rgb(249, 250, 251)",
+    "rgb(249, 250, 251)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw6esth007dn7r80imuzihz/p/home"
+}

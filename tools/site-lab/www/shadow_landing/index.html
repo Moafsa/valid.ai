@@ -1,0 +1,6 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>shadow_landing</title></head><body><style>body{font-family:system-ui;margin:0}</style><h1 style="text-align:center">Landing com web components</h1>
+<fancy-card data-t="Plano Básico" data-p="R$ 47"></fancy-card><fancy-card data-t="Plano Pro" data-p="R$ 97"></fancy-card>
+<script>
+class FancyCard extends HTMLElement{connectedCallback(){const r=this.attachShadow({mode:'open'});r.innerHTML=`<style>div{border:2px solid #d0541f;border-radius:14px;padding:20px;margin:16px auto;max-width:360px;text-align:center;font-family:system-ui}b{font-size:28px;color:#d0541f}button{background:#d0541f;color:#fff;border:0;padding:12px 24px;border-radius:99px;font-size:17px}</style><div><h2>${this.dataset.t}</h2><b>${this.dataset.p}</b><p><button>Assinar</button></p></div>`}}
+customElements.define('fancy-card',FancyCard)</script></body></html>

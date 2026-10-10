@@ -1,0 +1,250 @@
+{
+ "idx": 181,
+ "cat": "shopify",
+ "url": "https://the-shins-tmc.myshopify.com/",
+ "projectId": "cmux4brng007dbr8coex0ezac",
+ "slug": "home",
+ "scan": {
+  "seconds": 284,
+  "pages": 1,
+  "blocks": 6,
+  "cssKB": 255,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.632,
+   "extra": 0.0,
+   "missing": [
+    "cookie",
+    "consent",
+    "our",
+    "partners",
+    "including",
+    "shopify",
+    "use",
+    "cookies",
+    "other",
+    "technologies",
+    "personalize",
+    "your",
+    "experience",
+    "show",
+    "ads",
+    "perform",
+    "analytics",
+    "will",
+    "not",
+    "for",
+    "these",
+    "purposes",
+    "unless",
+    "accept",
+    "them"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    6.4
+   ],
+   "diffTop": 6.4,
+   "diffAll": 6.4,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    56,
+    53
+   ],
+   "buttons": [
+    35,
+    32
+   ],
+   "inputs": [
+    25,
+    25
+   ],
+   "kb": [
+    2599,
+    2207
+   ],
+   "requests": [
+    236,
+    25
+   ],
+   "loadSec": [
+    24.2,
+    12.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "the-shins-tmc.myshopify.com": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://shop.app/' because an ancestor violates the following Content Security Pol"
+   ],
+   "cloneFailed": [
+    "https://shop.app/accounts/pre_auth?client_id=595eac5a-6227-4b93-9c4c-fe2498d5afd9&analytics_trace_id=b704c2dd-f51c-410c-"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "GTStandard-M:unloaded"
+   ],
+   "fontOC": [
+    "Inter, sans-serif",
+    "Inter, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Cookie consent"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.605,
+   "extra": 0.0,
+   "missing": [
+    "cookie",
+    "consent",
+    "our",
+    "partners",
+    "including",
+    "shopify",
+    "use",
+    "cookies",
+    "other",
+    "technologies",
+    "personalize",
+    "your",
+    "experience",
+    "show",
+    "ads",
+    "perform",
+    "analytics",
+    "will",
+    "not",
+    "for",
+    "these",
+    "purposes",
+    "unless",
+    "accept",
+    "them"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    2.3,
+    17.0
+   ],
+   "diffTop": 9.7,
+   "diffAll": 9.7,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    56,
+    53
+   ],
+   "buttons": [
+    35,
+    32
+   ],
+   "inputs": [
+    25,
+    25
+   ],
+   "kb": [
+    2538,
+    2350
+   ],
+   "requests": [
+    233,
+    27
+   ],
+   "loadSec": [
+    25.3,
+    13.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "the-shins-tmc.myshopify.com": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://shop.app/' because an ancestor violates the following Content Security Pol"
+   ],
+   "cloneFailed": [
+    "https://shop.app/accounts/pre_auth?client_id=595eac5a-6227-4b93-9c4c-fe2498d5afd9&analytics_trace_id=b704c2dd-f51c-410c-"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "GTStandard-M:unloaded"
+   ],
+   "fontOC": [
+    "Inter, sans-serif",
+    "Inter, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Cookie consent"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4brng007dbr8coex0ezac/p/home"
+}

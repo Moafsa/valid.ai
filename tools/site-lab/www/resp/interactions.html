@@ -1,0 +1,54 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Interactions</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+
+.faq{max-width:760px;margin:0 auto;display:grid;gap:12px}
+.q{border:1px solid #cbd5e1;border-radius:14px;padding:18px 20px;cursor:pointer;background:#f8fafc;transition:background .2s}
+.q.open{background:#2563eb;color:#fff}
+.q .top{display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.q .icon{width:14px;height:14px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg);transition:transform .2s}
+.q .ans{margin-top:12px;font-weight:400}
+.acc button{display:block;width:100%;text-align:left;padding:16px;border:1px solid #cbd5e1;background:#fff;font-size:16px;cursor:pointer}
+.acc .panel{padding:14px 16px;border:1px solid #cbd5e1;border-top:0}
+.tabs [role=tab]{display:inline-block;padding:10px 16px;cursor:pointer;border-bottom:3px solid transparent}.tabs [aria-selected=true]{border-color:#2563eb;font-weight:700}
+.nav a{color:#fff;margin-left:20px;text-decoration:none}.burger{display:none;background:none;border:0;color:#fff;font-size:28px;cursor:pointer}
+@media(max-width:768px){.burger{display:block}.nav{display:none;position:absolute;top:64px;left:0;right:0;background:#1f2937;padding:12px 24px;z-index:5}body.menu-open .nav{display:block}.nav a{display:block;margin:0;padding:10px 0}}header.top{position:relative}
+.more{color:#2563eb;cursor:pointer;text-decoration:underline}
+</style></head><body>
+<header class="top"><div class="wrap"><div class="logo">Brand</div><button class="burger" aria-label="Menu" id="bg">&#9776;</button><nav class="nav" id="nv"><a href="#a">Products</a><a href="#b">Pricing</a><a href="#c">Contact</a></nav></div></header>
+<section class="blk"><div class="wrap"><h2>FAQ (pointer events, nodes added on open)</h2><div class="faq" id="faq">
+<div class="q" data-name="Closed" tabindex="0"><div class="top"><span>Preciso saber programar?</span><span class="icon"></span></div></div>
+<div class="q" data-name="Closed" tabindex="0"><div class="top"><span>Posso publicar pela plataforma?</span><span class="icon"></span></div></div>
+<div class="q" data-name="Closed" tabindex="0"><div class="top"><span>Existe garantia?</span><span class="icon"></span></div></div></div></div></section>
+<section class="blk alt"><div class="wrap acc"><h2>Accordion (aria-expanded)</h2>
+<button aria-expanded="false" aria-controls="p1" id="b1">Shipping information</button><div class="panel" id="p1" hidden>Ships worldwide in 5 business days.</div>
+<button aria-expanded="false" aria-controls="p2" id="b2">Return policy</button><div class="panel" id="p2" hidden>Returns accepted for 30 days.</div></div></section>
+<section class="blk"><div class="wrap tabs"><h2>Tabs</h2><div role="tablist"><span role="tab" aria-selected="true" data-t="1">Overview</span><span role="tab" aria-selected="false" data-t="2">Specs</span></div>
+<div id="t1">Overview content: the product is great.</div><div id="t2" style="display:none">Specs content: 12 cores, 64 GB.</div></div></section>
+<section class="blk alt"><div class="wrap"><h2>Details and show more</h2><details><summary>Native details</summary><p>Native answer text.</p></details>
+<p>Some long text. <span class="more" id="more">Ver mais</span><span id="extra" style="display:none"> Here is the extra text revealed.</span></p>
+<a class="btn" href="#end" id="cta">Quero comprar</a></div></section>
+<div id="end" style="height:20px"></div>
+<script>
+document.querySelectorAll('.q').forEach(function(q){
+  var open=false;
+  q.addEventListener('pointerup',function(){
+    open=!open; q.classList.toggle('open',open); q.setAttribute('data-name',open?'Open':'Closed');
+    var ic=q.querySelector('.icon'); ic.style.transform=open?'rotate(-135deg)':'rotate(45deg)';
+    var a=q.querySelector('.ans');
+    if(open&&!a){a=document.createElement('div');a.className='ans';a.textContent='Resposta: '+q.querySelector('span').textContent.replace('?','')+' - sim, é simples.';q.appendChild(a)}
+    if(!open&&a){a.remove()}
+  });
+});
+document.querySelectorAll('.acc button').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!o));document.getElementById(b.getAttribute('aria-controls')).hidden=o})});
+document.querySelectorAll('[role=tab]').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('[role=tab]').forEach(function(x){x.setAttribute('aria-selected',String(x===t));document.getElementById('t'+x.dataset.t).style.display=x===t?'':'none'})})});
+var more=document.getElementById('more');more.addEventListener('click',function(){var e=document.getElementById('extra');var show=e.style.display==='none';e.style.display=show?'inline':'none';more.textContent=show?'Ver menos':'Ver mais'});
+document.getElementById('bg').addEventListener('click',function(){document.body.classList.toggle('menu-open')});
+</script></body></html>

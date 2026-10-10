@@ -41,7 +41,8 @@
     "svix": "^1.24.0",
     "uuid": "^10.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "grapesjs": "^0.23.6"
+    "grapesjs": "^0.23.6",
+    "geoip-lite": "^2.0.3"
   },
   "devDependencies": {
     "@types/uuid": "^10.0.0",

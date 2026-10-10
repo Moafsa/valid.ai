@@ -1,0 +1,5 @@
+project cmuvj2vg70001pulx86kkxlrf slug home scan 96s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     1.4  'VSL com regra de pausa © 2026 Lab Funnel · Termo' | 'VSL com regra de pausa © 2026 Lab Funnel · Termo'
+  4.0     1.4  'VSL com regra de pausa © 2026 Lab Funnel · Termo' | 'VSL com regra de pausa © 2026 Lab Funnel · Termo'
+errors orig/clone: [] [] | worst diff 1.4

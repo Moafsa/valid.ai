@@ -15,8 +15,8 @@ export default async function DashboardPage() {
     : []
 
   return (
-    <div className="space-y-12">
-      <CloneHero />
+    <div className="space-y-14">
+      <CloneHero variant="workspace" />
       <ProjectGrid projects={projects} />
     </div>
   )

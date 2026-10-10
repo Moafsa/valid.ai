@@ -1,0 +1,262 @@
+{
+ "idx": 3,
+ "cat": "carrd",
+ "url": "https://templatehq.carrd.co/",
+ "projectId": "cmux1k4at0006br8cxf4e1pr9",
+ "slug": "home",
+ "scan": {
+  "seconds": 88,
+  "pages": 1,
+  "blocks": 25,
+  "cssKB": 181,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.074,
+   "extra": 0.991,
+   "missing": [
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a466e84d3a1e78ab",
+    "desempenho",
+    "cloudflare",
+    "privacidade"
+   ],
+   "heightRatio": 10.209,
+   "overflowX": false,
+   "tiles": [
+    12.9
+   ],
+   "diffTop": 12.9,
+   "diffAll": 12.9,
+   "imgVis": [
+    0,
+    30
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    2
+   ],
+   "links": [
+    2,
+    114
+   ],
+   "buttons": [
+    0,
+    51
+   ],
+   "inputs": [
+    1,
+    0
+   ],
+   "kb": [
+    206,
+    25029
+   ],
+   "requests": [
+    8,
+    87
+   ],
+   "loadSec": [
+    8.0,
+    27.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      500,
+      52,
+      false
+     ],
+     [
+      "iframe",
+      1267,
+      320,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(252, 254, 255)"
+   ],
+   "headsMissing": [
+    "templatehq.carrd.co",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.074,
+   "extra": 0.991,
+   "missing": [
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a466e9a599aa7aef",
+    "desempenho",
+    "cloudflare",
+    "privacidade"
+   ],
+   "heightRatio": 19.174,
+   "overflowX": false,
+   "tiles": [
+    24.2
+   ],
+   "diffTop": 24.2,
+   "diffAll": 24.2,
+   "imgVis": [
+    0,
+    30
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    2
+   ],
+   "links": [
+    2,
+    114
+   ],
+   "buttons": [
+    0,
+    51
+   ],
+   "inputs": [
+    1,
+    0
+   ],
+   "kb": [
+    212,
+    25031
+   ],
+   "requests": [
+    8,
+    91
+   ],
+   "loadSec": [
+    4.6,
+    12.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      353,
+      52,
+      false
+     ],
+     [
+      "iframe",
+      353,
+      320,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: the server responded with a status of 401 ()",
+    "console: Failed to load resource: the server responded with a status of 401 ()"
+   ],
+   "cloneFailed": [],
+   "origErrors": 4,
+   "cloneNErrors": 2,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(252, 254, 255)"
+   ],
+   "headsMissing": [
+    "templatehq.carrd.co",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux1k4at0006br8cxf4e1pr9/p/home"
+}

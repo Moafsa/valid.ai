@@ -1,0 +1,242 @@
+{
+ "idx": 136,
+ "cat": "dtc",
+ "url": "https://www.vuoriclothing.com/",
+ "projectId": "cmux3qo7d005ybr8cr69cvifc",
+ "slug": "home",
+ "scan": {
+  "seconds": 353,
+  "pages": 1,
+  "blocks": 10,
+  "cssKB": 417,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.87,
+   "extra": 0.005,
+   "missing": [
+    "free",
+    "standard",
+    "with",
+    "orders",
+    "over",
+    "clicking",
+    "accept",
+    "storing",
+    "device",
+    "enhance",
+    "analyze",
+    "usage",
+    "assist",
+    "efforts",
+    "reject",
+    "welcome",
+    "united",
+    "states",
+    "buy",
+    "local",
+    "currency",
+    "duties",
+    "taxes",
+    "already",
+    "included"
+   ],
+   "heightRatio": 1.003,
+   "overflowX": false,
+   "tiles": [
+    79.8,
+    27.5,
+    12.0,
+    39.6,
+    60.0,
+    30.7
+   ],
+   "diffTop": 39.8,
+   "diffAll": 41.6,
+   "imgVis": [
+    56,
+    55
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    0
+   ],
+   "links": [
+    195,
+    192
+   ],
+   "buttons": [
+    82,
+    61
+   ],
+   "inputs": [
+    22,
+    10
+   ],
+   "kb": [
+    74098,
+    18327
+   ],
+   "requests": [
+    511,
+    68
+   ],
+   "loadSec": [
+    51.3,
+    17.1
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      256,
+      60
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 7,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "aktiv-grotesk, sans-serif",
+    "aktiv-grotesk, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.908,
+   "extra": 0.031,
+   "missing": [
+    "free",
+    "standard",
+    "shipping",
+    "with",
+    "orders",
+    "over",
+    "clicking",
+    "accept",
+    "storing",
+    "device",
+    "enhance",
+    "analyze",
+    "usage",
+    "assist",
+    "efforts",
+    "reject"
+   ],
+   "heightRatio": 0.995,
+   "overflowX": false,
+   "tiles": [
+    67.0,
+    63.4,
+    58.4,
+    42.6,
+    43.5,
+    16.9
+   ],
+   "diffTop": 62.9,
+   "diffAll": 48.6,
+   "imgVis": [
+    50,
+    55
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    6,
+    0
+   ],
+   "links": [
+    184,
+    192
+   ],
+   "buttons": [
+    75,
+    61
+   ],
+   "inputs": [
+    22,
+    10
+   ],
+   "kb": [
+    12548,
+    9499
+   ],
+   "requests": [
+    396,
+    62
+   ],
+   "loadSec": [
+    40.1,
+    6.9
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      256,
+      60
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "aktiv-grotesk, sans-serif",
+    "aktiv-grotesk, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux3qo7d005ybr8cr69cvifc/p/home"
+}

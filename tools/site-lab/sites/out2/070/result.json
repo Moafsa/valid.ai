@@ -1,0 +1,258 @@
+{
+ "idx": 70,
+ "cat": "saas",
+ "url": "https://www.twilio.com/",
+ "projectId": "cmux2eqcy0034br8c7igtvavk",
+ "slug": "home",
+ "scan": {
+  "seconds": 287,
+  "pages": 2,
+  "blocks": 9,
+  "cssKB": 888,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.077,
+   "missing": [],
+   "heightRatio": 0.532,
+   "overflowX": false,
+   "tiles": [
+    1.9,
+    1.6,
+    3.4,
+    5.9,
+    3.0,
+    14.7,
+    1.6
+   ],
+   "diffTop": 2.3,
+   "diffAll": 4.6,
+   "imgVis": [
+    39,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    383,
+    398
+   ],
+   "buttons": [
+    130,
+    125
+   ],
+   "inputs": [
+    2,
+    0
+   ],
+   "kb": [
+    15237,
+    11448
+   ],
+   "requests": [
+    184,
+    46
+   ],
+   "loadSec": [
+    48.6,
+    9.7
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     744,
+     264,
+     576,
+     324
+    ],
+    [
+     744,
+     264,
+     576,
+     324
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "wistia-player",
+      576,
+      324
+     ]
+    ],
+    [
+     [
+      "div",
+      576,
+      324,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.twilio.com": [
+     2,
+     268672
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 7,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded"
+   ],
+   "fontOC": [
+    "\"Whitney SSm\", helvetica, arial, sans-se",
+    "\"Whitney SSm\", helvetica, arial, sans-se"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.997,
+   "extra": 0.086,
+   "missing": [
+    "helpe"
+   ],
+   "heightRatio": 1.037,
+   "overflowX": false,
+   "tiles": [
+    72.5,
+    1.4,
+    23.1,
+    43.0,
+    35.0,
+    24.9,
+    0.0,
+    8.7
+   ],
+   "diffTop": 32.3,
+   "diffAll": 26.1,
+   "imgVis": [
+    46,
+    30
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    383,
+    398
+   ],
+   "buttons": [
+    130,
+    125
+   ],
+   "inputs": [
+    2,
+    0
+   ],
+   "kb": [
+    16442,
+    14664
+   ],
+   "requests": [
+    178,
+    53
+   ],
+   "loadSec": [
+    40.0,
+    7.4
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     32,
+     744,
+     326,
+     183
+    ],
+    [
+     32,
+     744,
+     326,
+     183
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "wistia-player",
+      326,
+      183
+     ]
+    ],
+    [
+     [
+      "div",
+      326,
+      183,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.twilio.com": [
+     2,
+     268649
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 3,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded",
+    "Whitney SSm:unloaded"
+   ],
+   "fontOC": [
+    "\"Whitney SSm\", helvetica, arial, sans-se",
+    "\"Whitney SSm\", helvetica, arial, sans-se"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2eqcy0034br8c7igtvavk/p/home"
+}

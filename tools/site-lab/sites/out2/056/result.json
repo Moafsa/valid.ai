@@ -1,0 +1,250 @@
+{
+ "idx": 56,
+ "cat": "app",
+ "url": "https://www.coursera.org/",
+ "projectId": "cmux227rz002abr8csa62hwmi",
+ "slug": "home",
+ "scan": {
+  "seconds": 178,
+  "pages": 2,
+  "blocks": 2,
+  "cssKB": 503,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.686,
+   "extra": 0.33,
+   "missing": [
+    "pr\u00f3ximo",
+    "exibindo",
+    "itens",
+    "total",
+    "fundamentos",
+    "toda",
+    "parte",
+    "university",
+    "integrados",
+    "excel",
+    "hugging",
+    "face",
+    "planejamento",
+    "financeira",
+    "educadores",
+    "vanderbilt",
+    "l\u00edder",
+    "estrat\u00e9gico",
+    "cria\u00e7\u00e3o",
+    "agentes",
+    "ag\u00eanticos",
+    "estrelas",
+    "101",
+    "mil",
+    "revis\u00f5es"
+   ],
+   "heightRatio": 1.075,
+   "overflowX": false,
+   "tiles": [
+    78.3,
+    54.7,
+    49.8,
+    58.6,
+    27.2,
+    6.2
+   ],
+   "diffTop": 60.9,
+   "diffAll": 45.8,
+   "imgVis": [
+    94,
+    29
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    207,
+    169
+   ],
+   "buttons": [
+    77,
+    63
+   ],
+   "inputs": [
+    9,
+    1
+   ],
+   "kb": [
+    2650,
+    494
+   ],
+   "requests": [
+    169,
+    42
+   ],
+   "loadSec": [
+    42.1,
+    10.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 3,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "coursera-iconfont:unloaded",
+    "OpenSans-Light:unloaded",
+    "OpenSans:unloaded",
+    "OpenSans-Semibold:unloaded"
+   ],
+   "fontOC": [
+    "\"Source Sans Pro\", Arial, sans-serif",
+    "\"Source Sans Pro\", Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.715,
+   "extra": 0.376,
+   "missing": [
+    "fundamentos",
+    "toda",
+    "parte",
+    "university",
+    "integrados",
+    "excel",
+    "hugging",
+    "face",
+    "planejamento",
+    "financeira",
+    "educadores",
+    "vanderbilt",
+    "l\u00edder",
+    "estrat\u00e9gico",
+    "cria\u00e7\u00e3o",
+    "agentes",
+    "ag\u00eanticos",
+    "estrelas",
+    "101",
+    "mil",
+    "revis\u00f5es",
+    "ag\u00eantica",
+    "482",
+    "profunda",
+    "147"
+   ],
+   "heightRatio": 0.996,
+   "overflowX": false,
+   "tiles": [
+    78.3,
+    78.0,
+    74.7,
+    31.5,
+    49.0,
+    18.5,
+    13.1,
+    1.6
+   ],
+   "diffTop": 77.0,
+   "diffAll": 43.1,
+   "imgVis": [
+    98,
+    27
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    208,
+    167
+   ],
+   "buttons": [
+    82,
+    54
+   ],
+   "inputs": [
+    9,
+    1
+   ],
+   "kb": [
+    2733,
+    469
+   ],
+   "requests": [
+    165,
+    42
+   ],
+   "loadSec": [
+    35.9,
+    8.2
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      390,
+      144
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "coursera-iconfont:unloaded",
+    "OpenSans-Light:unloaded",
+    "OpenSans:unloaded",
+    "OpenSans-Semibold:unloaded"
+   ],
+   "fontOC": [
+    "\"Source Sans Pro\", Arial, sans-serif",
+    "\"Source Sans Pro\", Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Explorar carreiras"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux227rz002abr8csa62hwmi/p/home"
+}

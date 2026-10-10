@@ -52,5 +52,7 @@ export async function getCurrentWorkspace() {
     update: {},
     create: { workspaceId: workspace.id, clerkUserId: userId, role: 'OWNER' },
   })
+    // the very first visit of a new account: the one moment worth asking Clerk who this is (an administrator signs up like anybody else)
+  await import('@/lib/admin').then(m => m.tryClaimAdmin()).catch(() => {})
   return workspace
 }

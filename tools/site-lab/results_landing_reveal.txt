@@ -1,0 +1,11 @@
+project cmv1kx961000178atdt88dccu slug home scan 38s pages 1
+http://172.18.0.1:8099/landing_reveal/: 1 screens, exits=[] errors=0 total=7.2s bytes=1995
+
+http://web:3000/projects/cmv1kx961000178atdt88dccu/p/home: 1 screens, exits=[] errors=0 total=7.9s bytes=23359
+
+original: 1 screens in 7.2s, 1KB | clone: 1 screens in 7.9s, 22KB | exits [] vs []
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Landing com revelação ao rolar      Landing com revelação ao rolar      OK     0.0    0.09   0.84
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 1->1 same-title 1/1 | mean pixel diff 0.0% max 0.0% | weight 1KB -> 22KB | longtasks 0 -> 0
+

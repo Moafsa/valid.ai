@@ -1,0 +1,11 @@
+original: 7 screens in 17.9s, 18KB | clone: 7 screens in 20.2s, 37KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Descubra seu plano ideal            Descubra seu plano ideal            OK     0.0    1.11   3.14
+  2  Qual é o seu objetivo?              Qual é o seu objetivo?              OK     0.0    3.64   5.95
+  3  Como é sua rotina?                  Como é sua rotina?                  OK     0.0    5.94   8.23
+  4  Quanto tempo você tem?              Quanto tempo você tem?              OK     0.0    8.32  10.53
+  5  Você já treinou antes?              Você já treinou antes?              OK     0.0   10.55  12.84
+  6  Montando seu plano…                 Montando seu plano…                 OK    0.41   12.82  15.13
+  7  Seu plano está pronto!              Seu plano está pronto!              OK    0.14   15.72  17.96
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 7->7 same-title 7/7 | mean pixel diff 0.08% max 0.41% | weight 18KB -> 37KB | longtasks 4 -> 10

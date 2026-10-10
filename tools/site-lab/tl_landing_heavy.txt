@@ -1,0 +1,4 @@
+project cmuvjip4s000144rki5qg5ars slug landing-heavy scan 75s pages=1
+ t(s)  diff%   original text | clone text
+  1.0    3.46  'Landing pesada Foto 1 Foto 2 Foto 3 Foto 4 Foto ' | 'Landing pesada Foto 1 Foto 2 Foto 3 Foto 4 Foto '
+errors orig/clone: [] [] | worst diff 3.46

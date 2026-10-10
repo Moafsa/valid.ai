@@ -1,0 +1,242 @@
+{
+ "idx": 238,
+ "cat": "shopify",
+ "url": "https://knomerch.myshopify.com/",
+ "projectId": "cmux5jt74009mbr8c5naffw2t",
+ "slug": "home",
+ "scan": {
+  "seconds": 207,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 71,
+  "notes": [
+   "Deixei o site mais leve: o estilo caiu de 169KB para 70KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.671,
+   "extra": 0.0,
+   "missing": [
+    "consent",
+    "and",
+    "partners",
+    "including",
+    "use",
+    "cookies",
+    "other",
+    "technologies",
+    "personalize",
+    "your",
+    "experience",
+    "show",
+    "you",
+    "ads",
+    "perform",
+    "analytics",
+    "will",
+    "not",
+    "for",
+    "these",
+    "purposes",
+    "unless",
+    "accept",
+    "them",
+    "learn"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    47.9
+   ],
+   "diffTop": 47.9,
+   "diffAll": 47.9,
+   "imgVis": [
+    11,
+    11
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    147,
+    146
+   ],
+   "buttons": [
+    25,
+    22
+   ],
+   "inputs": [
+    24,
+    24
+   ],
+   "kb": [
+    1529,
+    1914
+   ],
+   "requests": [
+    171,
+    38
+   ],
+   "loadSec": [
+    10.3,
+    5.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "knomerch.myshopify.com": [
+     17,
+     24394
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Proza Libre:unloaded",
+    "Proza Libre:unloaded",
+    "Proza Libre:unloaded"
+   ],
+   "fontOC": [
+    "\"Proza Libre\", sans-serif",
+    "\"Proza Libre\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(247, 250, 255)",
+    "rgb(247, 250, 255)"
+   ],
+   "headsMissing": [
+    "Cookie consent"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.667,
+   "extra": 0.0,
+   "missing": [
+    "consent",
+    "and",
+    "partners",
+    "including",
+    "use",
+    "cookies",
+    "other",
+    "technologies",
+    "personalize",
+    "your",
+    "experience",
+    "show",
+    "you",
+    "ads",
+    "perform",
+    "analytics",
+    "will",
+    "not",
+    "for",
+    "these",
+    "purposes",
+    "unless",
+    "accept",
+    "them",
+    "learn"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    35.6,
+    48.0
+   ],
+   "diffTop": 41.8,
+   "diffAll": 41.8,
+   "imgVis": [
+    11,
+    11
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    147,
+    146
+   ],
+   "buttons": [
+    25,
+    22
+   ],
+   "inputs": [
+    24,
+    24
+   ],
+   "kb": [
+    1738,
+    1914
+   ],
+   "requests": [
+    247,
+    38
+   ],
+   "loadSec": [
+    9.6,
+    5.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "knomerch.myshopify.com": [
+     17,
+     24403
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Proza Libre:unloaded",
+    "Proza Libre:unloaded",
+    "Proza Libre:unloaded"
+   ],
+   "fontOC": [
+    "\"Proza Libre\", sans-serif",
+    "\"Proza Libre\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(247, 250, 255)",
+    "rgb(247, 250, 255)"
+   ],
+   "headsMissing": [
+    "Cookie consent"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5jt74009mbr8c5naffw2t/p/home"
+}

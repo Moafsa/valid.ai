@@ -1,0 +1,14 @@
+project cmuvfgglo0001ux2fldo4ghm9 slug home scan 181s pages 4
+http://172.18.0.1:8099/v_in_quiz/: 4 screens, exits=['https://example.com/checkout'] errors=0 total=13.0s bytes=572256
+
+http://web:3000/projects/cmuvfgglo0001ux2fldo4ghm9/p/home: 4 screens, exits=['https://example.com/checkout'] errors=0 total=13.9s bytes=83398
+
+original: 4 screens in 13.0s, 558KB | clone: 4 screens in 13.9s, 81KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Antes do vídeo: você quer emagrece  Antes do vídeo: você quer emagrece  OK     0.0     0.2   1.18
+  2  Veja como funciona                  Veja como funciona                  OK     1.4    2.34   3.41
+  3  Depois do vídeo: qual plano?        Depois do vídeo: qual plano?        OK     0.0    8.74    9.8
+  4  Pronto                              Pronto                              OK     0.0   10.82  11.88
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 4->4 same-title 4/4 | mean pixel diff 0.35% max 1.4% | weight 558KB -> 81KB | longtasks 0 -> 2
+

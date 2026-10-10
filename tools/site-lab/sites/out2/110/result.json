@@ -1,0 +1,201 @@
+{
+ "idx": 110,
+ "cat": "dtc",
+ "url": "https://www.fabletics.com/",
+ "projectId": "cmux8gmb9000311fwf29dotkn",
+ "slug": "home",
+ "scan": {
+  "seconds": 112,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 334,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.084,
+   "missing": [],
+   "heightRatio": 1.952,
+   "overflowX": true,
+   "tiles": [
+    56.2,
+    80.0,
+    75.6,
+    47.3
+   ],
+   "diffTop": 70.6,
+   "diffAll": 64.8,
+   "imgVis": [
+    48,
+    48
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    66,
+    64
+   ],
+   "buttons": [
+    22,
+    10
+   ],
+   "inputs": [
+    8,
+    0
+   ],
+   "kb": [
+    2713,
+    1792
+   ],
+   "requests": [
+    139,
+    58
+   ],
+   "loadSec": [
+    10.4,
+    5.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "cdn.fabletics.com": [
+     2,
+     125931
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 80,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "swiper-icons:unloaded",
+    "trade-gothic-next:unloaded",
+    "trade-gothic-next:unloaded",
+    "trade-gothic-next:unloaded"
+   ],
+   "fontOC": [
+    "GTPressura, sans-serif",
+    "GTPressura, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.308,
+   "extra": 0.979,
+   "missing": [
+    "before",
+    "continue",
+    "needs",
+    "confirm",
+    "human",
+    "bot",
+    "proceeding",
+    "having",
+    "problem"
+   ],
+   "heightRatio": 14.601,
+   "overflowX": false,
+   "tiles": [
+    84.9,
+    52.5
+   ],
+   "diffTop": 68.7,
+   "diffAll": 68.7,
+   "imgVis": [
+    2,
+    50
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    64
+   ],
+   "buttons": [
+    0,
+    10
+   ],
+   "inputs": [
+    1,
+    0
+   ],
+   "kb": [
+    292,
+    1518
+   ],
+   "requests": [
+    11,
+    55
+   ],
+   "loadSec": [
+    2.8,
+    4.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "cdn.fabletics.com": [
+     1,
+     90121
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "swiper-icons:unloaded",
+    "trade-gothic-next:unloaded",
+    "trade-gothic-next:unloaded",
+    "trade-gothic-next:unloaded"
+   ],
+   "fontOC": [
+    "\"GT Pressura\"",
+    "GTPressura, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Before we continue..."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux8gmb9000311fwf29dotkn/p/home"
+}

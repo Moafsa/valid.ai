@@ -1,0 +1,271 @@
+{
+ "idx": 21,
+ "cat": "framer",
+ "url": "https://plain-insight.framer.website/",
+ "projectId": "cmuw1l8fh0017n7r8kabrufcf",
+ "slug": "home",
+ "scan": {
+  "seconds": 303,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 216,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.055,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    2.8,
+    8.2,
+    0.0,
+    0.0,
+    0.0,
+    0.1,
+    40.6
+   ],
+   "diffTop": 3.7,
+   "diffAll": 7.4,
+   "imgVis": [
+    30,
+    76
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    25,
+    25
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    16,
+    16
+   ],
+   "kb": [
+    2859,
+    9252
+   ],
+   "requests": [
+    72,
+    63
+   ],
+   "loadSec": [
+    6.9,
+    11.6
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     164,
+     4454,
+     1112,
+     705
+    ],
+    [
+     164,
+     4454,
+     1112,
+     705
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      1112,
+      705
+     ]
+    ],
+    [
+     [
+      "iframe",
+      1112,
+      705,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.255,
+   "extra": 0.0,
+   "missing": [
+    "market",
+    "research",
+    "agency",
+    "been",
+    "helping",
+    "hospitality",
+    "leisure",
+    "retail",
+    "businesses",
+    "understand",
+    "their",
+    "better",
+    "over",
+    "years",
+    "2026",
+    "all",
+    "rights",
+    "reserved",
+    "purchase",
+    "template",
+    "can",
+    "improve",
+    "business",
+    "build",
+    "survey"
+   ],
+   "heightRatio": 0.344,
+   "overflowX": false,
+   "tiles": [
+    31.5,
+    50.4,
+    66.5,
+    61.8,
+    83.6,
+    75.0
+   ],
+   "diffTop": 49.5,
+   "diffAll": 61.5,
+   "imgVis": [
+    39,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    18,
+    25
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    16,
+    16
+   ],
+   "kb": [
+    2913,
+    8263
+   ],
+   "requests": [
+    185,
+    23
+   ],
+   "loadSec": [
+    8.4,
+    7.3
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     16,
+     3996,
+     358,
+     705
+    ],
+    [
+     16,
+     1342,
+     358,
+     705
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      358,
+      705
+     ]
+    ],
+    [
+     [
+      "iframe",
+      358,
+      705,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded",
+    "Geist Mono:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "See how it works",
+    "Pricing and plans"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw1l8fh0017n7r8kabrufcf/p/home"
+}

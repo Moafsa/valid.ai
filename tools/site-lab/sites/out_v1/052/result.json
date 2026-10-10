@@ -1,0 +1,248 @@
+{
+ "idx": 52,
+ "cat": "github",
+ "url": "https://austindickey.github.io/",
+ "projectId": "cmuw39swm0041n7r8ranjpsix",
+ "slug": "home",
+ "scan": {
+  "seconds": 132,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 24,
+  "notes": [
+   "Etapa 1: 1 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Deixei o site mais leve: o estilo caiu de 40KB para 24KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.933,
+   "extra": 0.0,
+   "missing": [
+    "freelancer"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    1.1
+   ],
+   "diffTop": 1.1,
+   "diffAll": 1.1,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    23,
+    23
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1757,
+    1567
+   ],
+   "requests": [
+    124,
+    110
+   ],
+   "loadSec": [
+    7.3,
+    11.7
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     300,
+     305,
+     1040,
+     500
+    ],
+    [
+     300,
+     305,
+     1040,
+     500
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      1040,
+      500
+     ]
+    ],
+    [
+     [
+      "iframe",
+      1040,
+      500,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "austindickey.github.io": [
+     13,
+     603500
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Font Awesome 5 Free:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded"
+   ],
+   "fontOC": [
+    "Roboto, sans-serif",
+    "Roboto, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(107, 108, 109)",
+    "rgb(107, 108, 109)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.933,
+   "extra": 0.0,
+   "missing": [
+    "freelancer"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.5
+   ],
+   "diffTop": 0.5,
+   "diffAll": 0.5,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    23,
+    23
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1780,
+    1506
+   ],
+   "requests": [
+    108,
+    97
+   ],
+   "loadSec": [
+    6.5,
+    7.9
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     20,
+     520,
+     351,
+     500
+    ],
+    [
+     20,
+     520,
+     351,
+     500
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      351,
+      500
+     ]
+    ],
+    [
+     [
+      "iframe",
+      351,
+      500,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "austindickey.github.io": [
+     13,
+     603513
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Font Awesome 5 Free:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded"
+   ],
+   "fontOC": [
+    "Roboto, sans-serif",
+    "Roboto, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(107, 108, 109)",
+    "rgb(107, 108, 109)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw39swm0041n7r8ranjpsix/p/home"
+}

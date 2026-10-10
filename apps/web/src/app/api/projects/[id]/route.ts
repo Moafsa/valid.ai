@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
-import { normalizeSlug } from '@/lib/utils'
+import { PublishError, publishProject } from '@/lib/publish'
 import { z } from 'zod'
 
 const patchSchema = z
@@ -24,18 +24,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     }
 
     if (rawSlug !== undefined) {
-      // Publishing: picking a domain is only meaningful once there's
-      // something real to show at it.
-      if (!['READY', 'PUBLISHED'].includes(project.status)) {
-        return NextResponse.json({ error: 'Publique depois que a clonagem terminar' }, { status: 400 })
-      }
-      const slug = normalizeSlug(rawSlug)
-      if (!slug) return NextResponse.json({ error: 'Domínio inválido' }, { status: 400 })
-
-      const taken = await db.project.findFirst({ where: { slug, NOT: { id } } })
-      if (taken) return NextResponse.json({ error: 'Esse domínio já está em uso, escolha outro' }, { status: 409 })
-
-      await db.project.update({ where: { id }, data: { slug, status: 'PUBLISHED' } })
+      // choosing an address publishes: same code path as the Publicar button (see /publish)
+      await publishProject(id, rawSlug)
     }
 
     const updated = await db.project.findUnique({ where: { id } })
@@ -44,6 +34,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: 'Dados inválidos' }, { status: 400 })
     }
+    if (error instanceof PublishError) return NextResponse.json({ error: error.message }, { status: error.status })
     console.error('Update project error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

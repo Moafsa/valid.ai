@@ -1,0 +1,312 @@
+{
+ "idx": 72,
+ "cat": "local-us",
+ "url": "https://reliantplumbing.com/",
+ "projectId": "cmuw4v1kr005pn7r8avp97jqg",
+ "slug": "home",
+ "scan": {
+  "seconds": 412,
+  "pages": 1,
+  "blocks": 7,
+  "cssKB": 549,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.996,
+   "extra": 0.004,
+   "missing": [
+    "890",
+    "6113"
+   ],
+   "heightRatio": 1.017,
+   "overflowX": false,
+   "tiles": [
+    0.1,
+    0.0,
+    0.0,
+    0.0,
+    0.1,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    5,
+    5
+   ],
+   "links": [
+    196,
+    196
+   ],
+   "buttons": [
+    21,
+    21
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    5041,
+    3361
+   ],
+   "requests": [
+    258,
+    150
+   ],
+   "loadSec": [
+    16.7,
+    11.8
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     -9999,
+     -9999,
+     1440,
+     900
+    ],
+    [
+     -9999,
+     -9999,
+     1440,
+     900
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      1440,
+      900
+     ],
+     [
+      "iframe",
+      490,
+      480
+     ],
+     [
+      "iframe",
+      384,
+      624
+     ]
+    ],
+    [
+     [
+      "iframe",
+      1440,
+      900,
+      false
+     ],
+     [
+      "iframe",
+      490,
+      480,
+      false
+     ],
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ],
+     [
+      "iframe",
+      384,
+      624,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use t",
+    "Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use t"
+   ],
+   "cloneFailed": [],
+   "origErrors": 3,
+   "cloneNErrors": 2,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(242, 242, 242)",
+    "rgb(242, 242, 242)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.996,
+   "extra": 0.0,
+   "missing": [
+    "contact",
+    "blog"
+   ],
+   "heightRatio": 1.008,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    20.8,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 2.6,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    5,
+    5
+   ],
+   "links": [
+    196,
+    196
+   ],
+   "buttons": [
+    22,
+    21
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    5152,
+    3233
+   ],
+   "requests": [
+    256,
+    135
+   ],
+   "loadSec": [
+    15.5,
+    13.0
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     -9999,
+     -9999,
+     390,
+     844
+    ],
+    [
+     -9999,
+     -9999,
+     390,
+     844
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      390,
+      844
+     ],
+     [
+      "iframe",
+      350,
+      480
+     ],
+     [
+      "iframe",
+      390,
+      844
+     ]
+    ],
+    [
+     [
+      "iframe",
+      390,
+      844,
+      false
+     ],
+     [
+      "iframe",
+      350,
+      480,
+      false
+     ],
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ],
+     [
+      "iframe",
+      390,
+      844,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use t",
+    "Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use t"
+   ],
+   "cloneFailed": [],
+   "origErrors": 3,
+   "cloneNErrors": 2,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(242, 242, 242)",
+    "rgb(242, 242, 242)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw4v1kr005pn7r8avp97jqg/p/home"
+}

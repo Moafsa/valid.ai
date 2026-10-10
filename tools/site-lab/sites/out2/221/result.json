@@ -1,0 +1,186 @@
+{
+ "idx": 221,
+ "cat": "carrd",
+ "url": "https://stack.carrd.co/",
+ "projectId": "cmux564wi008ybr8cdmh337gd",
+ "slug": "home",
+ "scan": {
+  "seconds": 314,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 245,
+  "notes": [
+   "Deixei o site mais leve: o estilo caiu de 579KB para 245KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.985,
+   "overflowX": false,
+   "tiles": [
+    6.3,
+    16.5,
+    17.5
+   ],
+   "diffTop": 13.4,
+   "diffAll": 13.4,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    70,
+    23
+   ],
+   "buttons": [
+    47,
+    6
+   ],
+   "inputs": [
+    11,
+    0
+   ],
+   "kb": [
+    2680,
+    1891
+   ],
+   "requests": [
+    66,
+    21
+   ],
+   "loadSec": [
+    40.2,
+    5.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux564wi008ybr8cdmh337gd/assets/home_section_3_0.png"
+   ],
+   "origErrors": 9,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Funnel Display:unloaded",
+    "Geist:unloaded",
+    "Zalando Sans:unloaded",
+    "Zalando Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(17, 17, 17)",
+    "rgb(17, 17, 17)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.983,
+   "overflowX": false,
+   "tiles": [
+    1.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.4,
+   "diffAll": 0.3,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    60,
+    23
+   ],
+   "buttons": [
+    45,
+    6
+   ],
+   "inputs": [
+    11,
+    0
+   ],
+   "kb": [
+    2635,
+    1831
+   ],
+   "requests": [
+    64,
+    18
+   ],
+   "loadSec": [
+    5.2,
+    2.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux564wi008ybr8cdmh337gd/assets/home_section_3_0.png"
+   ],
+   "origErrors": 9,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Funnel Display:unloaded",
+    "Funnel Display:unloaded",
+    "Geist:unloaded",
+    "Zalando Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(17, 17, 17)",
+    "rgb(17, 17, 17)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux564wi008ybr8cdmh337gd/p/home"
+}

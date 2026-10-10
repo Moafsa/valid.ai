@@ -1,0 +1,30 @@
+{
+  "name": "funnelai",
+  "private": true,
+  "packageManager": "npm@10.8.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0",
+    "prisma": "^5.16.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.16.0"
+  }
+}

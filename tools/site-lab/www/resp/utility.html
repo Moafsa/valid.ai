@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Utility classes</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+.grid{display:grid}.gap-4{gap:1rem}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.p-6{padding:1.5rem}.text-2xl{font-size:1.5rem}.flex{display:flex}.flex-col{flex-direction:column}.hidden{display:none}.block{display:block}
+@media(min-width:640px){.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.sm\:flex-row{flex-direction:row}}@media(min-width:768px){.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:block{display:block}.md\:hidden{display:none}.md\:text-4xl{font-size:2.25rem}}@media(min-width:1024px){.lg\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.lg\:p-12{padding:3rem}}</style></head><body><header class="top"><div class="wrap"><div class="logo">Brand</div></div></header><section class="blk"><div class="wrap"><div class="flex flex-col sm:flex-row gap-4"><div class="p-6 card text-2xl md:text-4xl">Utility</div><div class="p-6 card hidden md:block">Desktop only box</div><div class="p-6 card md:hidden">Phone only box</div></div><div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" style="margin-top:20px"><div class="card lg:p-12">a</div><div class="card lg:p-12">b</div><div class="card lg:p-12">c</div><div class="card lg:p-12">d</div></div></div></section></body></html>

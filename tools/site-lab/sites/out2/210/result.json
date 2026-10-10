@@ -1,0 +1,190 @@
+{
+ "idx": 210,
+ "cat": "framer",
+ "url": "https://mobi.framer.website/",
+ "projectId": "cmux4qkkp008abr8c0yjauhwy",
+ "slug": "home",
+ "scan": {
+  "seconds": 288,
+  "pages": 2,
+  "blocks": 3,
+  "cssKB": 172,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.01,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    2.7,
+    9.4,
+    8.9,
+    3.2,
+    9.4,
+    7.7
+   ],
+   "diffTop": 4.0,
+   "diffAll": 5.9,
+   "imgVis": [
+    14,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    47,
+    47
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    3,
+    3
+   ],
+   "kb": [
+    840,
+    613
+   ],
+   "requests": [
+    59,
+    22
+   ],
+   "loadSec": [
+    3.2,
+    4.1
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.01,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    7.3,
+    14.0,
+    16.7,
+    14.5,
+    14.9,
+    5.8,
+    23.9
+   ],
+   "diffTop": 7.1,
+   "diffAll": 12.1,
+   "imgVis": [
+    14,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    41,
+    41
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    3,
+    3
+   ],
+   "kb": [
+    559,
+    404
+   ],
+   "requests": [
+    50,
+    22
+   ],
+   "loadSec": [
+    5.2,
+    4.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4qkkp008abr8c0yjauhwy/p/home"
+}

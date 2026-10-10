@@ -1,0 +1,188 @@
+{
+ "idx": 12,
+ "cat": "framer",
+ "url": "https://bloomtemplate.framer.website/",
+ "projectId": "cmuw11ojz000gn7r8l7rnh4wt",
+ "slug": "home",
+ "scan": {
+  "seconds": 228,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 242,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.201,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.5,
+    5.5,
+    8.6,
+    16.0,
+    8.7,
+    8.3,
+    20.0
+   ],
+   "diffTop": 4.9,
+   "diffAll": 9.7,
+   "imgVis": [
+    41,
+    65
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    33,
+    33
+   ],
+   "buttons": [
+    8,
+    8
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    2496,
+    2029
+   ],
+   "requests": [
+    62,
+    49
+   ],
+   "loadSec": [
+    6.0,
+    5.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.021,
+   "missing": [],
+   "heightRatio": 1.112,
+   "overflowX": false,
+   "tiles": [
+    29.6,
+    29.4,
+    1.1,
+    8.9,
+    2.5,
+    2.3,
+    44.4,
+    20.8
+   ],
+   "diffTop": 20.0,
+   "diffAll": 17.4,
+   "imgVis": [
+    46,
+    65
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    26,
+    33
+   ],
+   "buttons": [
+    8,
+    8
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    2291,
+    2004
+   ],
+   "requests": [
+    86,
+    48
+   ],
+   "loadSec": [
+    4.9,
+    4.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw11ojz000gn7r8l7rnh4wt/p/home"
+}

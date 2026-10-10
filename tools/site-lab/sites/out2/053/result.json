@@ -1,0 +1,371 @@
+{
+ "idx": 53,
+ "cat": "br-saas",
+ "url": "https://www.gupy.io/",
+ "projectId": "cmux21e010027br8ceox9wklx",
+ "slug": "home",
+ "scan": {
+  "seconds": 438,
+  "pages": 2,
+  "blocks": 14,
+  "cssKB": 199,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.943,
+   "extra": 0.11,
+   "missing": [
+    "elimina",
+    "recomenda",
+    "criando",
+    "alinhamento",
+    "autom\u00e1tico",
+    "entre",
+    "times",
+    "l\u00edderes",
+    "clicar",
+    "aceitar",
+    "concorda",
+    "armazenamento",
+    "dispositivo",
+    "melhorar",
+    "navega\u00e7\u00e3o",
+    "site",
+    "analisar",
+    "ajudar",
+    "esfor\u00e7os",
+    "marketing",
+    "rejeitar",
+    "configurar"
+   ],
+   "heightRatio": 1.18,
+   "overflowX": false,
+   "tiles": [
+    28.2,
+    69.5,
+    90.1,
+    94.3,
+    65.1,
+    47.2,
+    98.0
+   ],
+   "diffTop": 62.6,
+   "diffAll": 70.3,
+   "imgVis": [
+    40,
+    40
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    21,
+    21
+   ],
+   "iframes": [
+    4,
+    4
+   ],
+   "links": [
+    186,
+    184
+   ],
+   "buttons": [
+    76,
+    74
+   ],
+   "inputs": [
+    24,
+    24
+   ],
+   "kb": [
+    15805,
+    5979
+   ],
+   "requests": [
+    238,
+    80
+   ],
+   "loadSec": [
+    48.6,
+    15.5
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     663,
+     1186,
+     552,
+     440
+    ],
+    [
+     663,
+     2303,
+     552,
+     440
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      552,
+      440
+     ],
+     [
+      "video",
+      552,
+      440
+     ],
+     [
+      "video",
+      552,
+      440
+     ],
+     [
+      "video",
+      552,
+      440
+     ]
+    ],
+    [
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ],
+     [
+      "video",
+      552,
+      440,
+      false
+     ],
+     [
+      "video",
+      552,
+      440,
+      false
+     ],
+     [
+      "video",
+      552,
+      440,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.gupy.io": [
+     23,
+     3344180
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://www.gupy.io/hubfs/IA%208%20-%20Impulsionamento.webm",
+    "https://www.gupy.io/hubfs/Web%20Growth%20(assets)/Institucional/home-2026/IA%201%20-%20Atra%C3%A7%C3%A3o%20de%20Talentos",
+    "https://www.gupy.io/hubfs/Web%20Growth%20(assets)/Institucional/home-2026/IA%203%20-%20Valida%C3%A7%C3%A3o%20de%20Docume",
+    "https://www.gupy.io/hubfs/Web%20Growth%20(assets)/Institucional/home-2026/IA%205%20-%20Mentoria.mp4"
+   ],
+   "origErrors": 27,
+   "cloneNErrors": 0,
+   "cloneNFailed": 10,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "Inter, Helvetica, Arial, sans-serif",
+    "Inter, Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.959,
+   "extra": 0.088,
+   "missing": [
+    "clicar",
+    "aceitar",
+    "concorda",
+    "armazenamento",
+    "dispositivo",
+    "melhorar",
+    "navega\u00e7\u00e3o",
+    "site",
+    "analisar",
+    "uso",
+    "ajudar",
+    "esfor\u00e7os",
+    "marketing",
+    "rejeitar",
+    "configurar"
+   ],
+   "heightRatio": 1.22,
+   "overflowX": false,
+   "tiles": [
+    10.0,
+    61.0,
+    86.1,
+    67.4,
+    61.8,
+    64.5,
+    54.9,
+    92.1
+   ],
+   "diffTop": 52.4,
+   "diffAll": 62.2,
+   "imgVis": [
+    40,
+    13
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    21,
+    21
+   ],
+   "iframes": [
+    5,
+    3
+   ],
+   "links": [
+    186,
+    184
+   ],
+   "buttons": [
+    82,
+    78
+   ],
+   "inputs": [
+    24,
+    24
+   ],
+   "kb": [
+    6988,
+    1034
+   ],
+   "requests": [
+    215,
+    61
+   ],
+   "loadSec": [
+    48.7,
+    10.2
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     20,
+     1825,
+     350,
+     250
+    ],
+    [
+     20,
+     2808,
+     350,
+     250
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      350,
+      250
+     ],
+     [
+      "video",
+      350,
+      250
+     ],
+     [
+      "video",
+      350,
+      250
+     ],
+     [
+      "video",
+      350,
+      250
+     ]
+    ],
+    [
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ],
+     [
+      "video",
+      350,
+      250,
+      false
+     ],
+     [
+      "video",
+      350,
+      250,
+      false
+     ],
+     [
+      "video",
+      350,
+      250,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.gupy.io": [
+     30,
+     114562
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux21e010027br8ceox9wklx/videos/home_m.mp4",
+    "https://www.gupy.io/hubfs/Rebranding%202023/Jornada2/Videos%20Home%20Abas%20de%20Produtos/Performance_c.mp4",
+    "https://www.gupy.io/hubfs/Rebranding%202023/Jornada2/Videos%20Home%20Abas%20de%20Produtos/Admin_c.mp4",
+    "https://www.gupy.io/hubfs/Rebranding%202023/Jornada2/Videos%20Home%20Abas%20de%20Produtos/EduCorp_c.mp4"
+   ],
+   "origErrors": 33,
+   "cloneNErrors": 0,
+   "cloneNFailed": 26,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "Inter, Helvetica, Arial, sans-serif",
+    "Inter, Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux21e010027br8ceox9wklx/p/home"
+}

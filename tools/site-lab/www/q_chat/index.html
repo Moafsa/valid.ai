@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>q_chat</title></head><body><style>body{margin:0;font-family:system-ui;background:#e9e4da}#c{max-width:480px;margin:0 auto;padding:16px 14px 100px}.b{background:#fff;border-radius:16px;padding:12px 14px;margin:10px 0;max-width:82%;animation:pop .35s both}.me{background:#d0541f;color:#fff;margin-left:auto}@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.o{display:block;width:100%;margin:8px 0;padding:14px;border:2px solid #d0541f;background:#fff;color:#d0541f;border-radius:99px;font-size:17px;cursor:pointer}.typing{opacity:.6}</style>
+<div id="c"><h1 style="font-size:20px">Assistente Lia</h1><div id="m"></div><div id="opts"></div></div>
+<script>
+var msgs=['Oi! Eu sou a Lia 👋','Vou montar seu plano em 1 minuto.','Primeiro: qual é o seu objetivo?'], m=document.getElementById('m'), opts=document.getElementById('opts');
+function say(t,cls,cb){var d=document.createElement('div');d.className='b typing '+(cls||'');d.textContent='digitando…';m.appendChild(d);setTimeout(function(){d.className='b '+(cls||'');d.textContent=t;cb&&cb()},900)}
+function seq(i){ if(i<msgs.length) return say(msgs[i],'',function(){setTimeout(function(){seq(i+1)},500)}); var b=document.createElement('button');b.className='o';b.textContent='Emagrecer';var b2=b.cloneNode();b2.textContent='Ganhar massa';opts.appendChild(b);opts.appendChild(b2);[b,b2].forEach(function(x){x.onclick=function(){opts.innerHTML='';say(x.textContent,'me',function(){say('Perfeito! Última pergunta: quanto tempo você tem por dia?','',function(){var c=document.createElement('button');c.className='o';c.textContent='30 minutos';opts.appendChild(c);c.onclick=function(){location.href='https://example.com/plano'}})})}}) }
+seq(0)</script></body></html>

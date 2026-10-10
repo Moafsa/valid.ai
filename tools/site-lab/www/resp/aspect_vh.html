@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Aspect ratio and script height</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+.ratio{position:relative;padding-top:56.25%;background:#111}.ratio div{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px}.hero{background:#065f46;color:#fff;display:flex;align-items:center}</style></head><body><header class="top"><div class="wrap"><div class="logo">Brand</div></div></header><section class="hero" id="hero"><div class="wrap"><h1>Full-height hero</h1><p>Its height is set by script to the window height.</p></div></section><section class="blk"><div class="wrap"><div class="ratio"><div>16:9 video box</div></div></div></section><script>function h(){document.getElementById('hero').style.height=Math.round(innerHeight*0.8)+'px'}h();addEventListener('resize',h)</script></body></html>

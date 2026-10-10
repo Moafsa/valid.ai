@@ -1,0 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root { --font-inter: Inter; --radius: 0.75rem; --border: 214.3 31.8% 91.4%; }
+* { border-color: hsl(var(--border)); }

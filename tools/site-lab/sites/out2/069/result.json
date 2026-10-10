@@ -1,0 +1,191 @@
+{
+ "idx": 69,
+ "cat": "github",
+ "url": "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/",
+ "projectId": "cmux2drm10031br8cgby25aio",
+ "slug": "home",
+ "scan": {
+  "seconds": 45,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 22,
+  "notes": [
+   "Deixei o site mais leve: o estilo caiu de 219KB para 21KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    42,
+    6
+   ],
+   "buttons": [
+    19,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    445,
+    368
+   ],
+   "requests": [
+    18,
+    12
+   ],
+   "loadSec": [
+    2.9,
+    5.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "ahmed-ramadan-abdallah.github.io": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/assets/portfolio/revinn.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    75.5
+   ],
+   "diffTop": 75.5,
+   "diffAll": 75.5,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    42,
+    6
+   ],
+   "buttons": [
+    19,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    445,
+    368
+   ],
+   "requests": [
+    18,
+    12
+   ],
+   "loadSec": [
+    2.5,
+    3.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "ahmed-ramadan-abdallah.github.io": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/assets/portfolio/revinn.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2drm10031br8cgby25aio/p/home"
+}

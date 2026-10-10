@@ -1,0 +1,233 @@
+{
+ "idx": 215,
+ "cat": "carrd",
+ "url": "https://aesthetictemplates.carrd.co/",
+ "projectId": "cmux50h3g008pbr8cytrl465z",
+ "slug": "home",
+ "scan": {
+  "seconds": 83,
+  "pages": 1,
+  "blocks": 6,
+  "cssKB": 345,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.037,
+   "extra": 0.989,
+   "missing": [
+    "aesthetictemplates",
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a46777dcabe518c5",
+    "desempenho",
+    "cloudflare"
+   ],
+   "heightRatio": 5.872,
+   "overflowX": false,
+   "tiles": [
+    24.1
+   ],
+   "diffTop": 24.1,
+   "diffAll": 24.1,
+   "imgVis": [
+    0,
+    38
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    2,
+    92
+   ],
+   "buttons": [
+    0,
+    90
+   ],
+   "inputs": [
+    1,
+    5
+   ],
+   "kb": [
+    216,
+    3321
+   ],
+   "requests": [
+    8,
+    50
+   ],
+   "loadSec": [
+    6.5,
+    7.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(250, 249, 251)"
+   ],
+   "headsMissing": [
+    "aesthetictemplates.carrd.co",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.037,
+   "extra": 0.989,
+   "missing": [
+    "aesthetictemplates",
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "site",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a467786d589cd352",
+    "desempenho",
+    "cloudflare"
+   ],
+   "heightRatio": 15.791,
+   "overflowX": false,
+   "tiles": [
+    36.3
+   ],
+   "diffTop": 36.3,
+   "diffAll": 36.3,
+   "imgVis": [
+    0,
+    38
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    2,
+    92
+   ],
+   "buttons": [
+    0,
+    90
+   ],
+   "inputs": [
+    1,
+    5
+   ],
+   "kb": [
+    207,
+    3321
+   ],
+   "requests": [
+    8,
+    50
+   ],
+   "loadSec": [
+    4.4,
+    5.1
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(250, 249, 251)"
+   ],
+   "headsMissing": [
+    "aesthetictemplates.carrd.co",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux50h3g008pbr8cytrl465z/p/home"
+}

@@ -1,0 +1,250 @@
+{
+ "idx": 90,
+ "cat": "hotmart",
+ "url": "https://hotmart.com/pt-br/marketplace/produtos/manual-do-curso-online/",
+ "projectId": "cmux2wn5t0044br8cky6pmokp",
+ "slug": "pt-br-marketplace-produtos-manual-do-curso-online",
+ "scan": {
+  "seconds": 191,
+  "pages": 2,
+  "blocks": 2,
+  "cssKB": 436,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.397,
+   "extra": 0.217,
+   "missing": [
+    "acessar",
+    "meu",
+    "criar",
+    "870",
+    "viol\u00e3o",
+    "tr\u00edade",
+    "completo",
+    "heitor",
+    "castro",
+    "jose",
+    "ribeiro",
+    "282",
+    "756",
+    "nail",
+    "sucesso",
+    "avan\u00e7ado",
+    "proen\u00e7a",
+    "415",
+    "b\u00e1sico",
+    "encaderna\u00e7\u00e3o",
+    "lidiane",
+    "severia",
+    "severiano",
+    "668",
+    "games"
+   ],
+   "heightRatio": 0.548,
+   "overflowX": false,
+   "tiles": [
+    4.3,
+    27.0,
+    32.5
+   ],
+   "diffTop": 21.3,
+   "diffAll": 21.3,
+   "imgVis": [
+    113,
+    110
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    0
+   ],
+   "links": [
+    149,
+    69
+   ],
+   "buttons": [
+    20,
+    7
+   ],
+   "inputs": [
+    4,
+    2
+   ],
+   "kb": [
+    5187,
+    1537
+   ],
+   "requests": [
+    217,
+    62
+   ],
+   "loadSec": [
+    29.2,
+    8.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "static-media.hotmart.com": [
+     7,
+     101049
+    ],
+    "hotmart.com": [
+     1,
+     8960
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Nunito Sans\", sans-serif",
+    "\"Nunito Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Desenvolva uma habilidade nova de onde estiver."
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.387,
+   "extra": 0.292,
+   "missing": [
+    "acessar",
+    "meu",
+    "criar",
+    "animais",
+    "pets",
+    "autoconhecimento",
+    "espiritualidade",
+    "educa\u00e7\u00e3o",
+    "infantil",
+    "fam\u00edlia",
+    "engenharia",
+    "arquitetura",
+    "ensino",
+    "estudo",
+    "acad\u00eamico",
+    "hobbies",
+    "lazer",
+    "equipamentos",
+    "vendas",
+    "moda",
+    "beleza",
+    "m\u00fasica",
+    "artes",
+    "plantas",
+    "ecologia"
+   ],
+   "heightRatio": 0.345,
+   "overflowX": false,
+   "tiles": [
+    24.3,
+    31.8
+   ],
+   "diffTop": 28.1,
+   "diffAll": 28.1,
+   "imgVis": [
+    77,
+    74
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    0
+   ],
+   "links": [
+    145,
+    46
+   ],
+   "buttons": [
+    23,
+    7
+   ],
+   "inputs": [
+    4,
+    2
+   ],
+   "kb": [
+    4736,
+    1113
+   ],
+   "requests": [
+    190,
+    39
+   ],
+   "loadSec": [
+    33.8,
+    9.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "hotmart.com": [
+     1,
+     8960
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Nunito Sans\", sans-serif",
+    "\"Nunito Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Desenvolva uma habilidade nova de onde estiver."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2wn5t0044br8cky6pmokp/p/pt-br-marketplace-produtos-manual-do-curso-online"
+}

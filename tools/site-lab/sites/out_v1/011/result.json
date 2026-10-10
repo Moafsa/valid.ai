@@ -1,0 +1,186 @@
+{
+ "idx": 11,
+ "cat": "wix-adv",
+ "url": "https://iagocorreaadv.wixsite.com/iagocorreaadvocacia",
+ "projectId": "cmuw11ofl000dn7r8ngg56s98",
+ "slug": "iagocorreaadvocacia",
+ "scan": {
+  "seconds": 198,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 193,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.983,
+   "extra": 0.011,
+   "missing": [
+    "desenvolvido",
+    "criador",
+    "sites"
+   ],
+   "heightRatio": 1.032,
+   "overflowX": false,
+   "tiles": [
+    22.1,
+    33.2,
+    21.0,
+    2.8,
+    23.9
+   ],
+   "diffTop": 25.4,
+   "diffAll": 20.6,
+   "imgVis": [
+    10,
+    10
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    20,
+    20
+   ],
+   "buttons": [
+    1,
+    1
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    1696,
+    666
+   ],
+   "requests": [
+    152,
+    24
+   ],
+   "loadSec": [
+    10.3,
+    4.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.022,
+   "missing": [],
+   "heightRatio": 1.141,
+   "overflowX": true,
+   "tiles": [
+    69.7,
+    39.1,
+    29.7,
+    41.3
+   ],
+   "diffTop": 46.2,
+   "diffAll": 45.0,
+   "imgVis": [
+    10,
+    10
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    22,
+    20
+   ],
+   "buttons": [
+    3,
+    1
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    1367,
+    666
+   ],
+   "requests": [
+    140,
+    24
+   ],
+   "loadSec": [
+    7.5,
+    4.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw11ofl000dn7r8ngg56s98/p/iagocorreaadvocacia"
+}

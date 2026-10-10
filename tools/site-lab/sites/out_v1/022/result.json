@@ -1,0 +1,230 @@
+{
+ "idx": 22,
+ "cat": "wix-adv",
+ "url": "https://costaemotaadv.wixsite.com/costamotaadvocacia",
+ "projectId": "cmuw1pbw2001an7r8jsjk4d2d",
+ "slug": "costamotaadvocacia",
+ "scan": {
+  "seconds": 249,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 164,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.984,
+   "extra": 0.003,
+   "missing": [
+    "conte\u00fado",
+    "principal",
+    "desenvolvido",
+    "criador",
+    "sites"
+   ],
+   "heightRatio": 1.017,
+   "overflowX": false,
+   "tiles": [
+    33.1,
+    50.6,
+    57.2,
+    63.2,
+    50.6,
+    47.9,
+    58.0
+   ],
+   "diffTop": 47.0,
+   "diffAll": 51.5,
+   "imgVis": [
+    16,
+    16
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    16,
+    16
+   ],
+   "buttons": [
+    6,
+    5
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    2148,
+    563
+   ],
+   "requests": [
+    209,
+    26
+   ],
+   "loadSec": [
+    9.7,
+    4.7
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     1082,
+     814,
+     358,
+     86
+    ],
+    [
+     1082,
+     814,
+     358,
+     86
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      358,
+      86
+     ]
+    ],
+    [
+     [
+      "iframe",
+      358,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.994,
+   "extra": 0.006,
+   "missing": [
+    "conte\u00fado",
+    "principal"
+   ],
+   "heightRatio": 1.12,
+   "overflowX": true,
+   "tiles": [
+    51.1,
+    75.8,
+    79.2,
+    67.8,
+    66.8,
+    80.6
+   ],
+   "diffTop": 68.7,
+   "diffAll": 70.2,
+   "imgVis": [
+    16,
+    16
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    20,
+    16
+   ],
+   "buttons": [
+    8,
+    5
+   ],
+   "inputs": [
+    5,
+    5
+   ],
+   "kb": [
+    1260,
+    563
+   ],
+   "requests": [
+    168,
+    26
+   ],
+   "loadSec": [
+    8.6,
+    4.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      358,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw1pbw2001an7r8jsjk4d2d/p/costamotaadvocacia"
+}

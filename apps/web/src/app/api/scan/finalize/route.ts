@@ -1,12 +1,12 @@
 import { getAuthUser } from '@/lib/auth-helper'
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@funnelai/db'
+import { persistScanResult } from '@/lib/scan-persist'
 
 /**
- * Persists the scan result produced by the scanner service. The scanner
- * only pushes progress events over Redis — it never writes to Postgres.
- * The client listens for the "done" event and calls this route with the
- * full result payload so we create the Page and flip the project to READY.
+ * Persists the scan result produced by the scanner service. Normally the
+ * scanner hands its result over directly (see /api/internal/scan-complete);
+ * this route is the fallback for when that did not work and the browser got
+ * the result instead.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -26,82 +26,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'projectId and (result or error) are required' }, { status: 400 })
     }
 
-    const project = await db.project.findUnique({ where: { id: projectId } })
-    if (!project) {
-      console.error('Finalize scan: project not found', { projectId, jobId })
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 })
-    }
-
-    if (scanError) {
-      await db.$transaction([
-        db.project.update({ where: { id: projectId }, data: { status: 'ERROR' } }),
-        // updateMany, not update: a stale/mismatched jobId (retry, a second
-        // tab, a race) must never throw and undo the project status update
-        // that already succeeded in this same transaction.
-        ...(jobId ? [db.scanJob.updateMany({ where: { id: jobId }, data: { status: 'ERROR', errorMsg: scanError } })] : []),
-      ])
-      return NextResponse.json({ ok: true })
-    }
-
-    const toBlocks = (sections: any[]) =>
-      (Array.isArray(sections) ? sections : []).map((s: any, i: number) => ({
-        id: s.id ?? `section_${i}`,
-        type: (s.type || 'custom-html').toString().toLowerCase(),
-        order: s.order ?? i,
-        generatedHtml: s.generatedHtml ?? null,
-        links: Array.isArray(s.links) ? s.links : [],
-      }))
-
-    // result.pages: one entry per page the crawler actually cloned — each
-    // becomes its own Page row, reachable at its own /projects/[id]/p/[slug]
-    // route (see the isolated page-viewer route).
-    //
-    // Page.slug MUST be the scanner's own p.slug (e.g. "home",
-    // "checkout") — the scanner already bakes internal cross-page <a
-    // href="/projects/{id}/p/{slug}"> links using exactly that slug at
-    // scan time (see _rewrite_internal_links in scan_orchestrator.py).
-    // An earlier version of this route overwrote the saved slug with one
-    // derived from project.slug instead, which silently broke every
-    // internal link on any multi-page clone the moment a project had a
-    // domain assigned (the href baked into the HTML no longer matched any
-    // Page row) — project.slug is for the published domain, it has
-    // nothing to do with how pages address each other internally.
-    const pages = Array.isArray(result.pages) ? result.pages : []
-    const pageCreates = pages.map((p: any, i: number) => ({
-      projectId,
-      name: p.name || p.slug || `Página ${i + 1}`,
-      slug: p.slug || `page-${i + 1}`,
-      order: i,
-      blocks: toBlocks(p.sections),
-      customCss: p.page_css || null,
-    }))
-
-    if (pageCreates.length === 0) {
-      console.error('Finalize scan: scanner result has no pages', { projectId, jobId })
-      return NextResponse.json({ error: 'A clonagem não retornou nenhuma página' }, { status: 400 })
-    }
-
-    try {
-      await db.$transaction([
-        db.page.deleteMany({ where: { projectId } }),
-        ...pageCreates.map((data: typeof pageCreates[number]) => db.page.create({ data })),
-        db.project.update({
-          where: { id: projectId },
-          data: { status: 'READY', thumbnail: result.thumbnail || null, crawlStats: result.crawlStats || null },
-        }),
-        // updateMany, not update — see the scanError branch above for why.
-        ...(jobId
-          ? [db.scanJob.updateMany({ where: { id: jobId }, data: { status: 'DONE', progress: 100, currentStep: 'Concluído', resultJson: result } })]
-          : []),
-      ])
-    } catch (dbError: any) {
-      console.error('Finalize scan: DB transaction failed', {
-        projectId, jobId, code: dbError?.code, meta: dbError?.meta, message: dbError?.message,
-        pageCount: pageCreates.length,
-      })
-      return NextResponse.json({ error: dbError?.message || 'Falha ao salvar no banco de dados' }, { status: 500 })
-    }
-
+    const outcome = await persistScanResult({ jobId, projectId, result, scanError })
+    if (!outcome.ok) return NextResponse.json({ error: outcome.error }, { status: outcome.status })
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     console.error('Finalize scan error:', error)

@@ -1,0 +1,274 @@
+{
+ "idx": 107,
+ "cat": "wix-cont",
+ "url": "https://ancora2012.wixsite.com/website",
+ "projectId": "cmux34ik6004ybr8c3y1g08be",
+ "slug": "website",
+ "scan": {
+  "seconds": 196,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 368,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.009,
+   "missing": [],
+   "heightRatio": 1.091,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    21.3,
+    38.6,
+    17.6,
+    0.0,
+    82.9
+   ],
+   "diffTop": 20.0,
+   "diffAll": 26.7,
+   "imgVis": [
+    13,
+    13
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    3
+   ],
+   "links": [
+    23,
+    23
+   ],
+   "buttons": [
+    1,
+    1
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    1665,
+    647
+   ],
+   "requests": [
+    164,
+    22
+   ],
+   "loadSec": [
+    7.8,
+    4.1
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     250,
+     3458,
+     940,
+     1040
+    ],
+    [
+     250,
+     3993,
+     940,
+     1040
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      980,
+      332
+     ],
+     [
+      "iframe",
+      940,
+      1040
+     ],
+     [
+      "iframe",
+      376,
+      70
+     ]
+    ],
+    [
+     [
+      "iframe",
+      980,
+      332,
+      false
+     ],
+     [
+      "iframe",
+      940,
+      1040,
+      false
+     ],
+     [
+      "iframe",
+      376,
+      70,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.009,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    2.8,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.9,
+   "diffAll": 0.7,
+   "imgVis": [
+    13,
+    13
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    2
+   ],
+   "links": [
+    25,
+    25
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    2285,
+    442
+   ],
+   "requests": [
+    192,
+    20
+   ],
+   "loadSec": [
+    6.5,
+    5.0
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     10,
+     2159,
+     300,
+     140
+    ],
+    [
+     10,
+     2159,
+     300,
+     140
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      300,
+      140
+     ],
+     [
+      "iframe",
+      300,
+      140
+     ]
+    ],
+    [
+     [
+      "iframe",
+      300,
+      140,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      140,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux34ik6004ybr8c3y1g08be/p/website"
+}

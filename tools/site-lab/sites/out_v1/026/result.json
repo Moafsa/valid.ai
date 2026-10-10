@@ -1,0 +1,241 @@
+{
+ "idx": 26,
+ "cat": "saas",
+ "url": "https://arc.net/",
+ "projectId": "cmuw1up70001mn7r8p0lswwzq",
+ "slug": "home",
+ "scan": {
+  "seconds": 78,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 250,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "estamos",
+    "verificando",
+    "seu",
+    "navegador",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791253208",
+    "nvz0mu17fqolrx2uzcfwpycurilltb09"
+   ],
+   "heightRatio": 6.473,
+   "overflowX": false,
+   "tiles": [
+    68.4
+   ],
+   "diffTop": 68.4,
+   "diffAll": 68.4,
+   "imgVis": [
+    0,
+    7
+   ],
+   "broken": [
+    0,
+    5
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    49
+   ],
+   "buttons": [
+    0,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    854
+   ],
+   "requests": [
+    2,
+    30
+   ],
+   "loadSec": [
+    1.1,
+    7.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "div",
+      88,
+      102,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "arc.net": [
+     13,
+     82394
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to font at 'https://arc.net/fonts/MarlinSoftSQ-ExtraBoldItalic.woff2' from origin 'http://web",
+    "console: Failed to load resource: net::ERR_FAILED",
+    "console: Access to font at 'https://arc.net/fonts/ABCFavoritMono-Regular.woff2' from origin 'http://web:3000'",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://arc.net/images/dia_app_icon.png",
+    "https://arc.net/images/dia-hero-image.png",
+    "https://arc.net/_next/image?url=%2Fwindows-browser-mmmhome.png&w=2048&q=100",
+    "https://arc.net/noise-light.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 10,
+   "cloneNFailed": 11,
+   "facesClone": [
+    "Marlin Soft Basic:unloaded",
+    "Marlin Soft Basic:unloaded",
+    "Inter:unloaded",
+    "Sohne Breit:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Marlin, -apple-system, BlinkMacSystemFon"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 252, 236)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "estamos",
+    "verificando",
+    "seu",
+    "navegador",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791253224",
+    "nvz0mu17fqolrx2uzcfwpycurilltb09"
+   ],
+   "heightRatio": 4.287,
+   "overflowX": false,
+   "tiles": [
+    74.5
+   ],
+   "diffTop": 74.5,
+   "diffAll": 74.5,
+   "imgVis": [
+    0,
+    7
+   ],
+   "broken": [
+    0,
+    5
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    49
+   ],
+   "buttons": [
+    0,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    815
+   ],
+   "requests": [
+    2,
+    25
+   ],
+   "loadSec": [
+    1.3,
+    4.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "div",
+      88,
+      102,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "arc.net": [
+     11,
+     202509
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to font at 'https://arc.net/fonts/inter-var-latin.woff2' from origin 'http://web:3000' has be",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://arc.net/_next/image?url=%2Fwindows-browser-mmmhome.png&w=2048&q=100",
+    "https://arc.net/images/dia-hero-image.png",
+    "https://arc.net/images/dia_app_icon.png",
+    "https://arc.net/noise-light.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 2,
+   "cloneNFailed": 7,
+   "facesClone": [
+    "Marlin Soft Basic:unloaded",
+    "Marlin Soft Basic:unloaded",
+    "Inter:unloaded",
+    "Inter:error"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Marlin, -apple-system, BlinkMacSystemFon"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 252, 236)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw1up70001mn7r8p0lswwzq/p/home"
+}

@@ -1,0 +1,384 @@
+{
+ "idx": 76,
+ "cat": "media",
+ "url": "https://g1.globo.com/",
+ "projectId": "cmux2k1fa003abr8cxi1i8v2k",
+ "slug": "home",
+ "scan": {
+  "seconds": 563,
+  "pages": 2,
+  "blocks": 6,
+  "cssKB": 393,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.859,
+   "extra": 0.322,
+   "missing": [
+    "ritmo",
+    "crescer",
+    "menos",
+    "am\u00e9rica",
+    "latina",
+    "banco",
+    "mundial",
+    "205",
+    "896",
+    "18h",
+    "19h",
+    "20h",
+    "980",
+    "incidente",
+    "diplom\u00e1tico",
+    "r\u00fassia",
+    "suspeita",
+    "afundar",
+    "navio",
+    "drones",
+    "pela",
+    "vez",
+    "\u00e1rea",
+    "otan",
+    "aconteceu"
+   ],
+   "heightRatio": 2.274,
+   "overflowX": false,
+   "tiles": [
+    40.7,
+    38.5,
+    26.4,
+    26.2,
+    26.7,
+    39.8,
+    25.7
+   ],
+   "diffTop": 35.2,
+   "diffAll": 32.0,
+   "imgVis": [
+    48,
+    103
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    12,
+    5
+   ],
+   "links": [
+    742,
+    796
+   ],
+   "buttons": [
+    143,
+    187
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    9892,
+    3253
+   ],
+   "requests": [
+    587,
+    146
+   ],
+   "loadSec": [
+    50.1,
+    15.8
+   ],
+   "videoArea": 4.28,
+   "videoRect": [
+    [
+     235,
+     313,
+     970,
+     250
+    ],
+    [
+     0,
+     15267,
+     1440,
+     720
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      970,
+      250
+     ],
+     [
+      "iframe",
+      970,
+      90
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ]
+    ],
+    [
+     [
+      "iframe",
+      970,
+      250,
+      false
+     ],
+     [
+      "iframe",
+      970,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      250,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      250,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Access to image at 'https://s2-g1.glbimg.com/kFcepv-VfJ6l-0THB0Y1xPVCzVQ=/65x65/smart/filters:bright",
+    "console: Failed to load resource: net::ERR_FAILED",
+    "console: Access to image at 'https://s2-g1.glbimg.com/kcMGGeBa45vpm79aJL5YH5wrFD0=/65x65/smart/filters:bright",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://s2-g1.glbimg.com/kFcepv-VfJ6l-0THB0Y1xPVCzVQ=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/kcMGGeBa45vpm79aJL5YH5wrFD0=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/XQobia9N9O5bmLd9j0Fta2qbzTk=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/_JrLgNPWh640h9Mw9sOYyin2iyM=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff"
+   ],
+   "origErrors": 23,
+   "cloneNErrors": 32,
+   "cloneNFailed": 17,
+   "facesClone": [
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(249, 249, 249)",
+    "rgb(249, 249, 249)"
+   ],
+   "headsMissing": [
+    "R\u00fassia \u00e9 suspeita de afundar navio com drones pela 1\u00aa vez em \u00e1rea da Otan"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.792,
+   "extra": 0.0,
+   "missing": [
+    "projeta",
+    "brasileira",
+    "abaixo",
+    "m\u00e9dia",
+    "regi\u00e3o",
+    "raz\u00f5es",
+    "est\u00e3o",
+    "juros",
+    "altos",
+    "investimento",
+    "p\u00fablico",
+    "caiado",
+    "agoraelei\u00e7\u00f5es",
+    "goi\u00e1s",
+    "incidente",
+    "diplom\u00e1tico",
+    "r\u00fassia",
+    "suspeita",
+    "afundar",
+    "navio",
+    "drones",
+    "pela",
+    "vez",
+    "\u00e1rea",
+    "otan"
+   ],
+   "heightRatio": 0.897,
+   "overflowX": false,
+   "tiles": [
+    23.9,
+    51.5,
+    33.0,
+    75.7,
+    57.1,
+    68.4,
+    70.4,
+    62.0
+   ],
+   "diffTop": 36.1,
+   "diffAll": 55.2,
+   "imgVis": [
+    51,
+    44
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    12,
+    6
+   ],
+   "links": [
+    768,
+    735
+   ],
+   "buttons": [
+    178,
+    175
+   ],
+   "inputs": [
+    2,
+    1
+   ],
+   "kb": [
+    9000,
+    2618
+   ],
+   "requests": [
+    547,
+    100
+   ],
+   "loadSec": [
+    48.7,
+    8.9
+   ],
+   "videoArea": 1.01,
+   "videoRect": [
+    [
+     45,
+     1159,
+     300,
+     250
+    ],
+    [
+     0,
+     14099,
+     390,
+     195
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      320,
+      50
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ],
+     [
+      "iframe",
+      300,
+      250
+     ]
+    ],
+    [
+     [
+      "iframe",
+      320,
+      50,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      250,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      250,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      250,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Access to image at 'https://s2-g1.glbimg.com/zbgv-j6P_Ay1YO7Ln3vp4oRQ2cU=/65x65/smart/filters:bright",
+    "console: Failed to load resource: net::ERR_FAILED",
+    "console: Access to image at 'https://s2-g1.glbimg.com/kcMGGeBa45vpm79aJL5YH5wrFD0=/65x65/smart/filters:bright",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://s2-g1.glbimg.com/zbgv-j6P_Ay1YO7Ln3vp4oRQ2cU=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/kcMGGeBa45vpm79aJL5YH5wrFD0=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/zFLlhePaUEM0DwzTbrfdNZ7EwcM=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff",
+    "https://s2-g1.glbimg.com/_JrLgNPWh640h9Mw9sOYyin2iyM=/65x65/smart/filters:brightness(5):contrast(5):background_color(fff"
+   ],
+   "origErrors": 11,
+   "cloneNErrors": 32,
+   "cloneNFailed": 17,
+   "facesClone": [
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded",
+    "glbOpenSans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(238, 238, 238)",
+    "rgb(238, 238, 238)"
+   ],
+   "headsMissing": [
+    "Caiado anuncia apoio a Fl\u00e1vio Bolsonaro no 2\u00ba turno",
+    "R\u00fassia \u00e9 suspeita de afundar navio com drones pela 1\u00aa vez em \u00e1rea da Otan"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2k1fa003abr8cxi1i8v2k/p/home"
+}

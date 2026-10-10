@@ -1,0 +1,40 @@
+project cmuvcsrhe00015xq41ocqpb2j slug home scan 1861s pages 700
+http://172.18.0.1:8099/big_1000/: 30 screens, exits=[] errors=0 total=67.5s bytes=17637
+
+http://web:3000/projects/cmuvcsrhe00015xq41ocqpb2j/p/home: 30 screens, exits=[] errors=0 total=68.4s bytes=97975
+
+original: 30 screens in 67.5s, 17KB | clone: 30 screens in 68.4s, 95KB | exits [] vs []
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Pergunta 1 de 1000                  Pergunta 1 de 1000                  OK     0.0    0.42   1.93
+  2  Pergunta 2 de 1000                  Pergunta 2 de 1000                  OK     0.0    2.93   4.31
+  3  Pergunta 3 de 1000                  Pergunta 3 de 1000                  OK     0.0    5.34   6.71
+  4  Pergunta 4 de 1000                  Pergunta 4 de 1000                  OK     0.0    7.74   9.15
+  5  Pergunta 5 de 1000                  Pergunta 5 de 1000                  OK     0.0    9.89  11.31
+  6  Pergunta 6 de 1000                  Pergunta 6 de 1000                  OK     0.0   12.12  13.43
+  7  Pergunta 7 de 1000                  Pergunta 7 de 1000                  OK     0.0   14.31  15.62
+  8  Pergunta 8 de 1000                  Pergunta 8 de 1000                  OK     0.0   16.59  17.82
+  9  Pergunta 9 de 1000                  Pergunta 9 de 1000                  OK     0.0   18.72  20.05
+ 10  Pergunta 10 de 1000                 Pergunta 10 de 1000                 OK     0.0   20.88  22.25
+ 11  Pergunta 11 de 1000                 Pergunta 11 de 1000                 OK     0.0   22.97   24.4
+ 12  Pergunta 12 de 1000                 Pergunta 12 de 1000                 OK     0.0   25.16  26.47
+ 13  Pergunta 13 de 1000                 Pergunta 13 de 1000                 OK     0.0   27.25   29.0
+ 14  Pergunta 14 de 1000                 Pergunta 14 de 1000                 OK     0.0   29.45  31.09
+ 15  Pergunta 15 de 1000                 Pergunta 15 de 1000                 OK     0.0   31.53  33.19
+ 16  Pergunta 16 de 1000                 Pergunta 16 de 1000                 OK     0.0   33.67  35.29
+ 17  Pergunta 17 de 1000                 Pergunta 17 de 1000                 OK     0.0   35.77  37.39
+ 18  Pergunta 18 de 1000                 Pergunta 18 de 1000                 OK     0.0   37.92  39.46
+ 19  Pergunta 19 de 1000                 Pergunta 19 de 1000                 OK     0.0   39.97  41.56
+ 20  Pergunta 20 de 1000                 Pergunta 20 de 1000                 OK     0.0   42.06  43.78
+ 21  Pergunta 21 de 1000                 Pergunta 21 de 1000                 OK     0.0   44.38  45.89
+ 22  Pergunta 22 de 1000                 Pergunta 22 de 1000                 OK     0.0    46.6   48.0
+ 23  Pergunta 23 de 1000                 Pergunta 23 de 1000                 OK     0.0   48.96  50.13
+ 24  Pergunta 24 de 1000                 Pergunta 24 de 1000                 OK     0.0   51.28  52.44
+ 25  Pergunta 25 de 1000                 Pergunta 25 de 1000                 OK     0.0   53.52   54.8
+ 26  Pergunta 26 de 1000                 Pergunta 26 de 1000                 OK     0.0   55.88  57.21
+ 27  Pergunta 27 de 1000                 Pergunta 27 de 1000                 OK     0.0   58.21  59.29
+ 28  Pergunta 28 de 1000                 Pergunta 28 de 1000                 OK     0.0    60.5  61.71
+ 29  Pergunta 29 de 1000                 Pergunta 29 de 1000                 OK     0.0   62.89   63.9
+ 30  Pergunta 30 de 1000                 Pergunta 30 de 1000                 OK     0.0   65.29  66.23
+LATENCY click->new screen in DOM (median ms): original 136 | clone 206   click->fully visible: original 136 | clone 411
+SUMMARY screens 30->30 same-title 30/30 | mean pixel diff 0.0% max 0.0% | weight 17KB -> 95KB | longtasks 1 -> 9
+

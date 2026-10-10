@@ -1,0 +1,180 @@
+{
+ "idx": 208,
+ "cat": "wix-psi",
+ "url": "https://rochannesonely.wixsite.com/rochannesonely",
+ "projectId": "cmux4pdyl0087br8c04apnyz0",
+ "slug": "rochannesonely",
+ "scan": {
+  "seconds": 193,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 306,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.02,
+   "missing": [],
+   "heightRatio": 1.242,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    7.3
+   ],
+   "diffTop": 3.6,
+   "diffAll": 3.6,
+   "imgVis": [
+    8,
+    8
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    18,
+    18
+   ],
+   "buttons": [
+    2,
+    2
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1244,
+    230
+   ],
+   "requests": [
+    139,
+    18
+   ],
+   "loadSec": [
+    7.8,
+    4.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.021,
+   "missing": [],
+   "heightRatio": 1.034,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    27.5
+   ],
+   "diffTop": 9.2,
+   "diffAll": 9.2,
+   "imgVis": [
+    8,
+    8
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    3,
+    3
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1260,
+    218
+   ],
+   "requests": [
+    136,
+    18
+   ],
+   "loadSec": [
+    7.2,
+    3.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4pdyl0087br8c04apnyz0/p/rochannesonely"
+}

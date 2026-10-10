@@ -1,0 +1,160 @@
+{
+ "idx": 203,
+ "cat": "br-saas",
+ "url": "https://www.mercadopago.com.br/",
+ "projectId": "cmux4o7b20081br8cv5qarutt",
+ "slug": "home",
+ "scan": {
+  "seconds": 935,
+  "pages": 2,
+  "blocks": 6,
+  "cssKB": 881,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "fail": "orig:Page.screenshot: Timeout 60000ms exceeded.\nCall log:\ntaking  clone:None"
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.963,
+   "extra": 0.0,
+   "missing": [
+    "usamos",
+    "cookies",
+    "melhorar",
+    "experi\u00eancia",
+    "consulte",
+    "central",
+    "aceitar",
+    "configurar"
+   ],
+   "heightRatio": 1.01,
+   "overflowX": false,
+   "tiles": [
+    81.7,
+    52.4,
+    91.9,
+    28.2,
+    29.0,
+    44.4,
+    33.0,
+    14.5
+   ],
+   "diffTop": 75.3,
+   "diffAll": 46.9,
+   "imgVis": [
+    12,
+    13
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    2
+   ],
+   "iframes": [
+    4,
+    1
+   ],
+   "links": [
+    106,
+    105
+   ],
+   "buttons": [
+    37,
+    33
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    7641,
+    1602
+   ],
+   "requests": [
+    190,
+    36
+   ],
+   "loadSec": [
+    22.6,
+    6.2
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     23,
+     1561,
+     345,
+     315
+    ],
+    [
+     23,
+     1556,
+     345,
+     315
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      345,
+      281
+     ],
+     [
+      "video",
+      345,
+      315
+     ]
+    ],
+    [
+     [
+      "div",
+      345,
+      281,
+      true
+     ],
+     [
+      "div",
+      345,
+      315,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux4o7b20081br8cv5qarutt/videos/home_m.mp4",
+    "https://http2.mlstatic.com/storage/pog-cm-admin/calm-assets/Modulo-Cofrinhos-140__RENDER556x508--e8835f05.webm"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "navigation:error",
+    "Proxima Nova:unloaded"
+   ],
+   "fontOC": [
+    "\"Proxima Nova\", -apple-system, Roboto, A",
+    "\"Proxima Nova\", -apple-system, Roboto, A"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4o7b20081br8cv5qarutt/p/home"
+}

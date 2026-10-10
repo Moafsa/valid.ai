@@ -1,0 +1,245 @@
+{
+ "idx": 29,
+ "cat": "wix-dent",
+ "url": "https://flaviaantunesrj.wixsite.com/draflviaantunes",
+ "projectId": "cmuw20063001vn7r8eo4ddyy7",
+ "slug": "draflviaantunes",
+ "scan": {
+  "seconds": 120,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 151,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.984,
+   "extra": 0.0,
+   "missing": [
+    "desenvolvido",
+    "criador",
+    "sites"
+   ],
+   "heightRatio": 1.029,
+   "overflowX": false,
+   "tiles": [
+    40.6,
+    20.1,
+    24.9,
+    25.5,
+    33.3
+   ],
+   "diffTop": 28.5,
+   "diffAll": 28.9,
+   "imgVis": [
+    14,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    14,
+    14
+   ],
+   "buttons": [
+    2,
+    2
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    1773,
+    318
+   ],
+   "requests": [
+    172,
+    18
+   ],
+   "loadSec": [
+    8.7,
+    4.9
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     1064,
+     830,
+     376,
+     70
+    ],
+    [
+     1064,
+     830,
+     376,
+     70
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      376,
+      70
+     ]
+    ],
+    [
+     [
+      "iframe",
+      376,
+      70,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.989,
+   "extra": 0.027,
+   "missing": [
+    "conte\u00fado",
+    "principal"
+   ],
+   "heightRatio": 1.349,
+   "overflowX": true,
+   "tiles": [
+    68.0,
+    77.9,
+    65.5,
+    83.1
+   ],
+   "diffTop": 70.5,
+   "diffAll": 73.6,
+   "imgVis": [
+    14,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    19,
+    14
+   ],
+   "buttons": [
+    5,
+    2
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    1704,
+    318
+   ],
+   "requests": [
+    163,
+    18
+   ],
+   "loadSec": [
+    6.7,
+    3.2
+   ],
+   "videoArea": 0.37,
+   "videoRect": [
+    [
+     10,
+     3358,
+     300,
+     239
+    ],
+    [
+     604,
+     2051,
+     376,
+     70
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      300,
+      239
+     ]
+    ],
+    [
+     [
+      "iframe",
+      376,
+      70,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw20063001vn7r8eo4ddyy7/p/draflviaantunes"
+}

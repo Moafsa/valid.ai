@@ -1,0 +1,241 @@
+{
+ "idx": 230,
+ "cat": "app",
+ "url": "https://www.spotify.com/br/",
+ "projectId": "cmux5gdsc009dbr8c7mflov83",
+ "slug": "home",
+ "scan": {
+  "seconds": 327,
+  "pages": 4,
+  "blocks": 2,
+  "cssKB": 131,
+  "notes": [
+   "Etapa 1: 2 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Etapa 2: 23 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "2 etapa(s) levam a caminhos diferentes conforme a resposta (reproduzido no clone).",
+   "Deixei o site mais leve: o estilo caiu de 904KB para 130KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.603,
+   "extra": 0.0,
+   "missing": [
+    "cookies",
+    "in\u00edcio",
+    "preocupamo",
+    "nos",
+    "privacidade",
+    "n\u00f3s",
+    "nossos",
+    "parceiros",
+    "armazenamos",
+    "acedemos",
+    "informa\u00e7\u00f5es",
+    "num",
+    "dispositivo",
+    "tais",
+    "como",
+    "identificadores",
+    "\u00fanicos",
+    "tratar",
+    "dados",
+    "pessoais",
+    "pode",
+    "aceitar",
+    "gerir",
+    "prefer\u00eancias",
+    "clicando"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    42.5
+   ],
+   "diffTop": 42.5,
+   "diffAll": 42.5,
+   "imgVis": [
+    0,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    0
+   ],
+   "links": [
+    30,
+    235
+   ],
+   "buttons": [
+    93,
+    86
+   ],
+   "inputs": [
+    32,
+    5
+   ],
+   "kb": [
+    5081,
+    608
+   ],
+   "requests": [
+    174,
+    8
+   ],
+   "loadSec": [
+    25.4,
+    5.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 4,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Grek:unloaded"
+   ],
+   "fontOC": [
+    "SpotifyMixUI, CircularSp-Arab, CircularS",
+    "SpotifyMixUI, CircularSp-Arab, CircularS"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Preocupamo-nos com a sua privacidade"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.186,
+   "extra": 0.462,
+   "missing": [
+    "abrir",
+    "app",
+    "ou\u00e7a",
+    "sem",
+    "limites",
+    "curta",
+    "m\u00eas",
+    "depois",
+    "apenas",
+    "cancele",
+    "quando",
+    "quiser",
+    "experimente",
+    "ver",
+    "todos",
+    "oferta",
+    "dispon\u00edvel",
+    "quem",
+    "nunca",
+    "teve",
+    "sujeito",
+    "termos",
+    "alta",
+    "cuenta",
+    "feat"
+   ],
+   "heightRatio": 0.578,
+   "overflowX": true,
+   "tiles": [
+    63.6,
+    46.7
+   ],
+   "diffTop": 55.2,
+   "diffAll": 55.2,
+   "imgVis": [
+    84,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    142,
+    235
+   ],
+   "buttons": [
+    134,
+    86
+   ],
+   "inputs": [
+    27,
+    5
+   ],
+   "kb": [
+    4654,
+    608
+   ],
+   "requests": [
+    144,
+    8
+   ],
+   "loadSec": [
+    12.3,
+    6.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Deva:unloaded",
+    "CircularSp-Grek:unloaded"
+   ],
+   "fontOC": [
+    "SpotifyMixUI, CircularSp-Arab, CircularS",
+    "SpotifyMixUI, CircularSp-Arab, CircularS"
+   ],
+   "bgOC": [
+    "rgb(18, 18, 18)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "M\u00fasicas em alta",
+    "Artistas populares",
+    "Singles e \u00e1lbuns que todo mundo gosta",
+    "Esta\u00e7\u00f5es de r\u00e1dio populares",
+    "Paradas em destaque"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5gdsc009dbr8c7mflov83/p/home"
+}

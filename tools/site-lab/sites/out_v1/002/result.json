@@ -1,0 +1,213 @@
+{
+ "idx": 2,
+ "cat": "br-saas",
+ "url": "https://www.pagbank.com.br/",
+ "projectId": "cmuw0ecpa0003yin5tncq813r",
+ "slug": "home",
+ "scan": {
+  "seconds": 306,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 359,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.935,
+   "overflowX": false,
+   "tiles": [
+    29.7,
+    24.0,
+    38.0,
+    53.5,
+    69.5,
+    67.5,
+    34.9
+   ],
+   "diffTop": 30.6,
+   "diffAll": 45.3,
+   "imgVis": [
+    50,
+    40
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    186,
+    186
+   ],
+   "buttons": [
+    66,
+    62
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    5904,
+    2141
+   ],
+   "requests": [
+    204,
+    50
+   ],
+   "loadSec": [
+    10.2,
+    4.9
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      304,
+      154
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "acq-static-pages.pagseguro.com.br": [
+     1,
+     525154
+    ],
+    "pagseguro.uol.com.br": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://pagbank.com.br/"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "UOLText:unloaded",
+    "UOLText:unloaded"
+   ],
+   "fontOC": [
+    "UOLText, Arial, sans-serif",
+    "UOLText, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.858,
+   "overflowX": false,
+   "tiles": [
+    46.1,
+    18.9,
+    60.6,
+    87.9,
+    83.2,
+    83.2,
+    95.8,
+    47.4
+   ],
+   "diffTop": 41.9,
+   "diffAll": 65.4,
+   "imgVis": [
+    50,
+    40
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    186,
+    186
+   ],
+   "buttons": [
+    67,
+    62
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    5209,
+    2141
+   ],
+   "requests": [
+    188,
+    50
+   ],
+   "loadSec": [
+    9.8,
+    3.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "acq-static-pages.pagseguro.com.br": [
+     1,
+     525163
+    ],
+    "pagseguro.uol.com.br": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://pagbank.com.br/"
+   ],
+   "origErrors": 8,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "UOLText:unloaded",
+    "UOLText:unloaded"
+   ],
+   "fontOC": [
+    "UOLText, Arial, sans-serif",
+    "UOLText, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0ecpa0003yin5tncq813r/p/home"
+}

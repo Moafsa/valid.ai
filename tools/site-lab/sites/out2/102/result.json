@@ -1,0 +1,214 @@
+{
+ "idx": 102,
+ "cat": "saas",
+ "url": "https://bubble.io/",
+ "projectId": "cmux343ow004vbr8clp2fdr5y",
+ "slug": "home",
+ "scan": {
+  "seconds": 450,
+  "pages": 1,
+  "blocks": 9,
+  "cssKB": 904,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.138,
+   "overflowX": true,
+   "tiles": [
+    10.0,
+    30.4,
+    7.5,
+    38.5,
+    60.6,
+    42.8,
+    20.7
+   ],
+   "diffTop": 16.0,
+   "diffAll": 30.1,
+   "imgVis": [
+    62,
+    63
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    1
+   ],
+   "links": [
+    102,
+    102
+   ],
+   "buttons": [
+    91,
+    87
+   ],
+   "inputs": [
+    8,
+    6
+   ],
+   "kb": [
+    6996,
+    1400
+   ],
+   "requests": [
+    277,
+    65
+   ],
+   "loadSec": [
+    43.9,
+    9.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "Helvetica, Arial, sans-serif",
+    "Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.958,
+   "extra": 0.005,
+   "missing": [
+    "gcl",
+    "adsense",
+    "experimenting",
+    "efficiency",
+    "lidc",
+    "ensures",
+    "proper",
+    "functioning",
+    "test",
+    "owned",
+    "display",
+    "personalized",
+    "fbp",
+    "facebook",
+    "series",
+    "products",
+    "bidding",
+    "advertisers",
+    "timezone",
+    "enhanced",
+    "demo",
+    "arcade",
+    "sid",
+    "manage",
+    "payments"
+   ],
+   "heightRatio": 1.636,
+   "overflowX": true,
+   "tiles": [
+    12.5,
+    9.8,
+    45.1,
+    58.8,
+    53.4,
+    65.6,
+    64.6,
+    30.4
+   ],
+   "diffTop": 22.5,
+   "diffAll": 42.5,
+   "imgVis": [
+    54,
+    63
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    1
+   ],
+   "links": [
+    100,
+    102
+   ],
+   "buttons": [
+    86,
+    87
+   ],
+   "inputs": [
+    8,
+    6
+   ],
+   "kb": [
+    7105,
+    1332
+   ],
+   "requests": [
+    293,
+    47
+   ],
+   "loadSec": [
+    46.1,
+    8.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 6,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "Helvetica, Arial, sans-serif",
+    "Helvetica, Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux343ow004vbr8clp2fdr5y/p/home"
+}

@@ -1,0 +1,4 @@
+project cmuvjfj700001pyz0hp3hkba1 slug shadow-landing scan 81s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Landing com web components' | 'Landing com web components'
+errors orig/clone: [] [] | worst diff 0

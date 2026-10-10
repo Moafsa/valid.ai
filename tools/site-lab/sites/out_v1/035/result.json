@@ -1,0 +1,210 @@
+{
+ "idx": 35,
+ "cat": "app",
+ "url": "https://www.udemy.com/",
+ "projectId": "cmuw2hfiw002mn7r8nea5fwac",
+ "slug": "home",
+ "scan": {
+  "seconds": 437,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 446,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "forbidden"
+   ],
+   "heightRatio": 6.878,
+   "overflowX": false,
+   "tiles": [
+    59.1
+   ],
+   "diffTop": 59.1,
+   "diffAll": 59.1,
+   "imgVis": [
+    0,
+    48
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    0,
+    299
+   ],
+   "buttons": [
+    0,
+    44
+   ],
+   "inputs": [
+    0,
+    2
+   ],
+   "kb": [
+    13,
+    1935
+   ],
+   "requests": [
+    3,
+    54
+   ],
+   "loadSec": [
+    1.1,
+    6.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Vazirmatn:unloaded",
+    "Vazirmatn:unloaded",
+    "Vazirmatn:unloaded",
+    "Noto Sans JP:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Udemy Sans\", \"Noto Sans JP\", Vazirmatn,"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.636,
+   "extra": 0.334,
+   "missing": [
+    "take",
+    "off",
+    "first",
+    "months",
+    "dive",
+    "today",
+    "exclusions",
+    "apply",
+    "offer",
+    "developmentdata",
+    "sciencemobile",
+    "developmentprogramming",
+    "languagesgame",
+    "developmentdatabase",
+    "developmentsoftware",
+    "testingsoftware",
+    "engineeringsoftware",
+    "toolsno",
+    "entrepreneurshipcommunicationmanagementsalesbusiness",
+    "strategyoperationsproject",
+    "managementbusiness",
+    "lawbusiness",
+    "intelligencehuman",
+    "resourcesindustrye",
+    "commercemediareal"
+   ],
+   "heightRatio": 0.806,
+   "overflowX": false,
+   "tiles": [
+    74.9,
+    57.9,
+    71.2,
+    58.5,
+    68.7,
+    63.0,
+    47.0,
+    78.5
+   ],
+   "diffTop": 68.0,
+   "diffAll": 65.0,
+   "imgVis": [
+    33,
+    47
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    0
+   ],
+   "links": [
+    536,
+    299
+   ],
+   "buttons": [
+    83,
+    44
+   ],
+   "inputs": [
+    11,
+    2
+   ],
+   "kb": [
+    4709,
+    1745
+   ],
+   "requests": [
+    192,
+    51
+   ],
+   "loadSec": [
+    14.2,
+    6.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 15,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Vazirmatn:unloaded",
+    "Vazirmatn:unloaded",
+    "Vazirmatn:unloaded",
+    "Vazirmatn:unloaded"
+   ],
+   "fontOC": [
+    "\"Udemy Sans\", \"Noto Sans JP\", Vazirmatn,",
+    "\"Udemy Sans\", \"Noto Sans JP\", Vazirmatn,"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw2hfiw002mn7r8nea5fwac/p/home"
+}

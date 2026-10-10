@@ -1,0 +1,5 @@
+project cmuv9fgt80001w8rlzgxqmb0m slug landing-reveal scan 77s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Landing com revelação ao rolar QUERO Seção 1 Con' | 'Landing com revelação ao rolar QUERO Seção 1 Con'
+  3.0     0.0  'Landing com revelação ao rolar QUERO Seção 1 Con' | 'Landing com revelação ao rolar QUERO Seção 1 Con'
+errors orig/clone: [] [] | worst diff 0

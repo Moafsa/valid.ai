@@ -1,0 +1,6 @@
+project cmuva8hr60001ro4tjlyb48c3 slug home scan 185s pages=6
+ t(s)  diff%   original text | clone text
+  1.0    0.57  'Descubra seu plano ideal Responda 6 perguntas rá' | 'Descubra seu plano ideal Responda 6 perguntas rá'
+  4.0    0.57  'Descubra seu plano ideal Responda 6 perguntas rá' | 'Descubra seu plano ideal Responda 6 perguntas rá'
+  8.0    5.82  'Descubra seu plano ideal Responda 6 perguntas rá' | 'Descubra seu plano ideal Responda 6 perguntas rá'
+errors orig/clone: [] [] | worst diff 5.82

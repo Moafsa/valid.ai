@@ -1,0 +1,14 @@
+project cmuve64cc0001zr1enwee4kqr slug home scan 120s pages 8
+http://172.18.0.1:8099/q_branch/: 4 screens, exits=['https://example.com/oferta'] errors=0 total=8.9s bytes=18455
+
+http://web:3000/projects/cmuve64cc0001zr1enwee4kqr/p/home: 4 screens, exits=['https://example.com/oferta'] errors=0 total=10.5s bytes=31279
+
+original: 4 screens in 8.9s, 18KB | clone: 4 screens in 10.5s, 30KB | exits ['https://example.com/oferta'] vs ['https://example.com/oferta']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Qual é o seu perfil?                Qual é o seu perfil?                OK     0.0     0.3    1.7
+  2  Trilha iniciante A                  Trilha iniciante A                  OK     0.0    2.53   3.91
+  3  Iniciante: o que mais te trava?     Iniciante: o que mais te trava?     OK     0.0    4.66   6.22
+  4  Seu plano personalizado             Seu plano personalizado             OK     0.0    6.79   8.35
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 4->4 same-title 4/4 | mean pixel diff 0.0% max 0.0% | weight 18KB -> 30KB | longtasks 1 -> 0
+

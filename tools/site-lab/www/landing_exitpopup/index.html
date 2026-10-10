@@ -1,0 +1,5 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>landing_exitpopup</title></head><body><style>body{font-family:system-ui;margin:0}.hero{padding:80px 20px;text-align:center;background:#eef}.btn{background:#d0541f;color:#fff;padding:14px 26px;border-radius:99px;text-decoration:none}#ep{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:99}#ep div{background:#fff;padding:30px;border-radius:14px;text-align:center}</style>
+<div class="hero"><h1>Curso completo de receitas</h1><p>7 dias grátis</p><a class="btn" href="https://example.com/comprar">COMEÇAR</a></div>
+<div id="ep"><div><h2>Espere! Antes de ir...</h2><p>Leve 30% de desconto agora.</p><a class="btn" href="https://example.com/oferta30">QUERO O DESCONTO</a><p><a href="#" onclick="document.getElementById('ep').style.display='none';return false">Não, obrigado</a></p></div></div>
+<script>document.addEventListener('mouseleave',function(e){if(e.clientY<=0)document.getElementById('ep').style.display='flex'})</script></body></html>

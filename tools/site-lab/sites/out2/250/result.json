@@ -1,0 +1,194 @@
+{
+ "idx": 250,
+ "cat": "imob",
+ "url": "https://www.imobiliariavictorarmani.com.br/66/imoveis/lancamento-apartamento-2-quartos-hortolandia-sp",
+ "projectId": "cmux5pnii009ybr8c9vaien2a",
+ "slug": "66-imoveis-lancamento-apartamento-2-quartos-hortolandia-sp",
+ "scan": {
+  "seconds": 230,
+  "pages": 2,
+  "blocks": 3,
+  "cssKB": 453,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.005,
+   "missing": [],
+   "heightRatio": 1.311,
+   "overflowX": true,
+   "tiles": [
+    32.8,
+    24.1,
+    11.4
+   ],
+   "diffTop": 22.8,
+   "diffAll": 22.8,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    138,
+    82
+   ],
+   "buttons": [
+    82,
+    56
+   ],
+   "inputs": [
+    18,
+    3
+   ],
+   "kb": [
+    2819,
+    2784
+   ],
+   "requests": [
+    82,
+    51
+   ],
+   "loadSec": [
+    10.4,
+    7.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "www.imobiliariavictorarmani.com.br": [
+     1,
+     1511
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Font Awesome 6 Brands:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, system-ui, BlinkMacSystem",
+    "-apple-system, system-ui, BlinkMacSystem"
+   ],
+   "bgOC": [
+    "rgb(241, 241, 241)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.006,
+   "missing": [],
+   "heightRatio": 1.149,
+   "overflowX": true,
+   "tiles": [
+    27.0,
+    38.8,
+    23.0,
+    21.4,
+    50.8,
+    51.1
+   ],
+   "diffTop": 29.6,
+   "diffAll": 35.4,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    138,
+    82
+   ],
+   "buttons": [
+    82,
+    56
+   ],
+   "inputs": [
+    18,
+    3
+   ],
+   "kb": [
+    2328,
+    2577
+   ],
+   "requests": [
+    78,
+    48
+   ],
+   "loadSec": [
+    8.7,
+    6.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "www.imobiliariavictorarmani.com.br": [
+     1,
+     1511
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Font Awesome 6 Brands:unloaded",
+    "Font Awesome 6 Free:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, system-ui, BlinkMacSystem",
+    "-apple-system, system-ui, BlinkMacSystem"
+   ],
+   "bgOC": [
+    "rgb(241, 241, 241)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5pnii009ybr8c9vaien2a/p/66-imoveis-lancamento-apartamento-2-quartos-hortolandia-sp"
+}

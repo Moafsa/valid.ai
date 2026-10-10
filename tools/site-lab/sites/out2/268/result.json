@@ -1,0 +1,284 @@
+{
+ "idx": 268,
+ "cat": "org",
+ "url": "https://www.msf.org/",
+ "projectId": "cmux5yog000ajbr8c4tk7s4sj",
+ "slug": "home",
+ "scan": {
+  "seconds": 514,
+  "pages": 1,
+  "blocks": 8,
+  "cssKB": 1200,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.754,
+   "extra": 0.0,
+   "missing": [
+    "bem",
+    "vindo",
+    "com",
+    "nossos",
+    "parceiros",
+    "n\u00f3s",
+    "desejamos",
+    "armazenar",
+    "acessar",
+    "informa\u00e7\u00f5es",
+    "seus",
+    "dispositivos",
+    "cookies",
+    "pixels",
+    "mails",
+    "etc",
+    "combinar",
+    "transmitir",
+    "entre",
+    "dados",
+    "pessoais",
+    "sejam",
+    "coletados",
+    "neste",
+    "site"
+   ],
+   "heightRatio": 1.026,
+   "overflowX": false,
+   "tiles": [
+    43.8,
+    30.6,
+    45.5,
+    17.0,
+    33.5,
+    50.0,
+    29.1
+   ],
+   "diffTop": 40.0,
+   "diffAll": 35.6,
+   "imgVis": [
+    23,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    3
+   ],
+   "links": [
+    234,
+    230
+   ],
+   "buttons": [
+    30,
+    85
+   ],
+   "inputs": [
+    8,
+    0
+   ],
+   "kb": [
+    3322,
+    2204
+   ],
+   "requests": [
+    73,
+    35
+   ],
+   "loadSec": [
+    20.0,
+    10.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Error: <svg> attribute height: Expected length, \"auto\"."
+   ],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 1,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Tajawal Medium:unloaded",
+    "Tajawal ExtraBold:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": [
+    "Want to receive the latest MSF news?"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.757,
+   "extra": 0.003,
+   "missing": [
+    "surv",
+    "bem",
+    "vindo",
+    "com",
+    "nossos",
+    "parceiros",
+    "n\u00f3s",
+    "desejamos",
+    "armazenar",
+    "acessar",
+    "informa\u00e7\u00f5es",
+    "seus",
+    "dispositivos",
+    "cookies",
+    "pixels",
+    "mails",
+    "etc",
+    "combinar",
+    "transmitir",
+    "entre",
+    "dados",
+    "pessoais",
+    "sejam",
+    "coletados",
+    "neste"
+   ],
+   "heightRatio": 1.063,
+   "overflowX": false,
+   "tiles": [
+    83.5,
+    46.1,
+    67.3,
+    36.3,
+    67.2,
+    59.8,
+    73.2,
+    48.9
+   ],
+   "diffTop": 65.6,
+   "diffAll": 60.3,
+   "imgVis": [
+    34,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    3
+   ],
+   "links": [
+    241,
+    230
+   ],
+   "buttons": [
+    95,
+    85
+   ],
+   "inputs": [
+    2,
+    0
+   ],
+   "kb": [
+    2650,
+    2124
+   ],
+   "requests": [
+    68,
+    32
+   ],
+   "loadSec": [
+    9.3,
+    3.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Error: <svg> attribute height: Expected length, \"auto\"."
+   ],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 1,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Tajawal Medium:unloaded",
+    "Tajawal ExtraBold:unloaded",
+    "Roboto:unloaded",
+    "Roboto:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5yog000ajbr8c4tk7s4sj/p/home"
+}

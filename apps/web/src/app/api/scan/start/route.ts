@@ -3,14 +3,14 @@ import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
 import { z } from 'zod'
 
-const schema = z.object({ projectId: z.string(), url: z.string().url() })
+const schema = z.object({ projectId: z.string(), url: z.string().url(), persona: z.enum(['ig_ios', 'ig_android', 'fb_android', 'fb_ios', 'tiktok', 'google_mobile']).optional() })
 
 export async function POST(req: NextRequest) {
   try {
     const workspace = await getCurrentWorkspace()
     if (!workspace) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { projectId, url } = schema.parse(await req.json())
+    const { projectId, url, persona } = schema.parse(await req.json())
 
     const project = await db.project.findFirst({ where: { id: projectId, workspaceId: workspace.id } })
     if (!project) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
     const scannerUrl = process.env.SCANNER_SERVICE_URL ?? 'http://scanner:8001'
     const res = await fetch(`${scannerUrl}/api/scanner/start`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ job_id: scanJob.id, project_id: projectId, url, workspace_id: workspace.id }),
+      headers: { 'Content-Type': 'application/json', 'x-scanner-secret': process.env.SCANNER_SHARED_SECRET || '' },
+      body: JSON.stringify({ job_id: scanJob.id, project_id: projectId, url, workspace_id: workspace.id, ...(persona ? { persona } : {}) }),
     })
     if (!res.ok) {
       await db.project.update({ where: { id: projectId }, data: { status: 'ERROR' } })

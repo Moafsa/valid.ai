@@ -1,0 +1,175 @@
+{
+ "idx": 39,
+ "cat": "webflow",
+ "url": "https://landing-page-template.webflow.io/",
+ "projectId": "cmuw2tmsg002yn7r8rvd9n52y",
+ "slug": "home",
+ "scan": {
+  "seconds": 296,
+  "pages": 1,
+  "blocks": 1,
+  "cssKB": 38,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    0,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    0,
+    0
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    310,
+    51
+   ],
+   "requests": [
+    18,
+    7
+   ],
+   "loadSec": [
+    2.4,
+    3.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "Lato, sans-serif",
+    "Lato, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    0,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    0,
+    0
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    233,
+    42
+   ],
+   "requests": [
+    18,
+    7
+   ],
+   "loadSec": [
+    1.9,
+    2.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "Lato, sans-serif",
+    "Lato, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw2tmsg002yn7r8rvd9n52y/p/home"
+}

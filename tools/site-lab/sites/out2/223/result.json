@@ -1,0 +1,262 @@
+{
+ "idx": 223,
+ "cat": "agency",
+ "url": "https://www.locomotive.ca/",
+ "projectId": "cmux588ku0091br8co0x9x1ti",
+ "slug": "home",
+ "scan": {
+  "seconds": 380,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 201,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.214,
+   "overflowX": false,
+   "tiles": [
+    68.4,
+    20.5,
+    0.0,
+    2.4,
+    23.0,
+    12.9,
+    9.9
+   ],
+   "diffTop": 29.6,
+   "diffAll": 19.6,
+   "imgVis": [
+    0,
+    7
+   ],
+   "broken": [
+    0,
+    2
+   ],
+   "videos": [
+    1,
+    2
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    54,
+    54
+   ],
+   "buttons": [
+    9,
+    9
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    3464,
+    1680
+   ],
+   "requests": [
+    38,
+    26
+   ],
+   "loadSec": [
+    13.3,
+    6.4
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     3825,
+     1440,
+     900
+    ],
+    [
+     0,
+     -225,
+     1440,
+     900
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      1440,
+      900
+     ]
+    ],
+    [
+     [
+      "div",
+      1440,
+      900,
+      true
+     ],
+     [
+      "video",
+      1440,
+      810,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "locomotive.ca": [
+     4,
+     560935
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux588ku0091br8co0x9x1ti/videos/home.mp4"
+   ],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "swiper-icons:unloaded"
+   ],
+   "fontOC": [
+    "HelveticaNowDisplay, -apple-system, Blin",
+    "HelveticaNowDisplay, -apple-system, Blin"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.238,
+   "overflowX": false,
+   "tiles": [
+    95.7,
+    18.1,
+    53.6,
+    85.8,
+    28.1,
+    11.6
+   ],
+   "diffTop": 55.8,
+   "diffAll": 48.8,
+   "imgVis": [
+    2,
+    7
+   ],
+   "broken": [
+    0,
+    2
+   ],
+   "videos": [
+    1,
+    2
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    54,
+    54
+   ],
+   "buttons": [
+    9,
+    9
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    3011,
+    1680
+   ],
+   "requests": [
+    40,
+    26
+   ],
+   "loadSec": [
+    8.4,
+    3.1
+   ],
+   "videoArea": 0.29,
+   "videoRect": [
+    [
+     0,
+     0,
+     390,
+     844
+    ],
+    [
+     0,
+     -211,
+     390,
+     244
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      390,
+      844
+     ]
+    ],
+    [
+     [
+      "div",
+      390,
+      244,
+      true
+     ],
+     [
+      "video",
+      390,
+      219,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "locomotive.ca": [
+     4,
+     560707
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux588ku0091br8co0x9x1ti/videos/home.mp4"
+   ],
+   "origErrors": 5,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "swiper-icons:unloaded"
+   ],
+   "fontOC": [
+    "HelveticaNowDisplay, -apple-system, Blin",
+    "HelveticaNowDisplay, -apple-system, Blin"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux588ku0091br8co0x9x1ti/p/home"
+}

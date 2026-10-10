@@ -1,0 +1,290 @@
+{
+ "idx": 6,
+ "cat": "wix-fit",
+ "url": "https://fisiccenter.wixsite.com/website",
+ "projectId": "cmuw0kwq9000gyin522f5vj1x",
+ "slug": "website",
+ "scan": {
+  "seconds": 158,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 266,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.98,
+   "extra": 0.007,
+   "missing": [
+    "776787956294508",
+    "conte\u00fado",
+    "principal",
+    "desenvolvido",
+    "criador",
+    "sites"
+   ],
+   "heightRatio": 1.019,
+   "overflowX": false,
+   "tiles": [
+    37.5,
+    35.7,
+    39.5,
+    42.7,
+    45.2,
+    2.9,
+    30.2
+   ],
+   "diffTop": 37.6,
+   "diffAll": 33.4,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    38,
+    37
+   ],
+   "buttons": [
+    19,
+    11
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    3283,
+    673
+   ],
+   "requests": [
+    231,
+    26
+   ],
+   "loadSec": [
+    13.4,
+    2.8
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     250,
+     5468,
+     940,
+     420
+    ],
+    [
+     250,
+     5609,
+     940,
+     420
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      460,
+      710
+     ],
+     [
+      "div",
+      940,
+      420
+     ],
+     [
+      "video",
+      940,
+      420
+     ],
+     [
+      "iframe",
+      309,
+      86
+     ]
+    ],
+    [
+     [
+      "div",
+      940,
+      420,
+      false
+     ],
+     [
+      "iframe",
+      309,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.99,
+   "extra": 0.013,
+   "missing": [
+    "776787956294508",
+    "conte\u00fado",
+    "principal"
+   ],
+   "heightRatio": 1.064,
+   "overflowX": true,
+   "tiles": [
+    46.0,
+    76.7,
+    86.2,
+    63.1,
+    32.5,
+    37.7
+   ],
+   "diffTop": 69.6,
+   "diffAll": 57.0,
+   "imgVis": [
+    17,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    40,
+    37
+   ],
+   "buttons": [
+    21,
+    11
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    2670,
+    673
+   ],
+   "requests": [
+    216,
+    26
+   ],
+   "loadSec": [
+    8.3,
+    2.9
+   ],
+   "videoArea": 5.51,
+   "videoRect": [
+    [
+     10,
+     5813,
+     300,
+     239
+    ],
+    [
+     20,
+     5609,
+     940,
+     420
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "div",
+      300,
+      220
+     ],
+     [
+      "video",
+      300,
+      220
+     ],
+     [
+      "iframe",
+      300,
+      239
+     ]
+    ],
+    [
+     [
+      "div",
+      940,
+      420,
+      false
+     ],
+     [
+      "iframe",
+      309,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0kwq9000gyin522f5vj1x/p/website"
+}

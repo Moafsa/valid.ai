@@ -1,0 +1,340 @@
+{
+ "idx": 13,
+ "cat": "saas",
+ "url": "https://miro.com/",
+ "projectId": "cmux1olaz000pbr8ctroxefyq",
+ "slug": "home",
+ "scan": {
+  "seconds": 220,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 504,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.953,
+   "extra": 0.0,
+   "missing": [
+    "clicar",
+    "aceitar",
+    "todos",
+    "concorda",
+    "armazenamento",
+    "dispositivo",
+    "melhorar",
+    "navega\u00e7\u00e3o",
+    "site",
+    "analisar",
+    "utiliza\u00e7\u00e3o",
+    "ajudar",
+    "nas",
+    "nossas",
+    "defini\u00e7\u00f5es",
+    "rejeitar"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    10.2,
+    0.6,
+    31.0,
+    8.4,
+    1.9,
+    0.0,
+    0.0
+   ],
+   "diffTop": 13.9,
+   "diffAll": 7.4,
+   "imgVis": [
+    56,
+    83
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    3,
+    3
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    169,
+    167
+   ],
+   "buttons": [
+    38,
+    17
+   ],
+   "inputs": [
+    9,
+    1
+   ],
+   "kb": [
+    3701,
+    2006
+   ],
+   "requests": [
+    126,
+    80
+   ],
+   "loadSec": [
+    26.2,
+    14.7
+   ],
+   "videoArea": 56.12,
+   "videoRect": [
+    [
+     336,
+     2306,
+     243,
+     386
+    ],
+    [
+     -813,
+     2716,
+     3066,
+     1717
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      243,
+      386
+     ],
+     [
+      "video",
+      243,
+      386
+     ],
+     [
+      "video",
+      243,
+      386
+     ]
+    ],
+    [
+     [
+      "div",
+      304,
+      482,
+      true
+     ],
+     [
+      "div",
+      304,
+      482,
+      true
+     ],
+     [
+      "div",
+      304,
+      482,
+      true
+     ],
+     [
+      "div",
+      3066,
+      1717,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux1olaz000pbr8ctroxefyq/videos/home.mp4",
+    "https://framerusercontent.com/assets/FNmet1EVdzlxlDw518uVkowKxw.mp4",
+    "https://framerusercontent.com/assets/RFRFxk34lyIrm8YL9jefiBoUk8I.mp4"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 3,
+   "facesClone": [
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(240, 240, 240)",
+    "rgb(240, 240, 240)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.948,
+   "extra": 0.014,
+   "missing": [
+    "clicar",
+    "aceitar",
+    "todos",
+    "concorda",
+    "armazenamento",
+    "dispositivo",
+    "melhorar",
+    "navega\u00e7\u00e3o",
+    "site",
+    "analisar",
+    "utiliza\u00e7\u00e3o",
+    "ajudar",
+    "nas",
+    "nossas",
+    "defini\u00e7\u00f5es",
+    "rejeitar"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    11.4,
+    3.6,
+    0.4,
+    47.3,
+    19.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 5.1,
+   "diffAll": 10.2,
+   "imgVis": [
+    58,
+    73
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    3,
+    3
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    169,
+    167
+   ],
+   "buttons": [
+    37,
+    17
+   ],
+   "inputs": [
+    8,
+    1
+   ],
+   "kb": [
+    6682,
+    4878
+   ],
+   "requests": [
+    122,
+    77
+   ],
+   "loadSec": [
+    22.7,
+    11.2
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     24,
+     2845,
+     342,
+     240
+    ],
+    [
+     24,
+     2845,
+     342,
+     240
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      342,
+      240
+     ],
+     [
+      "video",
+      342,
+      240
+     ],
+     [
+      "video",
+      342,
+      240
+     ]
+    ],
+    [
+     [
+      "video",
+      342,
+      240,
+      false
+     ],
+     [
+      "video",
+      342,
+      240,
+      false
+     ],
+     [
+      "video",
+      342,
+      240,
+      false
+     ],
+     [
+      "div",
+      342,
+      192,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded",
+    "Nanum Pen Script:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(240, 240, 240)",
+    "rgb(240, 240, 240)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux1olaz000pbr8ctroxefyq/p/home"
+}

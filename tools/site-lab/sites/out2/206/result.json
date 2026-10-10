@@ -1,0 +1,248 @@
+{
+ "idx": 206,
+ "cat": "saas",
+ "url": "https://www.mailchimp.com/",
+ "projectId": "cmux4olju0084br8cpkksjv69",
+ "slug": "home",
+ "scan": {
+  "seconds": 261,
+  "pages": 2,
+  "blocks": 9,
+  "cssKB": 863,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.827,
+   "extra": 0.005,
+   "missing": [
+    "design",
+    "facilidade",
+    "profissional",
+    "f\u00e1ceis",
+    "alta",
+    "qualidade",
+    "fins",
+    "esta\u00e7\u00f5es",
+    "intuitivo",
+    "arrastar",
+    "soltar",
+    "use",
+    "cria\u00e7\u00e3o",
+    "baseadas",
+    "t\u00edtulos",
+    "alinhados",
+    "segundos",
+    "obtenha",
+    "mensagens",
+    "eficazes",
+    "personalizadas",
+    "transformam",
+    "compradores",
+    "sempre",
+    "ativas"
+   ],
+   "heightRatio": 1.012,
+   "overflowX": false,
+   "tiles": [
+    60.5,
+    8.3,
+    7.0,
+    3.7,
+    9.3,
+    14.6,
+    13.2
+   ],
+   "diffTop": 25.3,
+   "diffAll": 16.7,
+   "imgVis": [
+    77,
+    69
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    325,
+    309
+   ],
+   "buttons": [
+    104,
+    59
+   ],
+   "inputs": [
+    28,
+    20
+   ],
+   "kb": [
+    2998,
+    801
+   ],
+   "requests": [
+    183,
+    41
+   ],
+   "loadSec": [
+    39.2,
+    9.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Means Web:unloaded",
+    "Means Web:unloaded",
+    "Means Web:unloaded",
+    "Means Web:unloaded"
+   ],
+   "fontOC": [
+    "\"Graphik Web\", \"Helvetica Neue\", Helveti",
+    "\"Graphik Web\", \"Helvetica Neue\", Helveti"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.608,
+   "extra": 0.09,
+   "missing": [
+    "design",
+    "facilidade",
+    "profissional",
+    "f\u00e1ceis",
+    "modelos",
+    "alta",
+    "qualidade",
+    "fins",
+    "diferentes",
+    "esta\u00e7\u00f5es",
+    "setores",
+    "intuitivo",
+    "arrastar",
+    "soltar",
+    "use",
+    "cria\u00e7\u00e3o",
+    "baseadas",
+    "t\u00edtulos",
+    "alinhados",
+    "segundos",
+    "obtenha",
+    "mensagens",
+    "eficazes",
+    "personalizadas",
+    "transformam"
+   ],
+   "heightRatio": 0.983,
+   "overflowX": false,
+   "tiles": [
+    55.3,
+    59.5,
+    84.7,
+    51.5,
+    16.3,
+    40.7,
+    25.1,
+    39.8
+   ],
+   "diffTop": 66.5,
+   "diffAll": 46.6,
+   "imgVis": [
+    83,
+    69
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    343,
+    305
+   ],
+   "buttons": [
+    107,
+    59
+   ],
+   "inputs": [
+    28,
+    20
+   ],
+   "kb": [
+    3417,
+    768
+   ],
+   "requests": [
+    191,
+    46
+   ],
+   "loadSec": [
+    21.5,
+    7.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Means Web:unloaded",
+    "Means Web:unloaded",
+    "Means Web:unloaded",
+    "Means Web:unloaded"
+   ],
+   "fontOC": [
+    "\"Graphik Web\", \"Helvetica Neue\", Helveti",
+    "\"Graphik Web\", \"Helvetica Neue\", Helveti"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Os clientes da Mailchimp geraram 1,1 bilh\u00e3o de d\u00f3lares em receita bruta em apenas 62 dias.",
+    "Os clientes do Mailchimp tiveram at\u00e9 8x mais pedidos em m\u00e9dia com os fluxos de automa\u00e7\u00e3o.",
+    "Usu\u00e1rios do Mailchimp tiveram uma taxa de cliques at\u00e9 97% maior quando utilizaram e-mail e tamb\u00e9m SMS.*",
+    "Os usu\u00e1rios de e-commerce do Mailchimp no plano Standard tiveram um ROI de at\u00e9 27x",
+    "Os clientes da Mailchimp geraram 1,1 bilh\u00e3o de d\u00f3lares em receita bruta em apenas 62 dias."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4olju0084br8cpkksjv69/p/home"
+}

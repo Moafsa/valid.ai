@@ -1,0 +1,4 @@
+project cmuv9q07h0001e68rvb27d85h slug landing-rtl scan 71s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'مرحبا بكم في موقعنا 🌟 هذا نص تجريبي بالعربية مع ' | 'مرحبا بكم في موقعنا 🌟 هذا نص تجريبي بالعربية مع '
+errors orig/clone: [] [] | worst diff 0

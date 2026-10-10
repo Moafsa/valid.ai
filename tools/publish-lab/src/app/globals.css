@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 229 93% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 229 93% 59%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --primary: 229 93% 59%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+
+/* landing page polish */
+@keyframes vai-aurora { 0%,100% { transform: translateX(-50%) scale(1); opacity: .9 } 50% { transform: translateX(-46%) scale(1.12); opacity: 1 } }
+.vai-aurora { animation: vai-aurora 12s ease-in-out infinite; }
+@keyframes vai-shine { to { background-position: 200% center } }
+.vai-shine { background-size: 200% auto; animation: vai-shine 6s linear infinite; }
+@keyframes vai-glow { 0%,100% { box-shadow: 0 10px 40px -8px rgba(139,92,246,.55) } 50% { box-shadow: 0 10px 56px -4px rgba(217,70,239,.6) } }
+.vai-glow { animation: vai-glow 3.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .vai-aurora,.vai-shine,.vai-glow { animation: none } }
+
+.landing section h2 { background: linear-gradient(180deg,#fff 30%,#c4b5fd 120%); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.02em; }
+.landing section [class*="rounded-2xl"][class*="border"] { transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+.landing section [class*="rounded-2xl"][class*="border"]:hover { transform: translateY(-4px); border-color: rgba(167,139,250,.35); box-shadow: 0 18px 50px -20px rgba(139,92,246,.45); }
+.landing nav img { filter: drop-shadow(0 0 14px rgba(167,139,250,.35)); }
+
+/* no white flash when the page is pulled past its edges on a phone */
+html { background-color: #07050f; overscroll-behavior-y: none; }
+body { overscroll-behavior-y: none; }
+.landing { min-height: 100svh; }
+@media (max-width: 640px) {
+  .landing section { scroll-margin-top: 72px; }
+  .landing h1 { font-size: clamp(2.35rem, 11vw, 3.4rem) !important; line-height: 1.06 !important; }
+  .landing section h2 { font-size: clamp(1.6rem, 7vw, 2rem); line-height: 1.15; }
+  .landing nav .hidden { display: none; }
+}

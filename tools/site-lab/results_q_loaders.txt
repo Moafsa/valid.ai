@@ -1,0 +1,17 @@
+project cmuve9dh80001nr1ozbwx99sf slug home scan 94s pages 7
+http://172.18.0.1:8099/q_loaders/: 7 screens, exits=['https://example.com/plano'] errors=0 total=28.6s bytes=18323
+
+http://web:3000/projects/cmuve9dh80001nr1ozbwx99sf/p/home: 7 screens, exits=['https://example.com/plano'] errors=0 total=32.3s bytes=55340
+
+original: 7 screens in 28.6s, 17KB | clone: 7 screens in 32.3s, 54KB | exits ['https://example.com/plano'] vs ['https://example.com/plano']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Vamos analisar seu perfil           Vamos analisar seu perfil           OK     0.0     0.2   1.31
+  2  Nível 1: perfil                     Nível 1: perfil                     OK    0.09    2.54   3.63
+  3  Nível 2: metas                      Nível 2: metas                      OK    0.13    6.65   7.64
+  4  Nível 3: rotina                     Nível 3: rotina                     OK     0.2   11.04   12.7
+  5  Nível 4: plano                      Nível 4: plano                      OK    0.18   15.45  18.09
+  6  Nível 5: finalizando                Nível 5: finalizando                OK    0.09   19.92  22.23
+  7  Plano pronto                        Plano pronto                        OK     0.0   23.97  27.13
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 7->7 same-title 7/7 | mean pixel diff 0.1% max 0.2% | weight 17KB -> 54KB | longtasks 0 -> 2
+

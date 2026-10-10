@@ -1,0 +1,11 @@
+project cmv1ks6hf0001i3zlq7dbtmwq slug home scan 55s pages 1
+http://172.18.0.1:8099/v_iframe/: 1 screens, exits=[] errors=0 total=7.3s bytes=17766
+
+http://web:3000/projects/cmv1ks6hf0001i3zlq7dbtmwq/p/home: 1 screens, exits=[] errors=0 total=8.1s bytes=50938
+
+original: 1 screens in 7.3s, 17KB | clone: 1 screens in 8.1s, 49KB | exits [] vs []
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Vídeo do YouTube                    Vídeo do YouTube                    OK    15.2    0.14    0.9
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 1->1 same-title 1/1 | mean pixel diff 15.2% max 15.2% | weight 17KB -> 49KB | longtasks 0 -> 0
+

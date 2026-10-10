@@ -1,0 +1,8 @@
+project cmuvj6npk000111ev2hcn4wl8 slug home scan 83s pages=2
+ t(s)  diff%   original text | clone text
+  0.5    4.23  'Assistente Lia digitando…' | 'Assistente Lia Oi! Eu sou a Lia 👋 digitando… dig'
+  2.0    6.18  'Assistente Lia Oi! Eu sou a Lia 👋 digitando…' | 'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu'
+  4.0     0.0  'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu' | 'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu'
+  6.0    5.76  'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu' | 'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu'
+  9.0     0.0  'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu' | 'Assistente Lia Oi! Eu sou a Lia 👋 Vou montar seu'
+errors orig/clone: [] [] | worst diff 6.18

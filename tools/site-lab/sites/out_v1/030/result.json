@@ -1,0 +1,312 @@
+{
+ "idx": 30,
+ "cat": "gsite",
+ "url": "https://sites.google.com/view/psicologaleticiadeoliveira/in%C3%ADcio",
+ "projectId": "cmuw20e08001yn7r8l8bgc6xg",
+ "slug": "view-psicologaleticiadeoliveira-in-c3-adcio",
+ "scan": {
+  "seconds": 140,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 1825,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.967,
+   "extra": 0.103,
+   "missing": [
+    "pular",
+    "conte\u00fado",
+    "principal",
+    "navega\u00e7\u00e3o",
+    "p\u00e1gina",
+    "denunciar",
+    "abuso"
+   ],
+   "heightRatio": 0.989,
+   "overflowX": false,
+   "tiles": [
+    29.6,
+    20.8,
+    31.7,
+    72.7
+   ],
+   "diffTop": 27.4,
+   "diffAll": 38.7,
+   "imgVis": [
+    5,
+    6
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    4,
+    4
+   ],
+   "buttons": [
+    12,
+    12
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    3185,
+    1570
+   ],
+   "requests": [
+    116,
+    106
+   ],
+   "loadSec": [
+    16.5,
+    9.5
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     143,
+     2749,
+     1154,
+     416
+    ],
+    [
+     143,
+     2749,
+     1154,
+     416
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      1154,
+      416
+     ],
+     [
+      "iframe",
+      562,
+      500
+     ]
+    ],
+    [
+     [
+      "iframe",
+      1154,
+      416,
+      false
+     ],
+     [
+      "iframe",
+      562,
+      536,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.google.com": [
+     17,
+     202166
+    ],
+    "apis.google.com": [
+     2,
+     26015
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72ssUe9zTTSm6OFqHijqcvbyIkTJJBBVsdZD-eWQ5xp_YrykjUFcd04O-yc0rkz33n0mpUmQD_",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sAhRA-0R0ZvGZPt0aTFyzgh97yHyZaT15oKFWlGOWHdimOS-4phYVtYR1n7xQseBLXBrY0Jt",
+    "https://sites.google.com/sitesv-images-rt/AMxu72u2InWgTVAEXMda8anqBru85DicYqvgNFsacplup-Yi1g6RpuJjRPWqlsfuNy2TZXvmVJ_4Ss",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sshHlxj0Is2DqkTxx5Fuz1wQWCK2n5_1leR1YajIZPcCOdUqNwkiEwxG11X294sB6GUjwoAg"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 7,
+   "cloneNFailed": 6,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.981,
+   "extra": 0.112,
+   "missing": [
+    "pular",
+    "conte\u00fado",
+    "principal",
+    "navega\u00e7\u00e3o"
+   ],
+   "heightRatio": 0.994,
+   "overflowX": true,
+   "tiles": [
+    20.8,
+    17.9,
+    20.7,
+    20.1,
+    26.8,
+    45.1
+   ],
+   "diffTop": 19.8,
+   "diffAll": 25.2,
+   "imgVis": [
+    5,
+    6
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    4,
+    4
+   ],
+   "buttons": [
+    11,
+    12
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    2947,
+    1280
+   ],
+   "requests": [
+    76,
+    58
+   ],
+   "loadSec": [
+    12.2,
+    7.4
+   ],
+   "videoArea": 1.23,
+   "videoRect": [
+    [
+     19,
+     5024,
+     352,
+     312
+    ],
+    [
+     19,
+     5024,
+     352,
+     384
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      352,
+      127
+     ],
+     [
+      "iframe",
+      352,
+      312
+     ]
+    ],
+    [
+     [
+      "iframe",
+      352,
+      127,
+      false
+     ],
+     [
+      "iframe",
+      352,
+      384,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.google.com": [
+     3,
+     29768
+    ],
+    "apis.google.com": [
+     2,
+     26015
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72ssUe9zTTSm6OFqHijqcvbyIkTJJBBVsdZD-eWQ5xp_YrykjUFcd04O-yc0rkz33n0mpUmQD_",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sshHlxj0Is2DqkTxx5Fuz1wQWCK2n5_1leR1YajIZPcCOdUqNwkiEwxG11X294sB6GUjwoAg",
+    "https://sites.google.com/sitesv-images-rt/AMxu72u2InWgTVAEXMda8anqBru85DicYqvgNFsacplup-Yi1g6RpuJjRPWqlsfuNy2TZXvmVJ_4Ss",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sYJZ8IkSFK3s-AVeyJQaa_o4Q4GUULTvlnrn7CmldVjmTiokPi9pp22qGmbwtolxiwxV-4D-"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 7,
+   "cloneNFailed": 6,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw20e08001yn7r8l8bgc6xg/p/view-psicologaleticiadeoliveira-in-c3-adcio"
+}

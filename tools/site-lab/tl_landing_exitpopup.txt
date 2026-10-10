@@ -1,0 +1,4 @@
+project cmuv9lb0600013vkpacjfy44n slug landing-exitpopup scan 74s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Curso completo de receitas 7 dias grátis COMEÇAR' | 'Curso completo de receitas 7 dias grátis COMEÇAR'
+errors orig/clone: [] [] | worst diff 0

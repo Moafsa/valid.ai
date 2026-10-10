@@ -1,0 +1,201 @@
+{
+ "idx": 64,
+ "cat": "shopify",
+ "url": "https://mansfieldofficialstore.myshopify.com/",
+ "projectId": "cmuw4dwlg0051n7r8wf0nrz0y",
+ "slug": "home",
+ "scan": {
+  "seconds": 391,
+  "pages": 1,
+  "blocks": 8,
+  "cssKB": 411,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    26.0,
+    2.8,
+    40.7,
+    49.7
+   ],
+   "diffTop": 23.2,
+   "diffAll": 29.8,
+   "imgVis": [
+    3,
+    3
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    46,
+    46
+   ],
+   "buttons": [
+    29,
+    29
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    1912,
+    882
+   ],
+   "requests": [
+    272,
+    16
+   ],
+   "loadSec": [
+    8.6,
+    4.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "mansfieldofficialstore.myshopify.com": [
+     2,
+     1310
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://mansfieldofficialstore.myshopify.com/' because an ancestor violates the fo"
+   ],
+   "cloneFailed": [
+    "https://mansfieldofficialstore.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-cus"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Merriweather Sans:unloaded",
+    "Anonymous Pro:unloaded",
+    "Anonymous Pro:unloaded",
+    "Anonymous Pro:unloaded"
+   ],
+   "fontOC": [
+    "Assistant, sans-serif",
+    "Assistant, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.988,
+   "extra": 0.0,
+   "missing": [
+    "more"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": true,
+   "tiles": [
+    17.4,
+    7.1,
+    14.2,
+    15.3
+   ],
+   "diffTop": 12.9,
+   "diffAll": 13.5,
+   "imgVis": [
+    3,
+    3
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    46,
+    46
+   ],
+   "buttons": [
+    29,
+    29
+   ],
+   "inputs": [
+    2,
+    2
+   ],
+   "kb": [
+    1565,
+    882
+   ],
+   "requests": [
+    236,
+    16
+   ],
+   "loadSec": [
+    8.2,
+    3.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "mansfieldofficialstore.myshopify.com": [
+     2,
+     1312
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://mansfieldofficialstore.myshopify.com/' because an ancestor violates the fo"
+   ],
+   "cloneFailed": [
+    "https://mansfieldofficialstore.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-cus"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Merriweather Sans:unloaded",
+    "Anonymous Pro:unloaded",
+    "Anonymous Pro:unloaded",
+    "Anonymous Pro:unloaded"
+   ],
+   "fontOC": [
+    "Assistant, sans-serif",
+    "Assistant, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw4dwlg0051n7r8wf0nrz0y/p/home"
+}

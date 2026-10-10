@@ -1,0 +1,272 @@
+{
+ "idx": 99,
+ "cat": "framer",
+ "url": "https://oryn.framer.ai/",
+ "projectId": "cmuw6y81d007yn7r8gcxemw5l",
+ "slug": "home",
+ "scan": {
+  "seconds": 381,
+  "pages": 1,
+  "blocks": 6,
+  "cssKB": 219,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.009,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.4,
+    14.3,
+    15.1,
+    25.0,
+    20.0,
+    2.2,
+    1.6
+   ],
+   "diffTop": 9.9,
+   "diffAll": 11.2,
+   "imgVis": [
+    13,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    2
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    19,
+    19
+   ],
+   "buttons": [
+    4,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1315,
+    1117
+   ],
+   "requests": [
+    48,
+    31
+   ],
+   "loadSec": [
+    2.5,
+    3.9
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     3639,
+     1440,
+     1298
+    ],
+    [
+     0,
+     3639,
+     1440,
+     1298
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      1440,
+      920
+     ],
+     [
+      "video",
+      1440,
+      1298
+     ]
+    ],
+    [
+     [
+      "video",
+      1440,
+      920,
+      false
+     ],
+     [
+      "video",
+      1440,
+      1298,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw6y81d007yn7r8gcxemw5l/videos/home.mp4",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw6y81d007yn7r8gcxemw5l/videos/home.mp4"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Geist:unloaded",
+    "Geist:unloaded",
+    "Geist:unloaded",
+    "Geist:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(0, 0, 0)",
+    "rgb(0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.028,
+   "missing": [],
+   "heightRatio": 1.127,
+   "overflowX": false,
+   "tiles": [
+    50.0,
+    60.1,
+    15.4,
+    24.4,
+    35.0,
+    16.1,
+    39.6,
+    17.6
+   ],
+   "diffTop": 41.8,
+   "diffAll": 32.3,
+   "imgVis": [
+    13,
+    12
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    2
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    14,
+    19
+   ],
+   "buttons": [
+    4,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    991,
+    964
+   ],
+   "requests": [
+    45,
+    30
+   ],
+   "loadSec": [
+    2.3,
+    3.6
+   ],
+   "videoArea": 1.71,
+   "videoRect": [
+    [
+     0,
+     0,
+     390,
+     1366
+    ],
+    [
+     0,
+     0,
+     390,
+     2330
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      390,
+      1366
+     ],
+     [
+      "video",
+      390,
+      1320
+     ]
+    ],
+    [
+     [
+      "video",
+      390,
+      2330,
+      false
+     ],
+     [
+      "video",
+      390,
+      1444,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw6y81d007yn7r8gcxemw5l/videos/home.mp4",
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw6y81d007yn7r8gcxemw5l/videos/home.mp4"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Geist:unloaded",
+    "Geist:unloaded",
+    "Geist:unloaded",
+    "Geist:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(0, 0, 0)",
+    "rgb(0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw6y81d007yn7r8gcxemw5l/p/home"
+}

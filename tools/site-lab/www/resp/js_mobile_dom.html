@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Different DOM on phones</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.m-list li{padding:12px;border-bottom:1px solid #ddd;list-style:none}.m-list{padding:0;margin:0}</style></head><body><header class="top"><div class="wrap"><div class="logo">Brand</div><nav id="dn"></nav></div></header><section class="blk"><div class="wrap"><h2>Products</h2><div id="out"></div></div></section><script>var items=['Alpha','Bravo','Charlie','Delta','Echo','Foxtrot'];function build(){var out=document.getElementById('out');if(innerWidth<700){out.innerHTML='<ul class="m-list">'+items.map(function(i){return '<li><strong>'+i+'</strong> <a href="#'+i+'">view</a></li>'}).join('')+'</ul>'}else{out.innerHTML='<div class="cards">'+items.map(function(i){return '<div class="card"><h3>'+i+'</h3><p>Description of '+i+' with more words.</p><a class="btn" href="#'+i+'">View</a></div>'}).join('')+'</div>'}}build();addEventListener('resize',build)</script></body></html>

@@ -1,0 +1,8 @@
+project cmuv9botc0001q9izbkgjj34s slug home scan 79s pages=2
+ t(s)  diff%   original text | clone text
+  1.0    0.09  'Estamos preparando tudo… 18% Conectando © 2026 L' | 'Estamos preparando tudo… 18% Conectando © 2026 L'
+  3.0    0.13  'Estamos preparando tudo… 52% Verificando © 2026 ' | 'Estamos preparando tudo… 58% Verificando © 2026 '
+  5.0     0.0  'Estamos preparando tudo… 85% Liberando acesso © ' | 'Estamos preparando tudo… 85% Liberando acesso © '
+  7.0    7.63  'Acesso liberado Plano completo Acesso imediato G' | 'Acesso liberado Plano completo Acesso imediato G'
+  9.0     0.0  'Acesso liberado Plano completo Acesso imediato G' | 'Acesso liberado Plano completo Acesso imediato G'
+errors orig/clone: [] [] | worst diff 7.63

@@ -1,0 +1,14 @@
+project cmuvf2bif00011ocxsit175zq slug home scan 195s pages 4
+http://172.18.0.1:8099/q_personalized/: 4 screens, exits=['https://example.com/plano'] errors=0 total=8.8s bytes=18121
+
+http://web:3000/projects/cmuvf2bif00011ocxsit175zq/p/home: 4 screens, exits=['https://example.com/plano'] errors=0 total=10.1s bytes=25845
+
+original: 4 screens in 8.8s, 17KB | clone: 4 screens in 10.1s, 25KB | exits ['https://example.com/plano'] vs ['https://example.com/plano']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Vamos começar                       Vamos começar                       OK     0.0    0.29    1.3
+  2  Como podemos te chamar?             Como podemos te chamar?             OK     0.0    2.45   3.52
+  3  Prazer, Ana! Qual é o seu objetivo  Prazer, Ana! Qual é o seu objetivo  OK     0.0    4.64   5.78
+  4  Ana, seu plano está pronto          Ana, seu plano está pronto          OK     0.0    6.75   7.89
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 4->4 same-title 4/4 | mean pixel diff 0.0% max 0.0% | weight 17KB -> 25KB | longtasks 1 -> 0
+

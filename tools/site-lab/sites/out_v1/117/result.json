@@ -1,0 +1,188 @@
+{
+ "idx": 117,
+ "cat": "webflow",
+ "url": "https://indiespark.webflow.io/",
+ "projectId": "cmuw8i891009gn7r8m4ukodf4",
+ "slug": "home",
+ "scan": {
+  "seconds": 320,
+  "pages": 1,
+  "blocks": 10,
+  "cssKB": 79,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    8.5,
+    6.9,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 5.1,
+   "diffAll": 2.2,
+   "imgVis": [
+    18,
+    18
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    9,
+    9
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    619,
+    369
+   ],
+   "requests": [
+    22,
+    21
+   ],
+   "loadSec": [
+    2.0,
+    3.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "Arial, \"Helvetica Neue\", Helvetica, sans",
+    "Arial, \"Helvetica Neue\", Helvetica, sans"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    17.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.1,
+    0.2
+   ],
+   "diffTop": 5.7,
+   "diffAll": 2.2,
+   "imgVis": [
+    16,
+    16
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    9,
+    9
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    620,
+    369
+   ],
+   "requests": [
+    22,
+    21
+   ],
+   "loadSec": [
+    2.1,
+    2.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "Arial, \"Helvetica Neue\", Helvetica, sans",
+    "Arial, \"Helvetica Neue\", Helvetica, sans"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw8i891009gn7r8m4ukodf4/p/home"
+}

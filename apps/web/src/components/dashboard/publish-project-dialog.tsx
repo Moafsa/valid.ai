@@ -20,7 +20,7 @@ export function PublishProjectDialog({
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const publishedLink = currentSlug ? `be-vallid.com/s/${currentSlug}` : null
+  const publishedLink = currentSlug ? `${currentSlug}.be-vallid.com` : null
 
   const handlePublish = async () => {
     const trimmed = slug.trim()
@@ -28,8 +28,8 @@ export function PublishProjectDialog({
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch(`/api/projects/${projectId}`, {
-        method: 'PATCH',
+      const res = await fetch(`/api/projects/${projectId}/publish`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug: trimmed }),
       })
@@ -47,7 +47,7 @@ export function PublishProjectDialog({
 
   const copyLink = () => {
     if (!publishedLink) return
-    navigator.clipboard.writeText(`https://${publishedLink}`).then(() => {
+    navigator.clipboard.writeText(`https://${currentSlug}.be-vallid.com`).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     })
@@ -71,27 +71,26 @@ export function PublishProjectDialog({
             </Dialog.Close>
           </div>
           <Dialog.Description className="mb-4 text-xs text-gray-400">
-            Escolha um domínio para esse projeto. Esse link já funciona agora — o domínio próprio de verdade
-            (<span className="text-gray-300">seudominio.be-vallid.com</span>) é a próxima etapa e depende de uma
-            configuração de DNS que ainda vamos fazer juntos.
+            Ao publicar, a versão que você editou vira o site de verdade: só a página clonada, sem nada do editor
+            nem do painel. Você pode continuar editando, o site só muda quando clicar em publicar de novo.
           </Dialog.Description>
 
           <div className="mb-2 flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-2 shadow-inner">
-            <span className="shrink-0 pl-2 text-sm text-gray-500">be-vallid.com/s/</span>
             <input
               type="text"
               value={slug}
               onChange={e => setSlug(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handlePublish()}
               placeholder="meu-projeto"
-              className="min-w-0 flex-1 bg-transparent px-1 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none"
+              className="min-w-0 flex-1 bg-transparent pl-2 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none"
             />
+            <span className="shrink-0 pr-2 text-sm text-gray-500">.be-vallid.com</span>
           </div>
           {error && <p className="mb-2 text-xs text-red-400">{error}</p>}
 
           {publishedLink && (
             <div className="mb-4 flex items-center justify-between gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-xs text-emerald-300">
-              <span className="truncate">{publishedLink}</span>
+              <a href={`https://${currentSlug}.be-vallid.com`} target="_blank" rel="noopener noreferrer" className="truncate underline-offset-2 hover:underline">{publishedLink}</a>
               <button onClick={copyLink} className="flex shrink-0 items-center gap-1 text-emerald-400 hover:text-emerald-200">
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 {copied ? 'Copiado' : 'Copiar'}
@@ -105,7 +104,7 @@ export function PublishProjectDialog({
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/20 hover:from-violet-500 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe2 className="h-4 w-4" />}
-            {currentSlug ? 'Atualizar domínio' : 'Publicar'}
+            {currentSlug ? 'Publicar de novo (atualizar o site)' : 'Publicar'}
           </button>
         </Dialog.Content>
       </Dialog.Portal>

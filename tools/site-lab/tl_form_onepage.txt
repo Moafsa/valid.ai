@@ -1,0 +1,5 @@
+project cmuv9j2o50001m3ipq6c2dyl2 slug form-onepage scan 105s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Pesquisa rápida 1. Qual é o seu objetivo? Emagre' | 'Pesquisa rápida 1. Qual é o seu objetivo? Emagre'
+  3.0     0.0  'Pesquisa rápida 1. Qual é o seu objetivo? Emagre' | 'Pesquisa rápida 1. Qual é o seu objetivo? Emagre'
+errors orig/clone: [] [] | worst diff 0

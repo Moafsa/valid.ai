@@ -1,0 +1,6 @@
+project cmuvjbipz0001eq5cl0cwhln4 slug landing-modal scan 106s pages=1
+ t(s)  diff%   original text | clone text
+  1.0    0.48  'Você tem mais de 18 anos? Sim, tenho Oferta espe' | 'Você tem mais de 18 anos? Sim, tenho Oferta espe'
+  4.0    0.48  'Você tem mais de 18 anos? Sim, tenho Oferta espe' | 'Você tem mais de 18 anos? Sim, tenho Oferta espe'
+  8.0     0.0  'Você tem mais de 18 anos? Sim, tenho Oferta espe' | 'Você tem mais de 18 anos? Sim, tenho Oferta espe'
+errors orig/clone: [] [] | worst diff 0.48

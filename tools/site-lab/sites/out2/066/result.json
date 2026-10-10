@@ -1,0 +1,235 @@
+{
+ "idx": 66,
+ "cat": "saas",
+ "url": "https://replit.com/",
+ "projectId": "cmux2cta0002ybr8cghmeo3mi",
+ "slug": "home",
+ "scan": {
+  "seconds": 337,
+  "pages": 2,
+  "blocks": 17,
+  "cssKB": 2122,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.989,
+   "extra": 0.031,
+   "missing": [
+    "first",
+    "consumption",
+    "b2b",
+    "management",
+    "proposal"
+   ],
+   "heightRatio": 1.009,
+   "overflowX": false,
+   "tiles": [
+    0.4,
+    0.0,
+    12.6,
+    9.7,
+    21.3,
+    9.8,
+    6.0
+   ],
+   "diffTop": 4.3,
+   "diffAll": 8.5,
+   "imgVis": [
+    11,
+    19
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    105,
+    106
+   ],
+   "buttons": [
+    34,
+    49
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    6115,
+    1592
+   ],
+   "requests": [
+    253,
+    21
+   ],
+   "loadSec": [
+    37.0,
+    18.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Replit Diatype:unloaded",
+    "Replit Diatype Mono:unloaded",
+    "text-security-circle:unloaded",
+    "text-security-circle:unloaded"
+   ],
+   "fontOC": [
+    "\"Replit Diatype\", sans-serif",
+    "\"Replit Diatype\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(246, 245, 244)",
+    "rgb(246, 245, 244)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.262,
+   "extra": 0.689,
+   "missing": [
+    "que",
+    "voc\u00ea",
+    "vai",
+    "criar",
+    "pode",
+    "fazer",
+    "altera\u00e7\u00f5es",
+    "depois",
+    "iniciar",
+    "site",
+    "celular",
+    "anima\u00e7\u00e3o",
+    "visualiza\u00e7\u00e3o",
+    "dados",
+    "jogo",
+    "documento",
+    "planilha",
+    "conhe\u00e7a",
+    "sua",
+    "cria\u00e7\u00e3o",
+    "modo",
+    "crie",
+    "sem",
+    "gastar",
+    "tokens"
+   ],
+   "heightRatio": 0.978,
+   "overflowX": false,
+   "tiles": [
+    6.7,
+    6.1,
+    25.0,
+    12.8,
+    12.8,
+    11.5,
+    15.4,
+    8.8
+   ],
+   "diffTop": 12.6,
+   "diffAll": 12.4,
+   "imgVis": [
+    20,
+    19
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    3,
+    0
+   ],
+   "links": [
+    107,
+    106
+   ],
+   "buttons": [
+    50,
+    47
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    6382,
+    1580
+   ],
+   "requests": [
+    239,
+    20
+   ],
+   "loadSec": [
+    11.7,
+    6.3
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      390,
+      144
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Replit Diatype:unloaded",
+    "Replit Diatype Mono:unloaded",
+    "text-security-circle:unloaded",
+    "text-security-circle:unloaded"
+   ],
+   "fontOC": [
+    "\"Replit Diatype\", sans-serif",
+    "\"Replit Diatype\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(246, 245, 244)",
+    "rgb(246, 245, 244)"
+   ],
+   "headsMissing": [
+    "O que voc\u00ea vai criar?",
+    "Conhe\u00e7a o Replit",
+    "Comece com modelos",
+    "Um oferecimento da plataforma Replit",
+    "Comece pequeno. Escale r\u00e1pido."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2cta0002ybr8cghmeo3mi/p/home"
+}

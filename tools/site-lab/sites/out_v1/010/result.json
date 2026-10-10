@@ -1,0 +1,187 @@
+{
+ "idx": 10,
+ "cat": "br-saas",
+ "url": "https://www.vindi.com.br/",
+ "projectId": "cmuw0zrir000an7r8wz29y9lq",
+ "slug": "home",
+ "scan": {
+  "seconds": 301,
+  "pages": 1,
+  "blocks": 13,
+  "cssKB": 252,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.983,
+   "overflowX": false,
+   "tiles": [
+    2.7,
+    1.7,
+    0.0,
+    3.2,
+    0.5,
+    0.3
+   ],
+   "diffTop": 1.5,
+   "diffAll": 1.4,
+   "imgVis": [
+    143,
+    139
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    92,
+    92
+   ],
+   "buttons": [
+    12,
+    12
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    3273,
+    668
+   ],
+   "requests": [
+    169,
+    74
+   ],
+   "loadSec": [
+    10.3,
+    8.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Red Hat Display:unloaded",
+    "Red Hat Display:unloaded",
+    "Red Hat Display:unloaded",
+    "Sora:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, \"Segoe UI\", Ro",
+    "system-ui, -apple-system, \"Segoe UI\", Ro"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.963,
+   "overflowX": false,
+   "tiles": [
+    0.7,
+    0.9,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3.3,
+    0.0
+   ],
+   "diffTop": 0.5,
+   "diffAll": 0.6,
+   "imgVis": [
+    102,
+    137
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    93,
+    92
+   ],
+   "buttons": [
+    13,
+    12
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1918,
+    430
+   ],
+   "requests": [
+    163,
+    42
+   ],
+   "loadSec": [
+    7.6,
+    5.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Red Hat Display:unloaded",
+    "Red Hat Display:unloaded",
+    "Red Hat Display:unloaded",
+    "Sora:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, \"Segoe UI\", Ro",
+    "system-ui, -apple-system, \"Segoe UI\", Ro"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0zrir000an7r8wz29y9lq/p/home"
+}

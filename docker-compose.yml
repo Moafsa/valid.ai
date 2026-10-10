@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: funnelai
     ports:
-      - '5435:5432'
+      - '127.0.0.1:5435:5432'   # só a própria máquina (era aberto pra internet: foi a porta da invasão de 27/09)
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -31,7 +31,7 @@ services:
     container_name: funnelai_redis
     command: redis-server --appendonly yes
     ports:
-      - '6385:6379'
+      - '127.0.0.1:6385:6379'
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -58,8 +58,10 @@ services:
       AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL:-}
       S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-false}
       PROXY_URL: ${PROXY_URL:-}
+      SCANNER_SHARED_SECRET: ${SCANNER_SHARED_SECRET:-}
+      WEB_INTERNAL_URL: http://web:3000
     ports:
-      - '8001:8001'
+      - '127.0.0.1:8001:8001'
     depends_on:
       postgres:
         condition: service_healthy
@@ -88,8 +90,12 @@ services:
       SCANNER_SERVICE_URL: http://scanner:8001
       CONFIG_ENCRYPTION_KEY: ${CONFIG_ENCRYPTION_KEY:-change-this-32-char-encryption-key}
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3005}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SCANNER_SHARED_SECRET: ${SCANNER_SHARED_SECRET:-}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-adm1@gmail.com}
+      SUPERADMIN_CLERK_USER_ID: ${SUPERADMIN_CLERK_USER_ID:-}
     ports:
-      - '3005:3000'
+      - '127.0.0.1:3005:3000'
     depends_on:
       postgres:
         condition: service_healthy
@@ -108,8 +114,8 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     ports:
-      - '9090:9000' # S3 API endpoint
-      - '9091:9001' # MinIO Web Dashboard
+      - '127.0.0.1:9090:9000' # S3 API endpoint (o nginx publica)
+      - '127.0.0.1:9091:9001' # MinIO Web Dashboard
     volumes:
       - minio_data:/data
     restart: unless-stopped

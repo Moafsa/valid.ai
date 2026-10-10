@@ -1,0 +1,182 @@
+{
+ "idx": 229,
+ "cat": "carrd",
+ "url": "https://woakes.carrd.co",
+ "projectId": "cmux5fat6009abr8c70h28zn9",
+ "slug": "home",
+ "scan": {
+  "seconds": 87,
+  "pages": 1,
+  "blocks": 12,
+  "cssKB": 71,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    1.2,
+    0.6,
+    6.1,
+    0.1
+   ],
+   "diffTop": 2.6,
+   "diffAll": 2.0,
+   "imgVis": [
+    6,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    13,
+    13
+   ],
+   "buttons": [
+    11,
+    11
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    901,
+    915
+   ],
+   "requests": [
+    18,
+    21
+   ],
+   "loadSec": [
+    3.6,
+    4.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(247, 247, 247)",
+    "rgb(247, 247, 247)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    6,
+    6
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    13,
+    13
+   ],
+   "buttons": [
+    11,
+    11
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    888,
+    902
+   ],
+   "requests": [
+    18,
+    21
+   ],
+   "loadSec": [
+    2.0,
+    3.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded",
+    "Hahmlet:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(247, 247, 247)",
+    "rgb(247, 247, 247)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux5fat6009abr8c70h28zn9/p/home"
+}

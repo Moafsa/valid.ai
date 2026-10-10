@@ -3,9 +3,13 @@ import {
   Sparkles, Layers, Globe2, ShieldCheck, CheckCircle2, ArrowRight,
   Zap, Search, Camera, LayoutDashboard, FolderOpen, BarChart3, Users, Settings,
   TrendingUp, PlayCircle, Link2, MonitorPlay, Image as ImageIcon,
-  Video, Type, Globe, Wifi, GitCompare, Pencil, Filter, Percent,
+  Video, Type, Globe, Wifi, GitCompare, Pencil, Filter, Percent, Smartphone, Target,
 } from 'lucide-react'
 import { FaqAccordion } from '@/components/landing/faq-accordion'
+import { PricingSection } from '@/components/landing/pricing-section'
+
+// the pricing cards read the plans the administrator edits
+export const dynamic = 'force-dynamic'
 
 const STEPS = [
   { icon: Link2, title: 'Cola o link da página', desc: 'A que você quer usar de referência. A gente importa a estrutura pra você.' },
@@ -19,12 +23,21 @@ const TRUST_POINTS = [
   { icon: CheckCircle2, text: 'Cancele quando quiser' },
 ]
 
+const DEEP_FEATURES = [
+  { icon: Layers, title: 'Clonagem completa de funis', desc: 'Clone páginas, etapas, quizzes e caminhos de navegação em uma única estrutura editável.' },
+  { icon: Sparkles, title: 'Inteligência Artificial integrada', desc: 'Traduza, reescreva e adapte textos e elementos da sua página com inteligência artificial.' },
+  { icon: Smartphone, title: 'Design responsivo', desc: 'Visualize e edite suas páginas para diferentes dispositivos, com adaptação para celular, tablet e computador.' },
+  { icon: Video, title: 'Player de vídeo e VSL', desc: 'Integre vídeos com carregamento otimizado para proporcionar uma experiência mais rápida e fluida.' },
+  { icon: BarChart3, title: 'Métricas e análise de comportamento', desc: 'Acompanhe visitas, cliques, rolagem, mapas de calor e gravações de sessões para identificar oportunidades de melhoria.' },
+  { icon: Target, title: 'Integração de pixels e eventos', desc: 'Configure Meta Pixel, Google Analytics, Google Ads, TikTok Pixel e outras ferramentas de rastreamento.' },
+]
+
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#07050f] text-white">
+    <div className="landing relative min-h-screen overflow-x-hidden bg-[#07050f] text-white">
       {/* Ambient background */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-violet-600/20 blur-[130px]" />
+        <div className="vai-aurora absolute -top-40 left-1/2 h-[620px] w-[1000px] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-600/30 via-fuchsia-500/20 to-blue-500/25 blur-[130px]" />
         <div className="absolute top-[30%] -left-40 h-[420px] w-[420px] rounded-full bg-blue-600/15 blur-[110px]" />
         <div className="absolute bottom-0 right-0 h-[480px] w-[480px] rounded-full bg-indigo-600/15 blur-[130px]" />
         <div
@@ -40,14 +53,10 @@ export default function LandingPage() {
       <div className="relative z-10">
         {/* Nav */}
         <nav className="sticky top-0 z-20 border-b border-white/5 bg-[#07050f]/70 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-blue-500 shadow-lg shadow-violet-600/30">
-                <Zap className="h-5 w-5 text-white" fill="currentColor" strokeWidth={0} />
-              </div>
-              <span className="text-xl font-extrabold tracking-tight text-white">
-                be-Vallid
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="be-Vallid" className="h-6 w-auto sm:h-8" />
             </div>
             <div className="hidden items-center gap-8 text-sm font-medium text-gray-400 md:flex">
               <Link href="#features" className="transition-colors hover:text-white">Recursos</Link>
@@ -55,13 +64,13 @@ export default function LandingPage() {
               <Link href="#faq" className="transition-colors hover:text-white">Dúvidas</Link>
               <Link href="#pricing" className="transition-colors hover:text-white">Preços</Link>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               <Link href="/sign-in" className="text-sm font-medium text-gray-400 transition-colors hover:text-white">
                 Entrar
               </Link>
               <Link
                 href="/sign-up"
-                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-all hover:from-violet-500 hover:to-blue-500"
+                className="whitespace-nowrap rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-violet-600/30 transition-all hover:from-violet-500 hover:to-blue-500 sm:px-5 sm:py-2.5"
               >
                 Começar grátis
               </Link>
@@ -79,20 +88,20 @@ export default function LandingPage() {
             <Sparkles className="h-3.5 w-3.5 shrink-0" />
             <span className="text-left sm:whitespace-nowrap">Captura real. Nada de IA chutando.</span>
           </div>
-          <h1 className="relative mb-6 mt-6 text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Não clone apenas a página.
+          <h1 className="relative mb-6 mt-6 text-5xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-8xl">
+            Página? É pouco.
             <br />
-            <span className="bg-gradient-to-r from-violet-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
-              Assuma o controle dela.
+            <span className="vai-shine bg-gradient-to-r from-violet-300 via-fuchsia-300 to-blue-300 bg-clip-text text-transparent">
+              Clone o funil inteiro.
             </span>
           </h1>
-          <p className="relative mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-400 sm:text-xl">
-            Cola o link e a gente entra na página de verdade pra trazer tudo: HTML, CSS, imagens, fontes e vídeos. Nada de IA inventando como era o original. É o clone real, hospedado com a gente, pronto em minutos e seu pra sempre.
+          <p className="relative mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-300 sm:text-xl">
+            Capture toda a jornada. Tenha o funil completo nas suas mãos: páginas, etapas, caminhos, elementos e métricas. Pegue o que já funciona, adapte do seu jeito e coloque sua versão no ar sem começar do zero.
           </p>
           <div className="relative flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/sign-up"
-              className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-xl shadow-violet-600/30 transition-all hover:-translate-y-0.5 hover:from-violet-500 hover:to-blue-500"
+              className="vai-glow group flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-600 to-blue-600 px-9 py-4 text-base font-semibold text-white shadow-xl shadow-violet-600/40 transition-all hover:-translate-y-0.5 hover:brightness-110"
             >
               <span>Começar grátis</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -292,7 +301,29 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Showcase */}
+        {/* Além do clone */}
+        <section className="relative mx-auto max-w-5xl px-6 py-16">
+          <div className="mb-12 text-center">
+            <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-semibold text-violet-300">
+              Muito além do clone
+            </span>
+            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Do clone ao resultado, no mesmo lugar</h2>
+            <p className="mt-3 text-gray-400">Clonou? Agora edite, publique, meça e melhore com dados reais</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {DEEP_FEATURES.map(f => (
+              <div key={f.title} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 transition-all hover:border-violet-500/40">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600/40 to-blue-500/30">
+                  <f.icon className="h-5 w-5 text-violet-200" />
+                </div>
+                <h3 className="mb-1.5 text-sm font-bold text-white">{f.title}</h3>
+                <p className="text-[13px] leading-relaxed text-gray-400">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Seu painel */}
         <section className="relative mx-auto max-w-5xl px-6 py-24">
           <div className="mb-14 text-center">
             <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-semibold text-violet-300">
@@ -330,7 +361,7 @@ export default function LandingPage() {
                         { label: 'Projetos', value: '4', icon: FolderOpen },
                         { label: 'Publicados', value: '3', icon: Globe2 },
                         { label: 'Assets salvos', value: '512', icon: ImageIcon },
-                        { label: 'Uso do plano', value: '2/5', icon: Zap },
+                        { label: 'Créditos de IA', value: '212/300', icon: Zap },
                       ].map(s => (
                         <div key={s.label} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                           <div className="mb-1.5 flex items-center gap-1.5 text-gray-500">
@@ -369,8 +400,8 @@ export default function LandingPage() {
                 <TrendingUp className="h-3.5 w-3.5" />
               </div>
               <div>
-                <p className="text-[10px] text-gray-500">Conversão</p>
-                <p className="text-xs font-bold text-white">+32% este mês</p>
+                <p className="text-[10px] text-gray-500">Teste A/B</p>
+                <p className="text-xs font-bold text-white">Variação B na frente</p>
               </div>
             </div>
             <div className="absolute -right-10 -bottom-8 hidden rotate-3 items-center gap-2 rounded-xl border border-white/10 bg-[#0a0814]/95 px-3.5 py-2.5 shadow-xl backdrop-blur-xl sm:flex">
@@ -378,8 +409,8 @@ export default function LandingPage() {
                 <Layers className="h-3.5 w-3.5" />
               </div>
               <div>
-                <p className="text-[10px] text-gray-500">Páginas clonadas</p>
-                <p className="text-xs font-bold text-white">100% fiéis</p>
+                <p className="text-[10px] text-gray-500">Pixel da Meta</p>
+                <p className="text-xs font-bold text-white">Evento enviado</p>
               </div>
             </div>
           </div>
@@ -387,7 +418,7 @@ export default function LandingPage() {
           {/* Métricas da página */}
           <div className="relative mt-8 overflow-hidden rounded-2xl border border-white/10 bg-[#0a0814]/90 p-4 backdrop-blur-xl sm:p-5">
             <h3 className="text-base font-bold text-white">Métricas da página</h3>
-            <p className="mt-1 text-sm text-gray-500">Visitantes, conversões e desempenho de cada clone</p>
+            <p className="mt-1 text-sm text-gray-500">Visitantes, conversões e desempenho de cada clone <span className="text-gray-600">· números de exemplo</span></p>
 
             <div className="mt-5 grid grid-cols-1 gap-3 lg:grid-cols-[180px_1fr]">
               <div className="grid grid-cols-3 gap-2.5 lg:grid-cols-1">
@@ -457,23 +488,43 @@ export default function LandingPage() {
           <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-violet-600/[0.07] to-transparent p-6 sm:p-10">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-600/20 blur-[110px]" />
             <div className="relative">
-              <h2 className="mb-2 max-w-xl text-2xl font-bold text-white sm:text-3xl">
-                A gente também acha a página escondida
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-300">
+                <Search className="h-3.5 w-3.5" /> Detector de cloaker
+              </span>
+              <h2 className="mb-4 max-w-2xl text-3xl font-extrabold text-white sm:text-4xl">
+                Se existe uma versão, a gente encontra.
               </h2>
-              <p className="mb-8 max-w-xl text-sm leading-relaxed text-gray-400">
-                Cloaker muda a oferta por região, VPN ou navegador. A gente testa de vários jeitos e te mostra a versão real.
+              <p className="mb-8 max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base">
+                Cloaker muda a oferta por região, VPN, navegador ou dispositivo: alguns sites escondem páginas, ofertas e conteúdos diferentes para cada visitante. A gente testa os cenários e revela o que realmente está por trás do link.
               </p>
 
-              <div className="flex flex-wrap gap-3">
-                <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-gray-300">
-                  <Globe className="h-3.5 w-3.5 text-violet-400" /> Por região
-                </span>
-                <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-gray-300">
-                  <Wifi className="h-3.5 w-3.5 text-violet-400" /> Com e sem VPN
-                </span>
-                <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-gray-300">
-                  <GitCompare className="h-3.5 w-3.5 text-violet-400" /> Compara as versões
-                </span>
+              <div className="mb-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  { icon: GitCompare, title: 'Compara as versões' },
+                  { icon: Search, title: 'Acha a oferta' },
+                  { icon: Layers, title: 'Clona o que importa' },
+                ].map(c => (
+                  <div key={c.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600/40 to-blue-500/30">
+                      <c.icon className="h-4 w-4 text-violet-200" />
+                    </div>
+                    <p className="text-sm font-semibold text-white">{c.title}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { icon: Globe, t: 'Região' },
+                  { icon: Wifi, t: 'VPN' },
+                  { icon: MonitorPlay, t: 'Navegador' },
+                  { icon: Camera, t: 'Dispositivo' },
+                  { icon: Sparkles, t: 'e muito mais…' },
+                ].map(x => (
+                  <span key={x.t} className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-gray-300">
+                    <x.icon className="h-3.5 w-3.5 text-violet-400" /> {x.t}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -492,68 +543,7 @@ export default function LandingPage() {
         </section>
 
         {/* Pricing */}
-        <section id="pricing" className="relative mx-auto max-w-5xl px-6 py-24">
-          <div className="mb-14 text-center">
-            <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-semibold text-violet-300">
-              Preços
-            </span>
-            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Preços simples e transparentes</h2>
-            <p className="mt-3 text-gray-400">Escolha o plano que faz sentido pro seu momento</p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {[
-              { name: 'Basic', price: 'R$ 97', period: '/mês', cta: 'Assinar Basic', features: ['2 páginas clonadas', 'Imagens, fontes e vídeos hospedados', 'Subdomínio be-vallid.com grátis', 'Suporte por e-mail'] },
-              { name: 'Pro', price: 'R$ 247', period: '/mês', cta: 'Assinar Pro', highlight: true, features: ['10 páginas clonadas', 'Imagens, fontes e vídeos hospedados', '3 domínios próprios customizados', 'Suporte prioritário'] },
-              { name: 'Scale', price: 'R$ 597', period: '/mês', cta: 'Assinar Scale', features: ['Páginas clonadas ILIMITADAS', 'Imagens, fontes e vídeos hospedados', 'Domínios próprios ilimitados', 'Suporte VIP prioritário'] },
-            ].map(plan => (
-              <div
-                key={plan.name}
-                className={
-                  plan.highlight
-                    ? 'rounded-2xl bg-gradient-to-b from-violet-500 to-blue-600 p-px shadow-2xl shadow-violet-900/40'
-                    : ''
-                }
-              >
-                <div
-                  className={`h-full rounded-2xl border p-6 ${
-                    plan.highlight
-                      ? 'border-transparent bg-[#0a0814]'
-                      : 'border-white/10 bg-white/[0.02]'
-                  }`}
-                >
-                  {plan.highlight && (
-                    <div className="mb-3 inline-flex items-center gap-1 rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs font-bold text-violet-300">
-                      <Sparkles className="h-3 w-3" /> Mais popular
-                    </div>
-                  )}
-                  <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-                  <div className="mb-4 mt-2">
-                    <span className="text-4xl font-extrabold text-white">{plan.price}</span>
-                    <span className="text-sm font-medium text-gray-400">{plan.period}</span>
-                  </div>
-                  <ul className="mb-6 space-y-2.5">
-                    {plan.features.map(f => (
-                      <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                        <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-emerald-400" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/sign-up"
-                    className={`block rounded-xl py-3 text-center text-sm font-bold transition-all ${
-                      plan.highlight
-                        ? 'bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg shadow-violet-600/30 hover:from-violet-500 hover:to-blue-500'
-                        : 'bg-white/10 text-gray-200 hover:bg-white/15'
-                    }`}
-                  >
-                    {plan.cta}
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <PricingSection />
 
         {/* CTA final */}
         <section className="relative mx-auto max-w-5xl px-6 py-16">
@@ -580,9 +570,8 @@ export default function LandingPage() {
         <footer className="border-t border-white/5 px-6 py-8">
           <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 text-sm text-gray-500 sm:flex-row">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-tr from-violet-600 to-blue-500">
-                <Zap className="h-3.5 w-3.5 text-white" fill="currentColor" strokeWidth={0} />
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-mark.png" alt="" className="h-5 w-auto opacity-90" />
               <p>© 2026 be-Vallid. Todos os direitos reservados.</p>
             </div>
             <div className="flex gap-6">

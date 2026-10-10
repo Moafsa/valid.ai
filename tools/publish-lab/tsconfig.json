@@ -1,0 +1,35 @@
+{
+ "compilerOptions": {
+  "target": "ES2022",
+  "module": "esnext",
+  "moduleResolution": "bundler",
+  "esModuleInterop": true,
+  "strict": false,
+  "skipLibCheck": true,
+  "baseUrl": ".",
+  "paths": {
+   "@/lib/auth-helper": [
+    "stubs/auth-helper.ts"
+   ],
+   "@/*": [
+    "src/*"
+   ],
+   "@funnelai/db": [
+    "stubs/db.ts"
+   ],
+   "next/server": [
+    "stubs/next-server.ts"
+   ],
+   "next/link": [
+    "stubs/next-link.tsx"
+   ],
+   "next/navigation": [
+    "stubs/next-navigation.ts"
+   ],
+   "@clerk/nextjs/server": [
+    "stubs/clerk-server.ts"
+   ]
+  },
+  "jsx": "react-jsx"
+ }
+}

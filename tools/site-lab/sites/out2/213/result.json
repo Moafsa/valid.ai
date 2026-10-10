@@ -1,0 +1,237 @@
+{
+ "idx": 213,
+ "cat": "shop-br",
+ "url": "https://lojadocledson2.lojavirtualnuvem.com.br/",
+ "projectId": "cmux4wr4y008jbr8cwgfi5xbx",
+ "slug": "home",
+ "scan": {
+  "seconds": 174,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 250,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.968,
+   "extra": 0.028,
+   "missing": [
+    "navegar",
+    "por",
+    "voc\u00ea",
+    "aceita",
+    "uso",
+    "cookies",
+    "agilizar",
+    "sua",
+    "experi\u00eancia",
+    "entendi"
+   ],
+   "heightRatio": 1.439,
+   "overflowX": false,
+   "tiles": [
+    43.7,
+    37.6,
+    23.1,
+    5.3,
+    88.5
+   ],
+   "diffTop": 34.8,
+   "diffAll": 39.6,
+   "imgVis": [
+    9,
+    19
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    323,
+    299
+   ],
+   "buttons": [
+    112,
+    110
+   ],
+   "inputs": [
+    192,
+    185
+   ],
+   "kb": [
+    2106,
+    5925
+   ],
+   "requests": [
+    28,
+    28
+   ],
+   "loadSec": [
+    9.6,
+    20.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "a",
+      1440,
+      810,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux4wr4y008jbr8cwgfi5xbx/assets/home_section_0_1.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Montserrat, sans-serif",
+    "Montserrat, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.968,
+   "extra": 0.032,
+   "missing": [
+    "navegar",
+    "por",
+    "voc\u00ea",
+    "aceita",
+    "uso",
+    "cookies",
+    "agilizar",
+    "sua",
+    "experi\u00eancia",
+    "entendi"
+   ],
+   "heightRatio": 1.231,
+   "overflowX": false,
+   "tiles": [
+    61.3,
+    53.2,
+    59.5,
+    41.0,
+    54.8,
+    58.1,
+    73.5
+   ],
+   "diffTop": 58.0,
+   "diffAll": 57.3,
+   "imgVis": [
+    8,
+    19
+   ],
+   "broken": [
+    0,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    263,
+    299
+   ],
+   "buttons": [
+    88,
+    110
+   ],
+   "inputs": [
+    147,
+    185
+   ],
+   "kb": [
+    1437,
+    5409
+   ],
+   "requests": [
+    27,
+    26
+   ],
+   "loadSec": [
+    7.7,
+    12.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "a",
+      390,
+      219,
+      false
+     ],
+     [
+      "div",
+      80,
+      80,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux4wr4y008jbr8cwgfi5xbx/assets/home_section_0_1.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded",
+    "Montserrat:unloaded"
+   ],
+   "fontOC": [
+    "Montserrat, sans-serif",
+    "Montserrat, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux4wr4y008jbr8cwgfi5xbx/p/home"
+}

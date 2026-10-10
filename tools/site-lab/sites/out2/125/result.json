@@ -1,0 +1,203 @@
+{
+ "idx": 125,
+ "cat": "br-saas",
+ "url": "https://descomplica.com.br/",
+ "projectId": "cmux3i2p8005gbr8ca02l6mrs",
+ "slug": "home",
+ "scan": {
+  "seconds": 230,
+  "pages": 2,
+  "blocks": 16,
+  "cssKB": 342,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.986,
+   "extra": 0.025,
+   "missing": [
+    "atendimento",
+    "entro",
+    "posso",
+    "cancelar",
+    "minha",
+    "compra",
+    "entra",
+    "manda",
+    "matr\u00edcula"
+   ],
+   "heightRatio": 1.149,
+   "overflowX": false,
+   "tiles": [
+    9.7,
+    0.0,
+    0.0,
+    0.9,
+    0.0,
+    14.9,
+    7.0
+   ],
+   "diffTop": 3.2,
+   "diffAll": 4.6,
+   "imgVis": [
+    86,
+    56
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    147,
+    102
+   ],
+   "buttons": [
+    77,
+    66
+   ],
+   "inputs": [
+    5,
+    9
+   ],
+   "kb": [
+    3367,
+    1534
+   ],
+   "requests": [
+    164,
+    73
+   ],
+   "loadSec": [
+    12.5,
+    10.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "swiper-icons:unloaded",
+    "AprovaFallbackRegular:error",
+    "AprovaFallbackBold:error",
+    "AprovaFallbackBlack:error"
+   ],
+   "fontOC": [
+    "__aprovaSans_ec89c6, AprovaFallbackRegul",
+    "__aprovaSans_ec89c6, AprovaFallbackRegul"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.996,
+   "extra": 0.013,
+   "missing": [
+    "15m",
+    "00s"
+   ],
+   "heightRatio": 1.496,
+   "overflowX": false,
+   "tiles": [
+    33.3,
+    5.9,
+    0.0,
+    0.0,
+    0.9,
+    0.0,
+    0.0,
+    8.4
+   ],
+   "diffTop": 13.1,
+   "diffAll": 6.1,
+   "imgVis": [
+    77,
+    76
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    148,
+    93
+   ],
+   "buttons": [
+    78,
+    72
+   ],
+   "inputs": [
+    5,
+    9
+   ],
+   "kb": [
+    2870,
+    1377
+   ],
+   "requests": [
+    140,
+    74
+   ],
+   "loadSec": [
+    9.4,
+    6.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "swiper-icons:unloaded",
+    "AprovaFallbackRegular:error",
+    "AprovaFallbackBold:error",
+    "AprovaFallbackBlack:error"
+   ],
+   "fontOC": [
+    "__aprovaSans_ec89c6, AprovaFallbackRegul",
+    "__aprovaSans_ec89c6, AprovaFallbackRegul"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux3i2p8005gbr8ca02l6mrs/p/home"
+}

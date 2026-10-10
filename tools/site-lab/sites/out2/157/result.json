@@ -1,0 +1,186 @@
+{
+ "idx": 157,
+ "cat": "carrd",
+ "url": "https://d13d9c501fc2f2cc.demo.carrd.co/",
+ "projectId": "cmux47wzh006pbr8cwgrsy3xx",
+ "slug": "home",
+ "scan": {
+  "seconds": 43,
+  "pages": 1,
+  "blocks": 17,
+  "cssKB": 151,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    18,
+    17
+   ],
+   "buttons": [
+    7,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    461,
+    480
+   ],
+   "requests": [
+    13,
+    16
+   ],
+   "loadSec": [
+    2.2,
+    4.1
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(87, 62, 242)",
+    "rgb(87, 62, 242)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.1
+   ],
+   "diffTop": 0.0,
+   "diffAll": 0.0,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    18,
+    17
+   ],
+   "buttons": [
+    7,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    456,
+    475
+   ],
+   "requests": [
+    13,
+    16
+   ],
+   "loadSec": [
+    6.8,
+    3.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded",
+    "Manrope:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(87, 62, 242)",
+    "rgb(87, 62, 242)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux47wzh006pbr8cwgrsy3xx/p/home"
+}

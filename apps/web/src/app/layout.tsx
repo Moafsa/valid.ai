@@ -9,7 +9,14 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 export const metadata: Metadata = {
   title: 'be-Vallid: clone qualquer página e fica no controle dela',
   description: 'Clone páginas reais com HTML, CSS, imagens, fontes e vídeos preservados, hospedados com a gente.',
-  icons: { icon: '/favicon.ico' },
+  // the symbol is drawn in white for dark browser themes and in dark ink for light ones
+  icons: {
+    icon: [
+      { url: '/icon-light.png', type: 'image/png', media: '(prefers-color-scheme: dark)' },
+      { url: '/icon-dark.png', type: 'image/png', media: '(prefers-color-scheme: light)' },
+    ],
+    apple: [{ url: '/icon-dark.png' }],
+  },
 }
 
 const isClerkValid = () => {

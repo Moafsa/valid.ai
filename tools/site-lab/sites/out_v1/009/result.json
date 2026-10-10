@@ -1,0 +1,260 @@
+{
+ "idx": 9,
+ "cat": "saas",
+ "url": "https://www.zendesk.com/",
+ "projectId": "cmuw0rdzu0006n7r8u495e7mp",
+ "slug": "home",
+ "scan": {
+  "seconds": 391,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 360,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.523,
+   "extra": 0.17,
+   "missing": [
+    "professionnel",
+    "pr\u00e9nom",
+    "nom",
+    "num\u00e9ro",
+    "nombre",
+    "100",
+    "249",
+    "250",
+    "499",
+    "500",
+    "999",
+    "1000",
+    "4999",
+    "5000",
+    "pays",
+    "s\u00e9lectionner",
+    "afghanistan",
+    "albanie",
+    "alg\u00e9rie",
+    "samoa",
+    "am\u00e9ricaines",
+    "andorre",
+    "angola",
+    "anguilla",
+    "antarctique"
+   ],
+   "heightRatio": 0.912,
+   "overflowX": false,
+   "tiles": [
+    74.2,
+    2.1,
+    5.1,
+    41.4,
+    33.4,
+    46.3,
+    91.4
+   ],
+   "diffTop": 27.1,
+   "diffAll": 42.0,
+   "imgVis": [
+    27,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    295,
+    291
+   ],
+   "buttons": [
+    56,
+    33
+   ],
+   "inputs": [
+    26,
+    2
+   ],
+   "kb": [
+    13698,
+    772
+   ],
+   "requests": [
+    200,
+    23
+   ],
+   "loadSec": [
+    26.8,
+    41.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: the server responded with a status of 522 ()",
+    "console: Refused to display 'http://www.zndsk.com/' in a frame because it set 'X-Frame-Options' to 'sameorigi"
+   ],
+   "cloneFailed": [
+    "http://www.zndsk.com/hub.html"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 2,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Vanilla Sans\", Arial, sans-serif",
+    "\"Vanilla Sans\", Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.95,
+   "extra": 0.151,
+   "missing": [
+    "meilleure",
+    "possible",
+    "visiteurs",
+    "site",
+    "web",
+    "cela",
+    "inclut",
+    "analyse",
+    "cibl\u00e9s",
+    "peuvent",
+    "\u00e9galement",
+    "\u00eatre",
+    "utilis\u00e9s",
+    "cadre",
+    "cliquez",
+    "bouton",
+    "tout",
+    "accepter",
+    "pr\u00e9f\u00e9rences",
+    "refuser",
+    "essentiels"
+   ],
+   "heightRatio": 0.894,
+   "overflowX": false,
+   "tiles": [
+    51.5,
+    46.9,
+    19.3,
+    13.4,
+    36.4,
+    28.7,
+    55.2,
+    38.0
+   ],
+   "diffTop": 39.2,
+   "diffAll": 36.2,
+   "imgVis": [
+    41,
+    32
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    296,
+    291
+   ],
+   "buttons": [
+    58,
+    33
+   ],
+   "inputs": [
+    25,
+    2
+   ],
+   "kb": [
+    5527,
+    834
+   ],
+   "requests": [
+    189,
+    26
+   ],
+   "loadSec": [
+    12.2,
+    42.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      304,
+      154,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: the server responded with a status of 522 ()",
+    "console: Refused to display 'http://www.zndsk.com/' in a frame because it set 'X-Frame-Options' to 'sameorigi"
+   ],
+   "cloneFailed": [
+    "http://www.zndsk.com/hub.html"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 2,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded",
+    "Vanilla Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Vanilla Sans\", Arial, sans-serif",
+    "\"Vanilla Sans\", Arial, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0rdzu0006n7r8u495e7mp/p/home"
+}

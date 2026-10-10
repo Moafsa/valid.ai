@@ -10,8 +10,21 @@ const nextConfig: NextConfig = {
     ],
   },
   output: 'standalone',
+  // the country lookup reads its database files at run time: keep the package out of the bundle and ship its data
+  serverExternalPackages: ['geoip-lite'],
+  outputFileTracingIncludes: {
+    '/api/collect': ['../../node_modules/geoip-lite/**/*'],
+    '/api/collect/rec': ['../../node_modules/geoip-lite/**/*'],
+    '/api/track': ['../../node_modules/geoip-lite/**/*'],
+  },
   async headers() {
     return [
+      // the player's own copy of hls.js never changes; the two scripts every clone loads are re-checked every few minutes
+      { source: '/hls.min.js', headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, immutable' }] },
+      { source: '/vai-player.js', headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }] },
+      { source: '/vai-m.js', headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }] },
+      { source: '/vendor/:file*', headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, immutable' }] },
+      { source: '/vai-runtime.js', headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }] },
       {
         source: '/:path*',
         headers: [

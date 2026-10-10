@@ -1,0 +1,290 @@
+{
+ "idx": 216,
+ "cat": "media",
+ "url": "https://www.bbc.com/news",
+ "projectId": "cmux50wjr008sbr8cguavlq83",
+ "slug": "news",
+ "scan": {
+  "seconds": 244,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 72,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.97,
+   "extra": 0.008,
+   "missing": [
+    "inspires",
+    "reaction",
+    "double",
+    "helps",
+    "comfortable",
+    "victory",
+    "come",
+    "beat",
+    "ramshackle",
+    "hampden",
+    "know",
+    "give",
+    "best",
+    "online",
+    "experience",
+    "please",
+    "yes",
+    "settings"
+   ],
+   "heightRatio": 1.023,
+   "overflowX": false,
+   "tiles": [
+    77.1,
+    0.3,
+    0.6,
+    2.5,
+    3.2,
+    1.8,
+    0.0
+   ],
+   "diffTop": 26.0,
+   "diffAll": 12.2,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    2
+   ],
+   "links": [
+    164,
+    162
+   ],
+   "buttons": [
+    29,
+    27
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    2408,
+    1109
+   ],
+   "requests": [
+    132,
+    32
+   ],
+   "loadSec": [
+    8.7,
+    4.5
+   ],
+   "videoArea": 0.03,
+   "videoRect": [
+    [
+     0,
+     0,
+     1440,
+     900
+    ],
+    [
+     0,
+     6590,
+     300,
+     150
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      1440,
+      900
+     ]
+    ],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.975,
+   "extra": 0.004,
+   "missing": [
+    "come",
+    "beat",
+    "ramshackle",
+    "hampden",
+    "know",
+    "give",
+    "best",
+    "online",
+    "experience",
+    "please",
+    "yes",
+    "settings"
+   ],
+   "heightRatio": 1.028,
+   "overflowX": false,
+   "tiles": [
+    58.5,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.1,
+    0.0,
+    0.0
+   ],
+   "diffTop": 19.5,
+   "diffAll": 7.3,
+   "imgVis": [
+    22,
+    22
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    2
+   ],
+   "links": [
+    153,
+    151
+   ],
+   "buttons": [
+    29,
+    27
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    2068,
+    752
+   ],
+   "requests": [
+    171,
+    32
+   ],
+   "loadSec": [
+    8.1,
+    3.3
+   ],
+   "videoArea": 0.14,
+   "videoRect": [
+    [
+     0,
+     0,
+     390,
+     844
+    ],
+    [
+     0,
+     10274,
+     300,
+     150
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      390,
+      844
+     ]
+    ],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ],
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded",
+    "BBC Reith Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux50wjr008sbr8cguavlq83/p/news"
+}

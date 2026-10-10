@@ -1,0 +1,17 @@
+project cmuvicw7j0001axb7mmwhb1nz slug home scan 185s pages 7
+http://172.18.0.1:8099/q_state_cont/: 7 screens, exits=['https://example.com/checkout'] errors=0 total=16.9s bytes=18810
+
+http://web:3000/projects/cmuvicw7j0001axb7mmwhb1nz/p/home: 7 screens, exits=['https://example.com/checkout'] errors=0 total=18.7s bytes=41799
+
+original: 7 screens in 16.9s, 18KB | clone: 7 screens in 18.7s, 40KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Descubra seu plano ideal            Descubra seu plano ideal            OK     0.0     0.4   2.08
+  2  Qual é o seu objetivo?              Qual é o seu objetivo?              OK     0.0    2.77   4.43
+  3  Quais são seus maiores desafios?    Quais são seus maiores desafios?    OK     0.0    5.08   6.62
+  4  O que você quer melhorar?           O que você quer melhorar?           OK     0.0     7.3   8.82
+  5  Você já treinou antes?              Você já treinou antes?              OK     0.0     9.4  11.02
+  6  Montando seu plano…                 Montando seu plano…                 OK    0.19   11.73  13.22
+  7  Seu plano está pronto!              Seu plano está pronto!              OK    0.03   14.76  16.64
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 7->7 same-title 7/7 | mean pixel diff 0.03% max 0.19% | weight 18KB -> 40KB | longtasks 1 -> 2
+

@@ -1,0 +1,225 @@
+{
+ "idx": 89,
+ "cat": "shopify",
+ "url": "https://explosions-in-the-sky-us.myshopify.com/",
+ "projectId": "cmuw67x4y0074n7r894p146j7",
+ "slug": "home",
+ "scan": {
+  "seconds": 321,
+  "pages": 1,
+  "blocks": 7,
+  "cssKB": 280,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.814,
+   "extra": 0.0,
+   "missing": [
+    "this",
+    "website",
+    "uses",
+    "cookies",
+    "ensure",
+    "you",
+    "get",
+    "best",
+    "experience",
+    "our",
+    "learn",
+    "more",
+    "got"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    7.5
+   ],
+   "diffTop": 7.5,
+   "diffAll": 7.5,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    53,
+    51
+   ],
+   "buttons": [
+    19,
+    15
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    2235,
+    520
+   ],
+   "requests": [
+    214,
+    33
+   ],
+   "loadSec": [
+    11.5,
+    4.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "explosions-in-the-sky-us.myshopify.com": [
+     13,
+     16066
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://explosions-in-the-sky-us.myshopify.com/' because an ancestor violates the ",
+    "console: Refused to frame 'https://explosions-in-the-sky-us.myshopify.com/' because an ancestor violates the "
+   ],
+   "cloneFailed": [
+    "https://explosions-in-the-sky-us.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-108200135",
+    "https://explosions-in-the-sky-us.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-c"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 2,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Font Awesome 6 Brands:unloaded",
+    "Font Awesome 6 Free:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "\"Trade Gothic LT Std\"",
+    "\"Trade Gothic LT Std\""
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.8,
+   "extra": 0.0,
+   "missing": [
+    "this",
+    "website",
+    "uses",
+    "cookies",
+    "ensure",
+    "you",
+    "get",
+    "best",
+    "experience",
+    "our",
+    "learn",
+    "more",
+    "got"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    22.6
+   ],
+   "diffTop": 22.6,
+   "diffAll": 22.6,
+   "imgVis": [
+    9,
+    9
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    53,
+    51
+   ],
+   "buttons": [
+    19,
+    15
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    2435,
+    519
+   ],
+   "requests": [
+    203,
+    33
+   ],
+   "loadSec": [
+    9.7,
+    4.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "explosions-in-the-sky-us.myshopify.com": [
+     13,
+     15098
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://explosions-in-the-sky-us.myshopify.com/' because an ancestor violates the ",
+    "console: Refused to frame 'https://explosions-in-the-sky-us.myshopify.com/' because an ancestor violates the "
+   ],
+   "cloneFailed": [
+    "https://explosions-in-the-sky-us.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-108200135",
+    "https://explosions-in-the-sky-us.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-c"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 2,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Font Awesome 6 Brands:unloaded",
+    "Font Awesome 6 Free:unloaded",
+    "Font Awesome 5 Brands:unloaded",
+    "Font Awesome 5 Free:unloaded"
+   ],
+   "fontOC": [
+    "\"Trade Gothic LT Std\"",
+    "\"Trade Gothic LT Std\""
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw67x4y0074n7r894p146j7/p/home"
+}

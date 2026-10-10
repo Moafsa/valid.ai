@@ -1,0 +1,289 @@
+{
+ "idx": 45,
+ "cat": "app",
+ "url": "https://www.uber.com/br/pt-br/",
+ "projectId": "cmuw31qi1003gn7r8z0693vun",
+ "slug": "br-pt-br",
+ "scan": {
+  "seconds": 357,
+  "pages": 1,
+  "blocks": 15,
+  "cssKB": 232,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.858,
+   "extra": 0.005,
+   "missing": [
+    "pickup",
+    "now",
+    "pronto",
+    "solicite",
+    "relaxe",
+    "informa\u00e7\u00f5es",
+    "fique",
+    "tranquilo",
+    "aeroporto",
+    "ida",
+    "volta",
+    "espa\u00e7o",
+    "bagagem",
+    "t\u00e1xi",
+    "pague",
+    "electric",
+    "el\u00e9trico",
+    "perto",
+    "teens",
+    "contas",
+    "adolescentes",
+    "oferecem",
+    "melhores",
+    "avalia\u00e7\u00f5es",
+    "ferramentas"
+   ],
+   "heightRatio": 0.999,
+   "overflowX": false,
+   "tiles": [
+    28.7,
+    4.1,
+    4.3,
+    7.6,
+    16.6,
+    9.0,
+    3.1
+   ],
+   "diffTop": 12.4,
+   "diffAll": 10.5,
+   "imgVis": [
+    15,
+    10
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    208,
+    186
+   ],
+   "buttons": [
+    39,
+    33
+   ],
+   "inputs": [
+    12,
+    17
+   ],
+   "kb": [
+    2880,
+    850
+   ],
+   "requests": [
+    127,
+    24
+   ],
+   "loadSec": [
+    13.0,
+    5.8
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     738,
+     2186,
+     558,
+     283
+    ],
+    [
+     738,
+     2178,
+     558,
+     283
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      558,
+      283
+     ]
+    ],
+    [
+     [
+      "video",
+      558,
+      283,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw31qi1003gn7r8z0693vun/videos/br-pt-br.mp4"
+   ],
+   "origErrors": 7,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Book:unloaded",
+    "Medium:unloaded",
+    "NarrowBook:unloaded",
+    "NarrowMedium:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.935,
+   "extra": 0.0,
+   "missing": [
+    "estrasburgo",
+    "alterar",
+    "cidade",
+    "aeroporto",
+    "t\u00e1xi",
+    "electric",
+    "teens",
+    "how",
+    "the",
+    "and",
+    "eats",
+    "apps",
+    "websites",
+    "work"
+   ],
+   "heightRatio": 1.006,
+   "overflowX": true,
+   "tiles": [
+    18.6,
+    29.8,
+    19.8,
+    26.8,
+    62.0,
+    36.0,
+    16.9,
+    4.0
+   ],
+   "diffTop": 22.7,
+   "diffAll": 26.7,
+   "imgVis": [
+    18,
+    8
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    207,
+    186
+   ],
+   "buttons": [
+    42,
+    33
+   ],
+   "inputs": [
+    12,
+    17
+   ],
+   "kb": [
+    2548,
+    730
+   ],
+   "requests": [
+    116,
+    21
+   ],
+   "loadSec": [
+    13.3,
+    5.4
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     24,
+     1981,
+     342,
+     175
+    ],
+    [
+     24,
+     2093,
+     342,
+     175
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      342,
+      175
+     ]
+    ],
+    [
+     [
+      "video",
+      342,
+      175,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw31qi1003gn7r8z0693vun/videos/br-pt-br.mp4"
+   ],
+   "origErrors": 7,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Book:unloaded",
+    "Medium:unloaded",
+    "NarrowBook:unloaded",
+    "NarrowMedium:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw31qi1003gn7r8z0693vun/p/br-pt-br"
+}

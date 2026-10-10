@@ -1,0 +1,6 @@
+project cmuviyobc000192u8tc2itele slug home scan 91s pages=1
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Vídeo que começa sozinho © 2026 Lab Funnel · Ter' | 'Vídeo que começa sozinho © 2026 Lab Funnel · Ter'
+  4.0    0.22  'Vídeo que começa sozinho © 2026 Lab Funnel · Ter' | 'Vídeo que começa sozinho © 2026 Lab Funnel · Ter'
+  8.0     0.0  'Vídeo que começa sozinho QUERO COMPRAR AGORA © 2' | 'Vídeo que começa sozinho QUERO COMPRAR AGORA © 2'
+errors orig/clone: [] [] | worst diff 0.22

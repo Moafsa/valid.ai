@@ -1,0 +1,303 @@
+{
+ "idx": 74,
+ "cat": "gsite",
+ "url": "https://sites.google.com/view/gislainestranchepsicologa/in%C3%ADcio",
+ "projectId": "cmuw53dhl005vn7r8uvu6xf9b",
+ "slug": "view-gislainestranchepsicologa-in-c3-adcio",
+ "scan": {
+  "seconds": 182,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 1843,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.07,
+   "overflowX": false,
+   "tiles": [
+    26.6,
+    67.6,
+    57.8,
+    65.0,
+    71.9,
+    50.1
+   ],
+   "diffTop": 50.7,
+   "diffAll": 56.5,
+   "imgVis": [
+    14,
+    15
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    23,
+    23
+   ],
+   "buttons": [
+    18,
+    18
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    8824,
+    5316
+   ],
+   "requests": [
+    169,
+    119
+   ],
+   "loadSec": [
+    16.4,
+    9.3
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     143,
+     4682,
+     1154,
+     944
+    ],
+    [
+     143,
+     5109,
+     1154,
+     944
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      760,
+      427
+     ],
+     [
+      "iframe",
+      1154,
+      944
+     ]
+    ],
+    [
+     [
+      "div",
+      760,
+      427,
+      true
+     ],
+     [
+      "iframe",
+      1154,
+      944,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "docs.google.com": [
+     4,
+     51600
+    ],
+    "play.google.com": [
+     3,
+     302
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_FILE_NOT_FOUND",
+    "console: Failed to load resource: net::ERR_FILE_NOT_FOUND"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72sgarkMp-0TTZBBGgAo2rO9iGg309SkXD-OifZt8a1yATwNC46pduiNNyLAmuULpJQlWMoX3j",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sW4FAR02UY_imnifqvLsJYugatg-PkUgmG2H3Ra7gqGozHkqLUEBHlhisVj8UY_i7q71iZAP",
+    "filesystem:https://docs.google.com/persistent/docs/fonts/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew7.woff2",
+    "filesystem:https://docs.google.com/persistent/docs/fonts/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Ew7.woff2"
+   ],
+   "origErrors": 6,
+   "cloneNErrors": 8,
+   "cloneNFailed": 8,
+   "facesClone": [
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.015,
+   "missing": [],
+   "heightRatio": 1.021,
+   "overflowX": false,
+   "tiles": [
+    36.8,
+    10.6,
+    30.9,
+    17.2,
+    61.3,
+    24.5,
+    34.2,
+    37.0
+   ],
+   "diffTop": 26.1,
+   "diffAll": 31.6,
+   "imgVis": [
+    14,
+    15
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    23,
+    23
+   ],
+   "buttons": [
+    17,
+    18
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    8488,
+    5034
+   ],
+   "requests": [
+    167,
+    119
+   ],
+   "loadSec": [
+    16.9,
+    12.0
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     19,
+     8057,
+     352,
+     944
+    ],
+    [
+     19,
+     8255,
+     352,
+     944
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      352,
+      197
+     ],
+     [
+      "iframe",
+      352,
+      944
+     ]
+    ],
+    [
+     [
+      "div",
+      352,
+      197,
+      true
+     ],
+     [
+      "iframe",
+      352,
+      944,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "docs.google.com": [
+     4,
+     51710
+    ],
+    "play.google.com": [
+     3,
+     302
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_FILE_NOT_FOUND",
+    "console: Failed to load resource: net::ERR_FILE_NOT_FOUND"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72sW4FAR02UY_imnifqvLsJYugatg-PkUgmG2H3Ra7gqGozHkqLUEBHlhisVj8UY_i7q71iZAP",
+    "https://sites.google.com/sitesv-images-rt/AMxu72sgarkMp-0TTZBBGgAo2rO9iGg309SkXD-OifZt8a1yATwNC46pduiNNyLAmuULpJQlWMoX3j",
+    "filesystem:https://docs.google.com/persistent/docs/fonts/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew7Y31cow.woff2",
+    "filesystem:https://docs.google.com/persistent/docs/fonts/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Ew7Y31cow.woff2"
+   ],
+   "origErrors": 6,
+   "cloneNErrors": 8,
+   "cloneNFailed": 8,
+   "facesClone": [
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw53dhl005vn7r8uvu6xf9b/p/view-gislainestranchepsicologa-in-c3-adcio"
+}

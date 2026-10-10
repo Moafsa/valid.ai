@@ -1,0 +1,216 @@
+{
+ "idx": 69,
+ "cat": "github",
+ "url": "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/",
+ "projectId": "cmuw4s33u005gn7r8434wybb9",
+ "slug": "home",
+ "scan": {
+  "seconds": 138,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 22,
+  "notes": [
+   "Etapa 1: 1 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Deixei o site mais leve: o estilo caiu de 219KB para 21KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 0.0,
+   "missing": [
+    "hello",
+    "ahmed",
+    "ramadan",
+    "designer",
+    "developer",
+    "more",
+    "about",
+    "portfolio"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    58.4
+   ],
+   "diffTop": 58.4,
+   "diffAll": 58.4,
+   "imgVis": [
+    1,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    42,
+    6
+   ],
+   "buttons": [
+    19,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    444,
+    91
+   ],
+   "requests": [
+    18,
+    11
+   ],
+   "loadSec": [
+    1.9,
+    3.0
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "ahmed-ramadan-abdallah.github.io": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/assets/portfolio/revinn.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Ahmed Ramadan",
+    "Designer & Developer"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.0,
+   "extra": 0.0,
+   "missing": [
+    "hello",
+    "ahmed",
+    "ramadan",
+    "designer",
+    "developer",
+    "more",
+    "about",
+    "portfolio"
+   ],
+   "heightRatio": 0.913,
+   "overflowX": false,
+   "tiles": [
+    71.0
+   ],
+   "diffTop": 71.0,
+   "diffAll": 71.0,
+   "imgVis": [
+    1,
+    0
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    42,
+    6
+   ],
+   "buttons": [
+    19,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    444,
+    91
+   ],
+   "requests": [
+    18,
+    11
+   ],
+   "loadSec": [
+    1.9,
+    2.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "ahmed-ramadan-abdallah.github.io": [
+     1,
+     0
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://ahmed-ramadan-abdallah.github.io/My-Portfolio/assets/portfolio/revinn.png"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded",
+    "Poppins:unloaded"
+   ],
+   "fontOC": [
+    "Poppins, sans-serif",
+    "Poppins, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Ahmed Ramadan",
+    "Designer & Developer"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw4s33u005gn7r8434wybb9/p/home"
+}

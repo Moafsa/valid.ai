@@ -1,0 +1,209 @@
+{
+ "idx": 79,
+ "cat": "carrd",
+ "url": "https://builtwith.carrd.co/",
+ "projectId": "cmux2m7jn003gbr8cz5ss0rmy",
+ "slug": "home",
+ "scan": {
+  "seconds": 245,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 178,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.074,
+   "extra": 0.993,
+   "missing": [
+    "builtwith",
+    "executando",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "este",
+    "utiliza",
+    "servi\u00e7o",
+    "para",
+    "prote\u00e7\u00e3o",
+    "contra",
+    "bots",
+    "maliciosos",
+    "esta",
+    "p\u00e1gina",
+    "exibida",
+    "enquanto",
+    "verifica",
+    "voc\u00ea",
+    "n\u00e3o",
+    "bot",
+    "ray",
+    "a4671c2a6b05362a",
+    "desempenho",
+    "cloudflare",
+    "privacidade"
+   ],
+   "heightRatio": 6.332,
+   "overflowX": false,
+   "tiles": [
+    4.8
+   ],
+   "diffTop": 4.8,
+   "diffAll": 4.8,
+   "imgVis": [
+    0,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    2,
+    49
+   ],
+   "buttons": [
+    0,
+    5
+   ],
+   "inputs": [
+    1,
+    8
+   ],
+   "kb": [
+    213,
+    46533
+   ],
+   "requests": [
+    8,
+    32
+   ],
+   "loadSec": [
+    3.5,
+    7.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 2,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Muli:unloaded",
+    "Muli:unloaded",
+    "Muli:unloaded",
+    "Muli:unloaded"
+   ],
+   "fontOC": [
+    "system-ui, -apple-system, BlinkMacSystem",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "builtwith.carrd.co",
+    "Executando verifica\u00e7\u00e3o de seguran\u00e7a"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.178,
+   "missing": [],
+   "heightRatio": 1.462,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    22.8,
+    24.7
+   ],
+   "diffTop": 0.0,
+   "diffAll": 7.9,
+   "imgVis": [
+    2,
+    19
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    9,
+    0
+   ],
+   "links": [
+    72,
+    49
+   ],
+   "buttons": [
+    8,
+    5
+   ],
+   "inputs": [
+    10,
+    8
+   ],
+   "kb": [
+    27656,
+    28496
+   ],
+   "requests": [
+    6080,
+    32
+   ],
+   "loadSec": [
+    54.5,
+    11.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 4530,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Muli:unloaded",
+    "Muli:unloaded",
+    "Muli:unloaded",
+    "Muli:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2m7jn003gbr8cz5ss0rmy/p/home"
+}

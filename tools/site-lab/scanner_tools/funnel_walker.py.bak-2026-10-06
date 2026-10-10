@@ -1,0 +1,1461 @@
+"""
+Explores a multi-step funnel (quiz / VSL / lead-capture SPA) the way visitors
+do, and captures every screen it can reach as its own page.
+
+Funnel builders (inlead, Typebot-likes, Perspective, hand-rolled React) keep
+the whole funnel inside ONE URL: clicking an answer swaps the DOM for the next
+screen. A single snapshot of the first screen is a clone of 1/N of the funnel.
+
+The result is a GRAPH, not a line: different answers can lead to different
+screens (the "just researching" answer that leaves for another ending).
+
+  1. PRIMARY PASS: from the first screen keep taking the first answer / the
+     most call-to-action looking button until the funnel leaves the site, hits
+     a dead end, or comes back to a screen already known. Every screen is
+     observed for a while first (what appears LATER, and when), then
+     snapshotted without touching the live app (capture_engine.snapshot works
+     on a detached clone).
+  2. BRANCH PASS: for every screen with several answers, the other answers
+     are tried too. The app cannot be rewound, so each try replays the path
+     from the start on its own page (several at once). A new screen found this
+     way is explored like the primary pass; a known one just becomes an edge.
+  3. WIRING: every answer / button is pointed at the screen it really leads to.
+
+Nothing the walker does may reach the original owner's systems: non-GET
+fetch/XHR (lead registration, webhooks) are answered locally, analytics are
+swallowed, window.open / navigations to another site are intercepted and
+recorded as the funnel's exit (never followed).
+"""
+import asyncio
+import json
+import os
+import re
+import time
+import base64
+from dataclasses import dataclass, field
+from typing import Optional
+from urllib.parse import urlparse, urlsplit, urlunsplit, parse_qsl, urlencode
+
+from loguru import logger
+from playwright.async_api import Page, Response
+
+from services.capture_engine import engine_js
+from services.video_rules import VTURB_PLAYER_RE, describe as describe_video
+
+TRACKER_HINTS = (
+    "google-analytics", "googletagmanager", "doubleclick", "facebook.net", "facebook.com/tr",
+    "connect.facebook", "hotjar", "clarity.ms", "cdn-cgi/rum", "analytics", "pixel", "tiktok.com/i18n",
+    "snap.licdn", "ads-twitter", "taboola", "outbrain", "mixpanel", "segment.io", "sentry.io", "utmify",
+    "linkedin.com/wa", "contentsquare",
+)
+
+MAX_NODES = int(os.environ.get("VAI_MAX_STEPS", "700"))  # screens in the whole graph
+MAX_PRIMARY = 700                                        # screens one forward pass may add
+TURBO_AFTER = 24           # after this many screens in a row where nothing showed up late, plain answer screens are read fast
+OBSERVE_MIN = 6.0          # seconds every screen is watched at least
+OBSERVE_QUIET = 4.0        # ... and until nothing new has appeared for this long
+OBSERVE_MAX_MEDIA = 30.0   # a video screen with nothing to click yet is watched this long (offers appear late)
+OBSERVE_MAX = 20.0         # same for a plain screen with nothing to click yet
+MIN_DELAY = 2.0            # appearing earlier than this is a transition, not a delay
+WALK_BUDGET = 1800.0       # seconds for the forward pass (a long quiz is still a quiz)
+BRANCH_BUDGET = 480.0      # extra seconds for trying the other answers
+HARD_TIMEOUT = 3000.0      # nothing runs longer than this; what was captured by then is returned
+BRANCH_WORKERS = 3
+MAX_OPTIONS_TRIED = 12     # other answers tried per screen
+
+OPENS_JS = """
+(() => {
+  const rec = u => { try { (window.__vaiOpens = window.__vaiOpens || []).push(String(u)); } catch (e) {} };
+  const mk = () => {
+    const loc = { assign: rec, replace: rec, reload() {}, toString() { return ''; } };
+    Object.defineProperty(loc, 'href', { set: rec, get() { return ''; } });
+    const w = { closed: false, focus() {}, blur() {}, close() { this.closed = true; }, postMessage() {}, opener: null,
+                document: { write() {}, writeln() {}, open() {}, close() {}, body: {}, title: '' } };
+    Object.defineProperty(w, 'location', { get() { return loc; }, set: rec });
+    return w;
+  };
+  window.open = function (u) { if (u) rec(u); return mk(); };
+})();
+"""
+
+DUMMY_NAME = "Marilu Tavares"
+DUMMY_EMAIL = "marilu.tavares@example.com"
+DUMMY_PHONE = "11987654321"
+OK_JSON = '{"success":true,"ok":true,"status":"ok","valid":true,"data":{}}'
+
+
+def _host(u: str) -> str:
+    return (urlparse(u).hostname or "").lower().removeprefix("www.")
+
+
+def clean_exit_url(url: str) -> str:
+    """Where a funnel ends often carries what the walker typed ("?name=Maria
+    Silva&email=…"). That must not reach real visitors: swap it for
+    placeholders the clone fills with what THEY typed."""
+    try:
+        parts = urlsplit(url)
+        out = []
+        for k, v in parse_qsl(parts.query, keep_blank_values=True):
+            # who-this-visitor-is parameters belong to the walker's visit, not to the clone
+            if k.lower() in ("fbp", "fbc", "fbclid", "gclid", "_ga", "_gl", "msclkid", "ttclid", "src", "sck", "xcod") or k.lower().startswith("utm_"):
+                continue
+            v = re.sub(re.escape(DUMMY_NAME), "{{nome}}", v, flags=re.I)
+            v = re.sub(re.escape(DUMMY_EMAIL), "{{email}}", v, flags=re.I)
+            if re.sub(r"\D", "", v).endswith("987654321") and len(re.sub(r"\D", "", v)) <= 13:
+                v = "{{telefone}}"
+            out.append((k, v))
+        path = parts.path
+        path = re.sub(r"55?11987654321", "{{telefone}}", path)
+        return urlunsplit((parts.scheme, parts.netloc, path, urlencode(out, safe="{}@:"), parts.fragment))
+    except Exception:
+        return url
+
+
+_TEXT_RUN = re.compile(r">([^<>]+)<")
+
+
+def personalize(html: str) -> str:
+    """Screens after a "what's your name?" question greet the person by what the walker typed ("Ótimo,
+    Marilu!"). The clone must greet whoever is visiting: those words become <span data-vai-var>, filled by
+    the runtime from what the visitor typed (and left as a neutral word when they did not)."""
+    first = DUMMY_NAME.split()[0]
+
+    def fix(m):
+        t = m.group(1)
+        if DUMMY_NAME.lower() not in t.lower() and first.lower() not in t.lower() and DUMMY_EMAIL.lower() not in t.lower():
+            return m.group(0)
+        t = re.sub(re.escape(DUMMY_EMAIL), '<span data-vai-var="email">' + DUMMY_EMAIL + "</span>", t, flags=re.I)
+        t = re.sub(re.escape(DUMMY_NAME), '<span data-vai-var="nome">' + DUMMY_NAME + "</span>", t, flags=re.I)
+        # the first name alone, where it is not already inside one of the spans above
+        t = re.sub(r"(?<![\w>])" + re.escape(first) + r"(?![\w<])", '<span data-vai-var="nome1">' + first + "</span>", t, flags=re.I)
+        return ">" + t + "<"
+
+    return _TEXT_RUN.sub(fix, html)
+
+
+def sig_replaced(a: dict, b: dict) -> bool:
+    """Was the SCREEN swapped for another (as opposed to something new
+    appearing on it)? Used to tell "the app moved on by itself" from "a
+    button showed up after 12s"."""
+    if a.get("path") != b.get("path"):
+        return True
+    if a.get("ids") and b.get("ids"):
+        # the builder's own step id is the truth: a progress bar that animates
+        # (or a heading that types itself) inside one step is not a new step
+        return a["ids"] != b["ids"]
+    if a.get("heads") != b.get("heads") and (a.get("heads") or b.get("heads")) and not (not a.get("heads") and b.get("heads")):
+        return True
+    if a.get("prog") != b.get("prog"):
+        return True
+    return False
+
+
+def sig_changed(a: dict, b: dict) -> bool:
+    """Did the visitor-visible screen change between two signatures?"""
+    if sig_replaced(a, b):
+        return True
+    if a.get("heads") != b.get("heads"):
+        return True
+    if a.get("media") != b.get("media"):
+        return True
+    ba, bb = set(a.get("btns") or []), set(b.get("btns") or [])
+    if ba or bb:
+        jac = len(ba & bb) / max(len(ba | bb), 1)
+        if jac < 0.6:
+            return True
+    return False
+
+
+def is_overlay(before: dict, now: dict) -> bool:
+    """A big fixed layer appeared AND the screen under it is still the old one.
+    A funnel app that merely swaps its screens may also have fixed layers, and
+    consecutive screens often share a "Continuar": so the builder's own step id
+    (when there is one) settles it, then the headings; buttons count only when
+    the old screen had no heading and the layer ADDED some."""
+    if not now.get("overlay") or before.get("overlay"):
+        return False
+    if before.get("ids") and now.get("ids") and not set(before["ids"]) <= set(now["ids"]):
+        return False   # the old screen's own container is gone: a swap, not a layer on top
+    old_heads, new_heads = set(before.get("heads") or []), set(now.get("heads") or [])
+    if old_heads:
+        return bool(old_heads & new_heads)
+    old_btns, new_btns = set(before.get("btns") or []), set(now.get("btns") or [])
+    return bool(old_btns) and len(new_btns) > len(old_btns) and len(old_btns & new_btns) / len(old_btns) >= 0.7
+
+
+# Ids every screen of an app shares (the framework's root, a cookie banner): they
+# say nothing about WHICH screen this is, and treating them as the screen's id
+# makes every step of such an app look like the same one.
+GENERIC_ID = re.compile(
+    r"^(__next|__nuxt|__gatsby|__remix.*|root|app|page|main|content|wrapper|layout|container|portal.*|modal-root|"
+    r"onetrust.*|ot-.*|cookie.*|cc-.*|consent.*|usercentrics.*|headlessui.*|radix-.*|react-.*|chakra.*|intercom.*|hotjar.*|"
+    r"__.*)$", re.I)
+
+
+def node_key(sig: dict) -> str:
+    """Identity of a screen: what stays the same however many times and by
+    whichever route you arrive. Builders give every step its own element id
+    (stable across visits), which is the best handle there is. Without it,
+    the headings / video; the progress bar only as a last resort, because it
+    animates while a screen is being watched."""
+    # the BUTTONS tell screens apart too (a quiz whose every screen is titled "Pergunta" is told apart by its
+    # answers; a chat that grows inside the same containers by what it offers next); labels that tick (a clock,
+    # a percentage) are left out so they do not make a new screen
+    btns = sorted({b[:30] for b in (sig.get("btns") or []) if not re.search(r"\d\s*[:%]|\(\d+\s*s\)|\d+\s*(seg|min|sec)", b)})[:8]
+    ids = [i for i in (sig.get("ids") or []) if not GENERIC_ID.match(i)]
+    if ids:
+        return json.dumps([sig.get("path"), ids, btns], ensure_ascii=False)
+    if sig.get("heads") or sig.get("media"):
+        return json.dumps([sig.get("path"), sig.get("heads"), sig.get("media"), btns], ensure_ascii=False)
+    return json.dumps([sig.get("path"), [], [], sig.get("prog"), btns], ensure_ascii=False)
+
+
+def slug_for(index: int, prefix: str = "") -> str:
+    if prefix:
+        return prefix if index == 0 else f"{prefix}-etapa-{index + 1}"
+    return "home" if index == 0 else f"etapa-{index + 1}"
+
+
+def _dummy_for(field_: dict) -> Optional[str]:
+    t = (field_.get("type") or "text").lower()
+    hint = " ".join([field_.get("name") or "", field_.get("placeholder") or "", field_.get("label") or "", field_.get("autocomplete") or ""]).lower()
+    if t in ("checkbox", "radio", "hidden", "file", "submit", "button", "range", "color", "password"):
+        return None
+    if t == "email" or "mail" in hint:
+        return DUMMY_EMAIL
+    if t == "tel" or re.search(r"whats|celular|telefone|fone|phone|\bddd\b", hint):
+        return DUMMY_PHONE
+    if "cpf" in hint:
+        return "52998224725"
+    if "cnpj" in hint:
+        return "11222333000181"
+    if "cep" in hint:
+        return "01310100"
+    if "crm" in hint or "registro" in hint:
+        return "123456"
+    if t == "number" or re.search(r"idade|age|peso|altura|quant", hint):
+        return "35"
+    if t == "date":
+        return "1990-05-20"
+    return DUMMY_NAME
+
+
+class ReplayError(Exception):
+    pass
+
+
+@dataclass
+class Ctx:
+    """One browser page and the per-page bookkeeping the walk needs."""
+    page: Page
+    primary: bool = False
+    exit_urls: list = field(default_factory=list)
+    loads: int = 0
+    recent: list = field(default_factory=list)
+
+
+@dataclass
+class Node:
+    key: str
+    index: int
+    url: str
+    path: list
+    step: Optional[dict] = None          # captured screen (sections, shell, ...)
+    ctrls: list = field(default_factory=list)
+    mode: str = "pending"                # cta | option | select | auto | end
+    options: list = field(default_factory=list)       # answer texts, DOM order
+    option_ctl: dict = field(default_factory=dict)    # answer text -> control index
+    cont_text: str = ""
+    cont_ctls: list = field(default_factory=list)     # controls that move on (cta / continue)
+    sel_map: dict = field(default_factory=dict)       # control index -> selection diff rows
+    multi: bool = False                                # several answers can be on at once
+    n_ctrl: int = 0                                    # usable controls on the screen
+    gated: bool = False                                # the forward button is off until fields are answered
+    gate_fields: list = field(default_factory=list)   # indexes (data-vai-fld) of the fields it needs
+    targets: dict = field(default_factory=dict)       # label -> node key | "exit:<url>"
+    auto_secs: Optional[float] = None
+    exit_url: Optional[str] = None
+    keep_n: set = field(default_factory=set)         # data-vai-n numbers that must survive wiring
+
+
+class FunnelWalker:
+    def __init__(self, scraper, url: str, on_progress=None, slug_prefix: str = ""):
+        self.slug_prefix = slug_prefix
+        self.scraper = scraper
+        self.url = url
+        self.on_progress = on_progress
+        self.origin_host = _host(url)
+        self.sniffed_css: list[Response] = []
+        self.sniffed_videos: list[dict] = []
+        self.notes: list[str] = []
+        self._t_walk = time.monotonic()
+        self._frac = 0.0
+        self._css = ""
+        self._css_sig = None
+        self._fonts: list[str] = []
+        self.nodes: dict[str, Node] = {}
+        self._thumb_b64: Optional[str] = None
+        self._spa_seen = False
+        self._deadline = 0.0
+        self._stop = False
+        self._tried: set = set()
+        self._sampling_noted = False
+        self._final: dict[str, int] = {}
+        self._alias: dict[str, str] = {}
+        self._calm = 0       # screens in a row that had nothing appearing late and no media
+        self._linkmode = False   # the steps of this funnel are separate pages reached through links
+        self._timer_false = 0    # screens in a row whose long timers did NOT move them on (an app's own housekeeping)
+
+    # ───────────────────────── plumbing ─────────────────────────
+    async def _progress(self, frac: Optional[float], text: str):
+        """frac None = keep the bar where it is, just update the message."""
+        if frac is not None:
+            self._frac = max(self._frac, frac)
+        if self.on_progress:
+            try:
+                await self.on_progress(self._frac, text)
+            except Exception:
+                pass
+
+    def _bump(self):
+        """Progress when the total is unknown: closes in on 95% as screens pile up."""
+        n = len(self.nodes)
+        return min(0.95, 1 - 1 / (1 + 0.16 * n))
+
+    def _make_route(self, ctx: Ctx):
+        async def _route(route, request):
+            """Keeps the walk from touching the original owner's systems."""
+            try:
+                url = request.url
+                rt = request.resource_type
+                method = request.method.upper()
+                frame = request.frame
+                ctx.recent.append(f"{method} {rt} {url[:140]}")
+                del ctx.recent[:-14]
+                is_main_doc = rt == "document" and frame is not None and frame.parent_frame is None
+                if is_main_doc:
+                    if _host(url) != self.origin_host or method == "POST":
+                        ctx.exit_urls.append(url)
+                        await route.abort()
+                        return
+                elif method not in ("GET", "HEAD", "OPTIONS") and rt in ("xhr", "fetch", "ping", "other", "document"):
+                    # lead registration, webhooks, analytics beacons: answer locally
+                    await route.fulfill(status=200, content_type="application/json", body=OK_JSON)
+                    return
+                elif rt in ("image", "script", "xhr", "fetch", "ping", "other") and any(h in url.lower() for h in TRACKER_HINTS):
+                    if rt in ("image", "ping"):
+                        await route.fulfill(status=204, body="")
+                    elif rt == "script":
+                        await route.continue_()
+                    else:
+                        await route.fulfill(status=200, content_type="application/json", body=OK_JSON)
+                    return
+                await route.continue_()
+            except Exception:
+                try:
+                    await route.continue_()
+                except Exception:
+                    pass
+        return _route
+
+    def _on_response(self, response):
+        try:
+            url_l = response.url.lower().split("?")[0]
+            ctype = (response.headers or {}).get("content-type", "").lower()
+            if url_l.endswith(".css") or "text/css" in ctype:
+                self.sniffed_css.append(response)
+            elif url_l.endswith(".m3u8") or "mpegurl" in ctype:
+                self.sniffed_videos.append({"url": response.url, "kind": "hls"})
+            elif url_l.endswith(".mp4") or ctype.startswith("video/"):
+                self.sniffed_videos.append({"url": response.url, "kind": "mp4"})
+            elif VTURB_PLAYER_RE.search(response.url):
+                self.sniffed_videos.append({"url": response.url, "kind": "vturb"})
+        except Exception:
+            pass
+
+    async def _new_ctx(self, primary: bool = False) -> Ctx:
+        context = await self.scraper.browser.new_context(
+            viewport=self.scraper.VIEWPORT,
+            user_agent=self.scraper.USER_AGENT,
+        )
+        await context.add_init_script(engine_js())
+        await context.add_init_script(OPENS_JS)
+        page = await context.new_page()
+        ctx = Ctx(page=page, primary=primary)
+        await context.route("**/*", self._make_route(ctx))
+
+        async def _popup(p):
+            # a target=_blank link leaves our tab: its destination is an exit
+            try:
+                for _ in range(10):
+                    if p.url and p.url != "about:blank":
+                        break
+                    await asyncio.sleep(0.2)
+                if p.url and p.url != "about:blank" and not p.url.startswith("chrome-error"):
+                    ctx.exit_urls.append(p.url)
+                await p.close()
+            except Exception:
+                pass
+        context.on("page", lambda p: asyncio.ensure_future(_popup(p)) if p != page else None)
+        page.on("response", self._on_response)
+        page.on("domcontentloaded", lambda _p: setattr(ctx, "loads", ctx.loads + 1))
+        return ctx
+
+    async def _close(self, ctx: Ctx):
+        try:
+            await ctx.page.context.close()
+        except Exception:
+            pass
+
+    def _over_budget(self) -> bool:
+        return self._stop or time.monotonic() > self._deadline
+
+    async def _sig(self, page: Page) -> dict:
+        return await page.evaluate("() => window.__vai.signature()")
+
+    # ───────────────────────── observation ─────────────────────────
+    async def _observe(self, ctx: Ctx, t0: float, k: int, chained: bool = False) -> dict:
+        """Watches a screen: when does each element first show up? Returns
+        whether it holds media and whether it moved on by itself."""
+        page = ctx.page
+        await page.evaluate("() => window.__vai.resetAppearance()")
+        if chained:
+            # this screen came by itself after another one (a run of loaders): nothing was
+            # clicked, so nothing reset the film; it starts where THIS screen arrived
+            try:
+                await page.evaluate("() => window.__vai.rebase(500)")
+            except Exception:
+                pass
+        base_sig = None   # taken once the screen has settled (see below)
+        saw_media = False
+        watched_timer = False
+        played = False
+        last_new = 0.0
+        auto_next = None
+        auto_exit = None
+        early = None
+        hists: list = []
+        last_msg = -1
+        exits0 = len(ctx.exit_urls)
+        opens0 = len(await self._opens(page))
+        loads0 = ctx.loads
+        while True:
+            try:
+                t = time.monotonic() - t0
+                n, media = await page.evaluate("(t) => [window.__vai.tick(t), window.__vai.hasMedia()]", t)
+                saw_media = saw_media or bool(media)
+                if n:
+                    last_new = t
+                ctrls_now = await page.evaluate("() => window.__vai.controls()")
+                due = 0.0
+                try:
+                    due = await page.evaluate("() => window.__vai.pendingMove()") if self._timer_false < 2 else 0.0
+                except Exception:
+                    due = 0.0
+                has_cta = any(
+                    (not c["disabled"]) and not c.get("back") and not c["inFaq"]
+                    and (c["score"] >= 3 or c["isOption"] or (c["tag"] in ("button", "a") and c["w"] >= 100 and c["h"] >= 30))
+                    for c in ctrls_now
+                )
+                if not has_cta and any(c["disabled"] and not c.get("back") and (c["score"] >= 3 or (c["tag"] == "button" and c["w"] >= 100)) for c in ctrls_now):
+                    # a button that is waiting for an answer (name, e-mail...): the screen is as ready as it gets
+                    has_cta = True
+                quick = (not saw_media) and (any(c["isOption"] for c in ctrls_now) or len(self.nodes) > 30)
+                # a long quiz whose last screens were all plain: this one is read in about a second
+                turbo = (not saw_media) and self._calm >= TURBO_AFTER and due <= 0
+                if turbo:
+                    try:
+                        turbo = bool(await page.evaluate("() => window.__vai.looksPlain()"))
+                    except Exception:
+                        turbo = False
+                if saw_media and not played and t >= 2.5 and not has_cta:
+                    # a video whose button is waiting for the video to be WATCHED: press play, as a viewer would
+                    played = True
+                    try:
+                        if await page.evaluate("() => window.__vai.playMedia()"):
+                            logger.info(f"[funnel] screen {k + 1}: pressed play to see what the video unlocks")
+                    except Exception:
+                        pass
+                if saw_media:
+                    done = t >= (12.0 if has_cta else OBSERVE_MAX_MEDIA)
+                elif turbo:
+                    done = (t >= 0.7 and has_cta and (t - last_new) >= 0.4) or t >= 4.0
+                elif quick:
+                    # an answer screen (or the 30th screen of a long quiz): things rarely
+                    # show up late here, so don't spend the full watch on it
+                    done = (t >= 3.0 and has_cta and (t - last_new) >= 2.0) or t >= OBSERVE_MAX
+                else:
+                    done = (t >= OBSERVE_MIN and has_cta and (t - last_new) >= OBSERVE_QUIET) or t >= OBSERVE_MAX
+                if done and due > 0 and t < 30.0 and not self._over_budget():
+                    done = False        # a timer is set to move the visitor on: wait for it, and see where it goes
+                    watched_timer = True
+                if done:
+                    break
+                if self._over_budget():
+                    break
+                # a screen with nothing to click may carry the visitor on by itself:
+                # keep a copy of it from before that happens
+                bare = not [c for c in ctrls_now if not c["disabled"] and not c.get("back")]
+                if base_sig is None and (t >= 1.4 or (bare and t >= 0.7)):
+                    # (a screen with nothing to press is copied sooner: a short loader is gone in a couple of seconds)
+                    # (...or one that has a timer set to send the visitor on: copy it now, then watch for it)
+                    if due > 0 or bare:
+                        early = await self._capture_blocks(page, k, None)
+                    base_sig = await self._sig(page)
+
+                if early is not None:
+                    try:
+                        hists = await page.evaluate("() => window.__vai.timelines()") or hists
+                    except Exception:
+                        pass
+                    # "redirecting you…": the screen sends the visitor out on its own
+                    opens = await self._opens(page)
+                    if len(ctx.exit_urls) > exits0 or len(opens) > opens0:
+                        auto_exit = (ctx.exit_urls[-1] if len(ctx.exit_urls) > exits0 else opens[-1], round(t, 1))
+                        break
+                if base_sig is not None and early is not None:
+                    sig = await self._sig(page)
+                    if sig_replaced(base_sig, sig):
+                        auto_next = round(t, 1)
+                        break
+                if int(t) // 3 != last_msg:
+                    last_msg = int(t) // 3
+                    await self._progress(None, f"⏳ Etapa {k + 1}: observando o que aparece com o tempo ({int(t)}s)...")
+                await asyncio.sleep(0.15 if (not saw_media and self._calm >= TURBO_AFTER) else 0.4)
+            except Exception as e:
+                # the page was torn down under us (a redirect, a navigation)
+                if early is not None and len(ctx.exit_urls) > exits0:
+                    auto_exit = (ctx.exit_urls[-1], round(time.monotonic() - t0, 1))
+                    break
+                if 'context was destroyed' in str(e) or 'Target closed' in str(e):
+                    await asyncio.sleep(0.4)
+                    if time.monotonic() - t0 > OBSERVE_MAX_MEDIA + 5:
+                        raise
+                    continue
+                raise
+        try:
+            app = await page.evaluate("(m) => window.__vai.appearances(m)", 1.0)
+            if app:
+                logger.info(f"[funnel] screen {k + 1} appearances after 1s: {app}")
+        except Exception:
+            pass
+        moved = auto_next is not None or auto_exit is not None
+        if watched_timer:
+            self._timer_false = 0 if moved else self._timer_false + 1
+        return {
+            "loaded": ctx.loads > loads0,
+            "media": saw_media, "auto_next": auto_next, "auto_exit": auto_exit,
+            "early": early if moved else None,
+            "early_sig": base_sig if moved else None,
+            "hists": hists if moved else [],
+        }
+
+    # ───────────────────────── capture ─────────────────────────
+    async def _capture_blocks(self, page: Page, k: int, video: Optional[dict]) -> dict:
+        plan = await page.evaluate("() => window.__vai.plan()")
+        ctrls = await page.evaluate("() => window.__vai.controls()")
+        clocks = await page.evaluate("() => window.__vai.countdowns()")
+        sections = []
+        embedded = 0
+        delayed = 0
+        count = min(plan["count"], self.scraper.MAX_BLOCKS)
+        vh = self.scraper.VIEWPORT["height"]
+        for i in range(count):
+            try:
+                box = await page.evaluate("(i) => window.__vai.blockBox(i)", i)
+                if box:
+                    y = max(0, int(box["top"]) - 100)
+                    end = int(box["top"] + box["height"])
+                    steps = 0
+                    while y < end and steps < 30:
+                        await page.evaluate(f"window.scrollTo(0, {y})")
+                        await page.wait_for_timeout(90)
+                        y += int(vh * 0.8)
+                        steps += 1
+                data = await page.evaluate(
+                    "([i, v, p]) => window.__vai.snapshot(i, { tagControls: true, tagAll: true, anims: true, video: v, minDelay: %s, pitchAt: p })" % MIN_DELAY,
+                    [i, video if video and video.get("url") else None, ((video or {}).get("vturb") or {}).get("pitch")],
+                )
+            except Exception as e:
+                logger.warning(f"[funnel] block {i} of screen {k} failed: {e}")
+                continue
+            if not data or not (data.get("domHtml") or "").strip():
+                continue
+            embedded += data.get("embedded", 0) or 0
+            delayed += data.get("delayed", 0) or 0
+            sections.append({
+                "name": f"block_{i + 1}_{data['tag'].lower()}",
+                "class_hint": data["className"],
+                "images": data.get("images", []),
+                "links": data.get("links", []),
+                "dom_html": data.get("domHtml", ""),
+            })
+        try:
+            await page.evaluate("window.scrollTo(0, 0)")
+        except Exception:
+            pass
+        return {"shell": plan["shell"], "sections": sections, "embedded": embedded, "delayed": delayed, "clocks": clocks, "ctrls": ctrls}
+
+    # ───────────────────────── inputs ─────────────────────────
+    async def _fill_inputs(self, page: Page, checks: bool = True) -> list:
+        fields = await page.evaluate("""
+            () => {
+              const vis = el => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 2 && r.height > 2 && cs.display !== 'none' && cs.visibility !== 'hidden'; };
+              const out = [];
+              document.querySelectorAll('input, textarea, select').forEach((el, i) => {
+                if (!vis(el) || el.disabled || el.readOnly) return;
+                el.setAttribute('data-vai-fill', String(i));
+                const label = (el.labels && el.labels[0] && el.labels[0].innerText) || el.getAttribute('aria-label') || '';
+                out.push({ i, tag: el.tagName.toLowerCase(), type: el.type, name: el.name || el.id || '', placeholder: el.placeholder || '', label, autocomplete: el.autocomplete || '', value: el.value || '', checked: !!el.checked, min: el.min, max: el.max });
+              });
+              return out;
+            }
+        """)
+        touched = []
+        for f in fields:
+            sel = f'[data-vai-fill="{f["i"]}"]'
+            try:
+                if f["tag"] == "select":
+                    await page.select_option(sel, index=1, timeout=1500)
+                    touched.append(f)
+                elif f["type"] == "range":
+                    # a slider: somewhere in the middle, announced the way a finger would
+                    await page.evaluate(
+                        """(s) => { const r = document.querySelector(s); const lo = +r.min || 0, hi = +r.max || 100;
+                          r.value = String(Math.round(lo + (hi - lo) * 0.5)); r.dispatchEvent(new Event('input', { bubbles: true })); r.dispatchEvent(new Event('change', { bubbles: true })); }""", sel)
+                    touched.append(f)
+                elif f["type"] in ("checkbox", "radio"):
+                    # (a radio / checkbox is often an ANSWER: ticking it before the screen is read would
+                    # change how the options look; only the late call, right before the click, ticks them)
+                    if checks and not f["checked"]:
+                        await page.check(sel, timeout=1500, force=True)
+                        touched.append(f)
+                elif not f["value"]:
+                    val = _dummy_for(f)
+                    if val is not None:
+                        await page.fill(sel, val, timeout=1500)
+                        touched.append({**f, 'filled': val})
+            except Exception:
+                pass
+        await page.evaluate("() => document.querySelectorAll('[data-vai-fill]').forEach(e => e.removeAttribute('data-vai-fill'))")
+        return touched
+
+    async def _required_fields(self, page: Page, cta_idx: int, filled: list) -> list:
+        """Which of the fields just filled keep the button alive: empty each one in turn and see whether
+        the button goes off again. Ends with everything filled as it was."""
+        required = []
+        for f in filled[:8]:
+            sel = f'[data-vai-fill="{f["i"]}"]'
+            try:
+                await page.evaluate("(i) => { const e = document.querySelectorAll('input, textarea, select')[i]; if (e) e.setAttribute('data-vai-fill', String(i)); }", f["i"])
+                if f["tag"] == "select":
+                    await page.select_option(sel, index=0, timeout=1200)
+                elif f["type"] == "range":
+                    await page.evaluate("""(s) => { const r = document.querySelector(s); r.value = r.min || '0'; r.dispatchEvent(new Event('input', { bubbles: true })); r.dispatchEvent(new Event('change', { bubbles: true })); }""", sel)
+                elif f["type"] in ("checkbox", "radio"):
+                    await page.uncheck(sel, timeout=1200, force=True)
+                else:
+                    await page.fill(sel, "", timeout=1200)
+                await asyncio.sleep(0.18)
+                now = await page.evaluate("() => window.__vai.controls()")
+                dead = [c for c in now if c["i"] == cta_idx and c["disabled"]]
+                if dead:
+                    required.append(f["i"])
+                # put it back
+                if f["tag"] == "select":
+                    await page.select_option(sel, index=1, timeout=1200)
+                elif f["type"] == "range":
+                    await page.evaluate("""(s) => { const r = document.querySelector(s); const lo = +r.min || 0, hi = +r.max || 100; r.value = String(Math.round(lo + (hi - lo) * 0.5)); r.dispatchEvent(new Event('input', { bubbles: true })); r.dispatchEvent(new Event('change', { bubbles: true })); }""", sel)
+                elif f["type"] in ("checkbox", "radio"):
+                    await page.check(sel, timeout=1200, force=True)
+                else:
+                    await page.fill(sel, f.get("filled") or f.get("value") or DUMMY_NAME, timeout=1200)
+                await asyncio.sleep(0.15)
+            except Exception:
+                pass
+            finally:
+                try:
+                    await page.evaluate("(i) => { const e = document.querySelectorAll('input, textarea, select')[i]; if (e) e.removeAttribute('data-vai-fill'); }", f["i"])
+                except Exception:
+                    pass
+        return required
+
+    # ───────────────────────── clicking ─────────────────────────
+    async def _click(self, page: Page, idx: int) -> bool:
+        try:
+            await page.evaluate("() => window.__vai.hideConsent()")
+        except Exception:
+            pass
+        # what animates from here on is the next screen arriving: record it
+        await page.evaluate("() => window.__vai.resetAnims()")
+        handle = await page.evaluate_handle("(i) => window.__vai.control(i)", idx)
+        el = handle.as_element()
+        if not el:
+            return False
+        try:
+            await el.scroll_into_view_if_needed(timeout=2000)
+            await el.click(timeout=3500)
+            # the pointer must not sit on the next screen: it would put a button
+            # in its hover state in every snapshot (and record hover transitions)
+            try:
+                await page.mouse.move(1, 1)
+            except Exception:
+                pass
+            return True
+        except Exception:
+            try:
+                # the real click only happens now (the attempt above may have waited seconds for
+                # something in the way): the recordings must start from THIS moment
+                await page.evaluate("() => window.__vai.resetAnims()")
+                await el.evaluate("e => e.click()")
+                return True
+            except Exception:
+                return False
+
+    async def _opens(self, page: Page) -> list:
+        try:
+            return await page.evaluate("() => window.__vaiOpens || []")
+        except Exception:
+            return []
+
+    async def _wait_outcome(self, ctx: Ctx, before: dict, exits_before: int, opens_before: int, timeout: float = 4.5) -> str:
+        page = ctx.page
+        t_end = time.monotonic() + timeout
+        while time.monotonic() < t_end:
+            if len(ctx.exit_urls) > exits_before:
+                return "external"
+            opens = await self._opens(page)
+            if len(opens) > opens_before:
+                ctx.exit_urls.append(opens[-1])
+                return "external"
+            try:
+                sig = await self._sig(page)
+            except Exception:
+                # the page is mid-navigation (same-site document load)
+                await asyncio.sleep(0.4)
+                continue
+            if sig_changed(before, sig):
+                if len(self.nodes) <= 1 and is_overlay(before, sig):
+                    return "overlay"   # the first move opened a modal over the same screen: not a funnel
+                await asyncio.sleep(0.5)
+                return "step"
+            await asyncio.sleep(0.2)
+        if len(ctx.exit_urls) > exits_before:
+            return "external"
+        opens = await self._opens(page)
+        if len(opens) > opens_before:
+            ctx.exit_urls.append(opens[-1])
+            return "external"
+        return "none"
+
+    async def _advance(self, ctx: Ctx, node: Node) -> dict:
+        """Clicks the way forward from the current screen (first answer, or
+        the most call-to-action looking button) and records on the node what
+        kind of screen it is."""
+        page = ctx.page
+        # a screen that asks for something (a name, an e-mail, a slider) keeps its button off until
+        # it is answered: answer first, THEN see which buttons are alive
+        live0 = await page.evaluate("() => window.__vai.controls()")
+        filled = await self._fill_inputs(page, checks=False)
+        if filled:
+            await asyncio.sleep(0.5)
+        live = await page.evaluate("() => window.__vai.controls()")
+        usable = [c for c in live if not c["disabled"] and not c["risky"] and not c.get("back")]
+        logger.info("[funnel] screen %d controls: %s" % (node.index + 1, [(c["i"], c["text"][:18], c["groupSize"], c["isOption"], c["disabled"], c["score"]) for c in live]))
+        if not usable:
+            return {"outcome": "none"}
+
+        groups: dict[str, list] = {}
+        for c in usable:
+            if c["isOption"]:
+                groups.setdefault(c["gkey"], []).append(c)
+        options = max(groups.values(), key=len) if groups else []
+        option_ids = {c["i"] for c in options}
+        ctas = sorted((c for c in usable if c["i"] not in option_ids), key=lambda c: (-c["score"], c["top"]))
+
+        node.n_ctrl = len(usable)
+        before = await self._sig(page)
+        exits_before = len(ctx.exit_urls)
+        opens_before = len(await self._opens(page))
+        loads_before = ctx.loads
+
+        # 1. an answer-style screen: click the first answer
+        if len(options) >= 2:
+            first = options[0]
+            await self._fill_inputs(page, checks=False)
+            if not await self._click(page, first["i"]):
+                return {"outcome": "none"}
+            outcome = await self._wait_outcome(ctx, before, exits_before, opens_before)
+            if outcome == "overlay":
+                return {"outcome": "none", "overlay": True}
+            node.options = [c["text"] for c in options]
+            node.option_ctl = {c["text"]: c["i"] for c in options}
+            if outcome in ("step", "external"):
+                node.mode = "option"
+                return {"outcome": outcome, "label": first["text"], "action": {"kind": "option", "text": first["text"]}, "loaded": ctx.loads > loads_before, "tag": first["tag"]}
+            # nothing moved: the answer was only SELECTED. Learn how each answer
+            # looks when selected (and what that switches on, like "Continuar"):
+            # click them one by one and record what differs from the screen as
+            # it was captured.
+            node.sel_map = {first["i"]: await page.evaluate("() => window.__vai.diffNodes()")}
+            # a second click on the same answer tells the two kinds of screen
+            # apart: it un-picks it when several answers can be on at once
+            # (a checklist), and does nothing when only one can (a radio group)
+            await self._click(page, first["i"])
+            await asyncio.sleep(0.4)
+            node.multi = not await page.evaluate("() => window.__vai.diffNodes().length")
+            for opt in options[1:12]:
+                if await self._click(page, opt["i"]):
+                    await asyncio.sleep(0.45)
+                    node.sel_map[opt["i"]] = await page.evaluate("() => window.__vai.diffNodes()")
+                    if node.multi:
+                        # un-pick it again: every answer's diff must be ITS OWN
+                        # look, not the look of everything picked before it
+                        await self._click(page, opt["i"])
+                        await asyncio.sleep(0.4)
+            if node.multi:
+                logger.info("[funnel] screen %d is a multi-choice (several answers can be on)" % (node.index + 1))
+            # answers can branch the funnel ("just researching" often leaves the
+            # main path): end on the first one, the main path
+            if len(options) > 1 and await self._click(page, first["i"]):
+                await asyncio.sleep(0.45)
+            live2 = await page.evaluate("() => window.__vai.controls()")
+            cont = sorted(
+                (c for c in live2 if not c["disabled"] and not c["risky"] and not c.get("back") and c["i"] not in option_ids),
+                key=lambda c: (-c["score"], c["top"]),
+            )
+            for cta in cont[:3]:
+                before2 = await self._sig(page)
+                ex2, op2 = len(ctx.exit_urls), len(await self._opens(page))
+                await self._fill_inputs(page, checks=False)
+                if not await self._click(page, cta["i"]):
+                    continue
+                outcome = await self._wait_outcome(ctx, before2, ex2, op2)
+                if outcome in ("step", "external"):
+                    node.mode = "select"
+                    node.cont_text = cta["text"]
+                    node.cont_ctls = [c["i"] for c in live2 if c["text"] == cta["text"] and not c["inFaq"]] or [cta["i"]]
+                    return {"outcome": outcome, "label": first["text"], "action": {"kind": "select", "option": first["text"], "cont": cta["text"]}, "loaded": ctx.loads > loads_before}
+            return {"outcome": "none"}
+
+        # 2. a button-style screen: the most call-to-action-looking control
+        for cta in ctas[:3]:
+            await self._fill_inputs(page)
+            if filled and any(c["i"] == cta["i"] and c["disabled"] for c in live0):
+                # the button was off until the screen was answered: which answers does it want?
+                node.gate_fields = await self._required_fields(page, cta["i"], filled)
+                node.gated = True
+                logger.info(f"[funnel] screen {node.index + 1}: the button waits for fields {node.gate_fields}")
+                await self._fill_inputs(page)
+                await asyncio.sleep(0.2)
+            if not await self._click(page, cta["i"]):
+                logger.info(f"[funnel] click failed on {cta['text']!r}")
+                continue
+            outcome = await self._wait_outcome(ctx, before, exits_before, opens_before)
+            logger.info(f"[funnel] clicked {cta['text']!r} ({cta['tag']}) -> {outcome}; exits={ctx.exit_urls[-1:]} loads={ctx.loads - loads_before}")
+            if outcome == "overlay":
+                return {"outcome": "none", "overlay": True}
+            if outcome in ("step", "external"):
+                node.mode = "cta"
+                node.cont_text = cta["text"]
+                node.cont_ctls = [c["i"] for c in usable if c["text"] == cta["text"] and cta["text"] and not c["inFaq"]] or [cta["i"]]
+                return {"outcome": outcome, "label": "*", "action": {"kind": "cta", "text": cta["text"]}, "tag": cta["tag"], "loaded": ctx.loads > loads_before}
+            exits_before = len(ctx.exit_urls)
+            opens_before = len(await self._opens(page))
+            before = await self._sig(page)
+        return {"outcome": "none"}
+
+    # ───────────────────────── replay (to try other answers) ─────────────────────────
+    async def _wait_control(self, page: Page, text: str, timeout: float) -> Optional[int]:
+        t_end = time.monotonic() + timeout
+        while time.monotonic() < t_end:
+            try:
+                live = await page.evaluate("() => window.__vai.controls()")
+            except Exception:
+                await asyncio.sleep(0.4)
+                continue
+            hit = [c for c in live if c["text"] == text and not c["disabled"] and not c.get("back")]
+            if hit:
+                return sorted(hit, key=lambda c: c["top"])[0]["i"]
+            await asyncio.sleep(0.4)
+        return None
+
+    async def _do_action(self, ctx: Ctx, action: dict, wait: float = 45.0) -> str:
+        """Performs one recorded move; returns its outcome."""
+        page = ctx.page
+        kind = action["kind"]
+        before = await self._sig(page)
+        if kind == "auto":
+            t_end = time.monotonic() + 14
+            while time.monotonic() < t_end:
+                if sig_replaced(before, await self._sig(page)):
+                    await asyncio.sleep(0.5)
+                    return "step"
+                await asyncio.sleep(0.3)
+            return "none"
+        exits_before = len(ctx.exit_urls)
+        opens_before = len(await self._opens(page))
+        label = action.get("option") or action.get("text")
+        idx = await self._wait_control(page, label, wait)
+        if idx is None:
+            raise ReplayError(f"control {label!r} never showed up")
+        await self._fill_inputs(page, checks=False)
+        if not await self._click(page, idx):
+            raise ReplayError(f"could not click {label!r}")
+        if kind == "select":
+            await asyncio.sleep(0.45)
+            cidx = await self._wait_control(page, action["cont"], 10)
+            if cidx is None:
+                raise ReplayError(f"continue {action['cont']!r} never enabled")
+            before = await self._sig(page)
+            exits_before = len(ctx.exit_urls)
+            opens_before = len(await self._opens(page))
+            await self._fill_inputs(page, checks=False)
+            if not await self._click(page, cidx):
+                raise ReplayError("could not click continue")
+        return await self._wait_outcome(ctx, before, exits_before, opens_before, timeout=6.0)
+
+    async def _start(self, ctx: Ctx):
+        """Loads the funnel and waits for its first screen to be pressable."""
+        page = ctx.page
+        await page.goto(self.url, wait_until="domcontentloaded", timeout=45000)
+        t_wait = time.monotonic()
+        while time.monotonic() - t_wait < 15:
+            try:
+                n_vis = await page.evaluate("() => window.__vai.visibleCount()")
+                # three things on screen = ready; one or two for a couple of seconds = a sparse screen
+                # (a loader, a queue) that will not get busier: do not wait it out, it may be gone by then
+                if n_vis >= 3 or (n_vis >= 1 and time.monotonic() - t_wait >= 1.5):
+                    break
+            except Exception:
+                pass
+            await asyncio.sleep(0.25)
+        try:
+            await page.wait_for_load_state("load", timeout=3000)
+        except Exception:
+            pass
+
+    async def _replay(self, ctx: Ctx, path: list):
+        await self._start(ctx)
+        await asyncio.sleep(1.0)
+        for action in path:
+            outcome = await self._do_action(ctx, action)
+            if outcome != "step":
+                raise ReplayError(f"replay of {action} ended in {outcome}")
+
+    # ───────────────────────── exploration ─────────────────────────
+    async def _explore(self, ctx: Ctx, path: list, t0: float, pending: Optional[tuple]):
+        """Walks forward from the screen the page is on, taking the first
+        answer each time, until the funnel exits, dead-ends or comes back to a
+        screen we already know."""
+        added = 0
+        while True:
+            if self._over_budget() or len(self.nodes) >= MAX_NODES or added >= MAX_PRIMARY:
+                if len(self.nodes) >= MAX_NODES or added >= MAX_PRIMARY:
+                    self.notes.append(f"Funil gigante: clonei as primeiras {len(self.nodes)} etapas (o limite é {MAX_NODES}). O que vem depois ficou de fora.")
+                else:
+                    self.notes.append("O tempo máximo da exploração acabou: o que ainda não foi visitado ficou de fora (veja o Fluxo do funil).")
+                return
+            k = len(self.nodes)
+            obs = await self._observe(ctx, t0, k, chained=bool(pending and pending[0].mode == "auto" and pending[1] == "*"))
+            sig = obs["early_sig"] or await self._sig(ctx.page)
+            key = node_key(sig)
+            if pending:
+                src, label = pending
+                if src.key == key and src.mode == "auto":
+                    # an "auto" screen that merely kept animating: it is a dead end
+                    src.mode = "end"
+                else:
+                    src.targets[label] = key
+                pending = None
+            if key in self.nodes:
+                return
+            node = Node(key=key, index=len(self.nodes), url=ctx.page.url, path=list(path))
+            self.nodes[key] = node          # claim it before any await so parallel workers see it
+            added += 1
+            await self._progress(self._bump(), f"🧭 Etapa {node.index + 1}: lendo a tela e o que aparece depois...")
+
+            video = None
+            if obs["media"]:
+                try:
+                    video = await self.scraper._detect_video(ctx.page, self.sniffed_videos)
+                except Exception:
+                    video = None
+            if video and video.get("vturb"):
+                self.notes.append(f"Etapa {node.index + 1}: {describe_video(video.get('rules') or {}, video.get('vturb'))}")
+            if ctx.primary:
+                await self._read_css(ctx)
+                if node.index == 0:
+                    try:
+                        self._thumb_b64 = base64.b64encode(await ctx.page.screenshot(timeout=15000)).decode()
+                    except Exception:
+                        self._thumb_b64 = None
+
+            shots_dir = os.environ.get("VAI_DEBUG_SHOTS")
+            if shots_dir:
+                try:
+                    os.makedirs(shots_dir, exist_ok=True)
+                    await ctx.page.screenshot(path=f"{shots_dir}/step_{node.index}.png", timeout=10000)
+                except Exception:
+                    pass
+            host_shots: list = []
+            if video and video.get("url") and obs["early"] is None:
+                from services.playwright_scraper import shoot_players
+                host_shots = await shoot_players(ctx.page)
+                await ctx.page.evaluate("(s) => { window.__vaiShots = s }", host_shots)
+            video_shots: list = []
+            if obs["early"] is None:
+                try:
+                    from services.playwright_scraper import shoot_videos
+                    video_shots = await shoot_videos(ctx.page)
+                except Exception:
+                    video_shots = []
+            cap = obs["early"] if obs["early"] is not None else await self._capture_blocks(ctx.page, node.index, video)
+            hidden = []
+            try:
+                hidden = await ctx.page.evaluate("() => window.__vai.hiddenCtas()")
+            except Exception:
+                pass
+            if not cap["sections"]:
+                # nothing on screen (the page was already being torn down): not a screen
+                self.nodes.pop(key, None)
+                return
+            if obs["early"] is not None and obs.get("hists"):
+                # the early copy was taken before the screen finished doing its thing:
+                # complete it with the film recorded afterwards
+                for h in obs["hists"]:
+                    payload = h["tl"].replace("&", "&amp;").replace('"', "&quot;")
+                    tag_pat = re.compile(r'<[a-zA-Z][\w-]*\b[^>]*?\sdata-vai-n="%d"[^>]*>' % h["n"])
+                    for sec in cap["sections"]:
+                        mt = tag_pat.search(sec["dom_html"])
+                        if not mt:
+                            continue
+                        tag = mt.group(0)
+                        # the complete film REPLACES the early one (two data-vai-tl on one tag: the browser keeps the first)
+                        tag = re.sub(r'\sdata-vai-tl="[^"]*"', "", tag)
+                        tag = re.sub(r'(\sdata-vai-n="%d")' % h["n"], lambda m_: m_.group(1) + ' data-vai-tl="' + payload + '"', tag, count=1)
+                        sec["dom_html"] = sec["dom_html"][:mt.start()] + tag + sec["dom_html"][mt.end():]
+                        node.keep_n.add(h["n"])
+                        break
+            node.ctrls = cap.get("ctrls") or []
+            node.step = {
+                "index": node.index, "slug": slug_for(node.index, self.slug_prefix), "url": node.url,
+                "shell": cap["shell"], "sections": cap["sections"], "video": video,
+                "video_embedded": cap["embedded"] > 0, "host_shots": host_shots, "video_shots": video_shots, "delayed": cap["delayed"], "clocks": cap.get("clocks") or [],
+                "auto_next": obs["auto_next"], "has_media": obs["media"],
+                "headline": ((obs.get("early_sig") or sig).get("heads") or [""])[0],
+            }
+            if cap["delayed"] or obs["media"] or cap.get("clocks"):
+                self._calm = 0
+            else:
+                self._calm += 1
+            if cap.get("clocks"):
+                self.notes.append(f"Etapa {node.index + 1}: contagem regressiva encontrada ({', '.join(c['text'] for c in cap['clocks'])}), reproduzida no clone.")
+            if cap["delayed"]:
+                self.notes.append(f"Etapa {node.index + 1}: {cap['delayed']} elemento(s) aparecem com atraso (reproduzidos no clone).")
+            if obs["media"] and hidden and not cap["delayed"]:
+                self.notes.append(f"Etapa {node.index + 1}: tem vídeo e botões escondidos ({', '.join(hidden[:3])}) que provavelmente aparecem só depois de um tempo longo; configure o tempo no editor.")
+
+            if obs["auto_exit"]:
+                url = clean_exit_url(obs["auto_exit"][0])
+                node.mode = "auto"
+                node.auto_secs = obs["auto_exit"][1]
+                node.exit_url = url
+                node.targets["*"] = "exit:" + url
+                return
+            if obs["auto_next"] is not None:
+                # the app moved on by itself: no click, keep walking from here
+                if not obs.get("loaded"):
+                    self._spa_seen = True    # swapped its own screen without loading a document: an app
+                # a screen that moves on by itself may ALSO have a button that does the same sooner ("pular espera")
+                node.cont_ctls = [
+                    c["i"] for c in (node.ctrls or [])
+                    if not c["disabled"] and not c.get("back") and not c.get("external") and not c.get("risky")
+                    and (c["score"] >= 2 or (c["tag"] == "button" and c["w"] >= 100 and c["h"] >= 30)) and not c["isOption"] and not c.get("inFaq")
+                ][:3]
+                node.mode = "auto"
+                node.auto_secs = obs["auto_next"]
+                path = path + [{"kind": "auto"}]
+                pending = (node, "*")
+                t0 = time.monotonic() - 0.5
+                continue
+
+            adv = await self._advance(ctx, node)
+            if adv["outcome"] == "none":
+                if adv.get("overlay") and node.index == 0:
+                    logger.info("[funnel] the first move only opened a modal: not a funnel")
+                    raise NotAFunnel()
+                node.mode = "end"
+                return
+            if adv["outcome"] == "external":
+                url = clean_exit_url(ctx.exit_urls[-1]) if ctx.exit_urls else None
+                node.exit_url = url
+                node.targets[adv["label"]] = "exit:" + (url or "")
+                return
+            # A plain link to another page of the same site is just a website,
+            # not a funnel: stop before we start "cloning" its other pages.
+            if adv.get("loaded") and adv.get("tag") == "a" and not self._spa_seen:
+                # A link to another page of the same site: a website... or a quiz whose every step is its own
+                # page. A quiz screen has a handful of controls; a website has menus, footers, lists of links.
+                if node.n_ctrl > 14 or len(node.options) > 8:
+                    logger.info("[funnel] first move was a link to another page of the site (%d controls): not a funnel" % node.n_ctrl)
+                    raise NotAFunnel()
+                if not self._linkmode:
+                    self._linkmode = True
+                    logger.info("[funnel] the steps are separate pages: walking them as a funnel")
+            if not adv.get("loaded"):
+                self._spa_seen = True
+            path = path + [adv["action"]]
+            pending = (node, adv["label"])
+            t0 = time.monotonic() - 0.7
+
+    async def _read_css(self, ctx: Ctx):
+        # the stylesheet, re-read only when it changed (the last screen's exit
+        # click leaves the page, so it can't be read afterwards)
+        try:
+            css_sig = await ctx.page.evaluate("() => window.__vai.cssSig()")
+            if css_sig != self._css_sig:
+                self._css_sig = css_sig
+                css = await self.scraper.capture_page_css(ctx.page, self.sniffed_css)
+                if len(css) > len(self._css):
+                    self._css = css
+                self._fonts = list(dict.fromkeys([*self._fonts, *await self.scraper.capture_font_links(ctx.page)]))
+        except Exception as e:
+            logger.warning(f"[funnel] css capture failed: {e}")
+
+    # ───────────────────────── branches ─────────────────────────
+    def _branch_tasks(self) -> list:
+        """The next batch of (screen, answer) pairs worth trying.
+
+        The usual quiz sends every answer to the same next screen, and the
+        odd one out ("just researching") is typically the LAST or the second.
+        So each answer screen gets those two first; the rest are tried only if
+        something diverged, or when there are few enough to be cheap. A
+        screen where the extremes all converged on 6+ answers is taken to
+        converge."""
+        tasks = []
+        any_diverged = any(
+            t != n.targets.get(n.options[0])
+            for n in self.nodes.values() if n.mode in ("option", "select") and n.options
+            for o, t in n.targets.items() if o != n.options[0]
+        )
+        ordinal = -1
+        sampled = {7, 10, 14, 20, 28, 40, 55, 80, 120}
+        for node in sorted(self.nodes.values(), key=lambda n: n.index):
+            if node.mode not in ("option", "select") or len(node.options) < 2 or not node.step:
+                continue
+            ordinal += 1
+            # Replaying a path costs time proportional to its length. If the
+            # first answer screens all converge, a very long quiz is probably
+            # all of one piece: later screens are only sampled (unless
+            # something diverged, which makes every screen suspect).
+            if not any_diverged and ordinal >= 6 and ordinal not in sampled and not any(
+                t != node.targets.get(node.options[0]) for t in node.targets.values()
+            ):
+                if not self._sampling_noted:
+                    self._sampling_noted = True
+                    self.notes.append("Quiz comprido: testei as outras respostas nas primeiras perguntas e em algumas amostras; as demais seguem o mesmo caminho.")
+                continue
+            primary = node.targets.get(node.options[0])
+            others = node.options[1:1 + MAX_OPTIONS_TRIED]
+            pending = [t for t in others if t not in node.targets and (node.key, t) not in self._tried]
+            if not pending:
+                continue
+            probe = [t for t in ([others[-1], others[0]] if len(others) > 1 else [others[0]]) if t in pending]
+            probe = list(dict.fromkeys(probe))
+            if probe:
+                tasks.extend((node, t) for t in probe)
+                continue
+            diverged = any(node.targets.get(t) not in (None, primary) for t in others)
+            if diverged or len(node.options) <= 5:
+                tasks.extend((node, t) for t in pending)
+        return tasks
+
+    async def _branch_worker(self, queue: "asyncio.Queue", done: dict):
+        ctx = await self._new_ctx(primary=False)
+        try:
+            while True:
+                try:
+                    node, text = queue.get_nowait()
+                except asyncio.QueueEmpty:
+                    return
+                if self._over_budget() or len(self.nodes) >= MAX_NODES:
+                    return
+                self._tried.add((node.key, text))
+                for attempt in (1, 2):
+                    try:
+                        await asyncio.wait_for(self._try_answer(ctx, node, text), 420)
+                        break
+                    except NotAFunnel:
+                        break
+                    except ReplayError as e:
+                        logger.info(f"[funnel] could not try {text[:30]!r} on screen {node.index + 1} (attempt {attempt}): {e}")
+                    except Exception as e:
+                        logger.warning(f"[funnel] branch {text[:30]!r} failed (attempt {attempt}): {e!r}")
+                        # a page that hung or crashed is replaced by a fresh one
+                        await self._close(ctx)
+                        ctx = await self._new_ctx(primary=False)
+                done["n"] += 1
+                await self._progress(None, f"🔀 Testando outras respostas ({done['n']}/{done['total']})...")
+        finally:
+            await self._close(ctx)
+
+    async def _branch_pass(self):
+        waves = 0
+        while not self._over_budget() and len(self.nodes) < MAX_NODES and waves < 60:
+            tasks = self._branch_tasks()
+            if not tasks:
+                return
+            waves += 1
+            queue: asyncio.Queue = asyncio.Queue()
+            for t in tasks:
+                queue.put_nowait(t)
+            done = {"n": 0, "total": len(tasks)}
+            await self._progress(None, f"🔀 Testando outras respostas (0/{len(tasks)})...")
+            await asyncio.gather(*(self._branch_worker(queue, done) for _ in range(min(BRANCH_WORKERS, len(tasks)))))
+            if queue.qsize():
+                self.notes.append(f"{queue.qsize()} resposta(s) não deu tempo de testar; elas seguem o caminho principal.")
+                return
+
+    async def _try_answer(self, ctx: Ctx, node: Node, text: str):
+        await self._replay(ctx, node.path)
+        # we must be on the same screen
+        here = await self._sig(ctx.page)
+        known = json.loads(node.key)
+        if here.get("path") != known[0] or (len(known) == 2 and node_key(here) != node.key):
+            raise ReplayError("arrived on a different screen")
+        action = {"kind": node.mode, "option": text, "text": text, "cont": node.cont_text}
+        await self._observe_light(ctx)
+        before_exits = len(ctx.exit_urls)
+        outcome = await self._do_action(ctx, action, wait=15)
+        if outcome == "external":
+            node.targets[text] = "exit:" + clean_exit_url(ctx.exit_urls[-1]) if ctx.exit_urls else "exit:"
+            return
+        if outcome != "step":
+            return
+        await self._explore(ctx, node.path + [action], time.monotonic() - 0.7, (node, text))
+
+    async def _observe_light(self, ctx: Ctx):
+        """Delayed controls: a replay waits for them by name instead of watching."""
+        await asyncio.sleep(0.3)
+
+    # ───────────────────────── wiring ─────────────────────────
+    def _resolve(self, key: Optional[str]) -> Optional[str]:
+        return self._alias.get(key, key) if key else key
+
+    @staticmethod
+    def _fingerprint(node: "Node") -> Optional[str]:
+        """The builder's own id on a screen's root element (inlead: step_xxxx). Two
+        captures of one screen that raced each other carry the same one."""
+        secs = (node.step or {}).get("sections") or []
+        if not secs:
+            return None
+        m = re.match(r'\s*<[a-zA-Z][\w-]*[^>]*?\sid="([^"]+)"', secs[0].get("dom_html") or "")
+        return m.group(1) if m and not GENERIC_ID.match(m.group(1)) else None
+
+    def _target_attr(self, target: Optional[str]) -> str:
+        if not target:
+            return ""
+        if target.startswith("exit:"):
+            url = target[5:]
+            return f' data-vai-href="{url.replace("&", "&amp;")}"' if url else ""
+        idx = self._final.get(self._resolve(target))
+        return f' data-vai-next="{slug_for(idx, self.slug_prefix)}"' if idx is not None else ""
+
+    def _target_goto(self, target: Optional[str]) -> str:
+        if not target:
+            return ""
+        if target.startswith("exit:"):
+            return target[5:]
+        idx = self._final.get(self._resolve(target))
+        return slug_for(idx, self.slug_prefix) if idx is not None else ""
+
+    def _wire(self, node: Node):
+        st = node.step
+        if not st:
+            return
+        default = None
+        if node.options:
+            default = node.targets.get(node.options[0])
+        else:
+            default = node.targets.get("*")
+        idx_to_text = {i: t for t, i in node.option_ctl.items()}
+        touched = {row[0] for rows in node.sel_map.values() for row in rows} | node.keep_n
+        ctl_pat = re.compile(r'\sdata-vai-ctl="(\d+)"')
+        n_pat = re.compile(r'\sdata-vai-n="(\d+)"')
+
+        def sub(m):
+            i = int(m.group(1))
+            if node.mode == "option" and i in idx_to_text:
+                return self._target_attr(node.targets.get(idx_to_text[i]) or default)
+            if node.mode == "select" and i in idx_to_text:
+                attrs = ' data-vai-select="m"' if node.multi else ' data-vai-select="1"'
+                rows = node.sel_map.get(i) or []
+                if rows:
+                    j = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).replace("&", "&amp;").replace('"', "&quot;")
+                    attrs += f' data-vai-sel="{j}"'
+                goto = self._target_goto(node.targets.get(idx_to_text[i]) or default)
+                if goto:
+                    attrs += f' data-vai-goto="{goto.replace("&", "&amp;")}"'
+                return attrs
+            if i in node.cont_ctls:
+                gate = ' data-vai-gate="1"' if (node.gated and node.mode == "cta") else ""
+                return self._target_attr(default) + gate
+            return ""
+
+        def keep_n(m):
+            return m.group(0) if int(m.group(1)) in touched else ""
+
+        fld_pat = re.compile(r'\sdata-vai-fld="(\d+)"')
+
+        def fld(m):
+            return ' data-vai-req="1"' if (node.gated and int(m.group(1)) in node.gate_fields) else ""
+
+        for sec in st["sections"]:
+            sec["dom_html"] = personalize(fld_pat.sub(fld, n_pat.sub(keep_n, ctl_pat.sub(sub, sec.get("dom_html") or ""))))
+
+        if node.mode == "auto" and default:
+            goto = self._target_goto(default)
+            for sec in st["sections"]:
+                html = sec.get("dom_html") or ""
+                m = re.match(r"\s*<([a-zA-Z][\w-]*)", html)
+                if m and goto:
+                    sec["dom_html"] = html[:m.end()] + f' data-vai-auto-to="{goto.replace("&", "&amp;")}" data-vai-auto-after="{max(1.0, round((node.auto_secs or 3) - 0.2, 1))}"' + html[m.end():]
+                    break
+
+    # ───────────────────────── main ─────────────────────────
+    async def walk(self) -> Optional[dict]:
+        self._t_walk = time.monotonic()
+        self._deadline = self._t_walk + WALK_BUDGET
+        ctx = await self._new_ctx(primary=True)
+        try:
+            t_goto = time.monotonic()
+            try:
+                await self._start(ctx)
+            except Exception as e:
+                logger.warning(f"[funnel] goto failed: {e}")
+                return None
+
+            # Is there anything here a visitor would press to go on? A static
+            # one-screen page has nothing, and is not worth walking.
+            # (no waiting for controls to show up: a chat, a loader or a queue shows none for seconds, and
+            # the first screen's clock is already running)
+            try:
+                pressable = await ctx.page.evaluate("""
+                    () => {
+                        if (document.documentElement.scrollHeight > innerHeight * 3.2) return false;
+                        return window.__vai.controls().some(c => !c.disabled && !c.external && !c.back);
+                    }
+                """)
+            except Exception:
+                pressable = False
+            if not pressable:
+                # nothing to press. A long page is a landing page; a SHORT one may be a waiting screen
+                # ("analisando…", a queue, a countdown) that moves on by itself: walk it and let the
+                # result decide (a screen that never moves on ends up as fewer than two screens)
+                try:
+                    tall = await ctx.page.evaluate("() => document.documentElement.scrollHeight > innerHeight * 3.2")
+                except Exception:
+                    tall = True
+                if tall:
+                    return None
+
+            try:
+                # the first screen's clock starts when the page was OPENED (a loader, a queue, a button
+                # that shows up at 10s: all of it counts from there, not from when we began to look)
+                await self._explore(ctx, [], t_goto, None)
+            except NotAFunnel:
+                return None
+
+            # the other answers
+            self._deadline = time.monotonic() + BRANCH_BUDGET
+            await self._branch_pass()
+
+            return self._build()
+        finally:
+            await self._close(ctx)
+
+
+    def _build(self) -> Optional[dict]:
+        """The result from whatever has been captured so far (also used when the
+        walk is cut short)."""
+        nodes = sorted((n for n in self.nodes.values() if n.step), key=lambda n: n.index)
+        # the same screen captured twice (two workers reached it at once): keep the first
+        first_by_fp: dict[str, "Node"] = {}
+        unique: list = []
+        for n in nodes:
+            fp = self._fingerprint(n)
+            if fp and fp in first_by_fp:
+                self._alias[n.key] = first_by_fp[fp].key
+                continue
+            if fp:
+                first_by_fp[fp] = n
+            unique.append(n)
+        nodes = unique
+        if len(nodes) == 1 and nodes[0].step:
+            # ONE screen is not a funnel, but if things happen on it BY THEMSELVES (a button that shows up at
+            # 6s, a clock, a loader, a video that unlocks an offer) this reader records them and the plain
+            # page capture does not: hand the screen over as a one-step result
+            st0 = nodes[0].step
+            html0 = "".join(x.get("dom_html") or "" for x in st0.get("sections") or [])
+            timed = bool(st0.get("delayed") or st0.get("clocks") or "data-vai-tl=" in html0 or "data-vai-pitch-at=" in html0
+                         or "data-vai-modal=" in html0 and "data-vai-delay=" in html0)
+            if not timed:
+                return None
+        elif len(nodes) < 2 or (not self._spa_seen and len(nodes) < 3):
+            return None
+        # pages are numbered over the screens that were really captured
+        self._final = {n.key: i for i, n in enumerate(nodes)}
+
+        for n in nodes:
+            self._wire(n)
+
+        page_css = self._css
+        font_links = self._fonts
+        steps = []
+        for i, n in enumerate(nodes):
+            st = n.step
+            st["index"] = i
+            st["slug"] = slug_for(i, self.slug_prefix)
+            st["shell"] = {**st["shell"], "fontLinks": font_links[:8]}
+            st["name"] = f"Etapa {i + 1}" + (f": {st['headline'][:38]}" if st.get("headline") else "")
+            st["exit_url"] = n.exit_url
+            steps.append(st)
+
+        exits = [n.exit_url for n in nodes if n.exit_url]
+        branches = sum(1 for n in nodes if len({t for t in n.targets.values()}) > 1)
+        if branches:
+            self.notes.append(f"{branches} etapa(s) levam a caminhos diferentes conforme a resposta (reproduzido no clone).")
+        return {
+            "steps": steps,
+            "page_css": page_css,
+            "font_links": font_links,
+            "full_screenshot_b64": self._thumb_b64,
+            "exit_url": exits[0] if exits else None,
+            "notes": list(dict.fromkeys(self.notes)),
+        }
+
+    async def run(self) -> Optional[dict]:
+        """walk() under a hard time limit: whatever was captured when it runs
+        out is still returned (a long funnel cloned in part beats an error)."""
+        task = asyncio.ensure_future(self.walk())
+        try:
+            done, _ = await asyncio.wait({task}, timeout=HARD_TIMEOUT)
+            if not done:
+                self._stop = True
+                done, _ = await asyncio.wait({task}, timeout=120)
+                if not done:
+                    task.cancel()
+                    self.notes.append("Tempo máximo atingido; o funil foi clonado até onde deu.")
+                    try:
+                        return self._build()
+                    except Exception:
+                        return None
+            return task.result()
+        finally:
+            if not task.done():
+                task.cancel()
+
+
+class NotAFunnel(Exception):
+    pass

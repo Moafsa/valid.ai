@@ -1,0 +1,257 @@
+{
+ "idx": 75,
+ "cat": "dtc",
+ "url": "https://www.havaianas.com.br/",
+ "projectId": "cmux2gnuh0037br8cqgsz74zh",
+ "slug": "home",
+ "scan": {
+  "seconds": 259,
+  "pages": 1,
+  "blocks": 50,
+  "cssKB": 917,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.955,
+   "extra": 0.0,
+   "missing": [
+    "padr\u00e3o",
+    "utilizamos",
+    "melhorar",
+    "experi\u00eancia",
+    "navega\u00e7\u00e3o",
+    "aceite",
+    "todos",
+    "clique",
+    "personalizar",
+    "configurar",
+    "prefer\u00eancias",
+    "informa\u00e7\u00f5es",
+    "aceitar"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    98.2,
+    0.2,
+    5.8,
+    23.9,
+    10.8,
+    46.0,
+    49.6
+   ],
+   "diffTop": 34.7,
+   "diffAll": 33.5,
+   "imgVis": [
+    59,
+    59
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    17,
+    0
+   ],
+   "links": [
+    376,
+    375
+   ],
+   "buttons": [
+    121,
+    119
+   ],
+   "inputs": [
+    23,
+    23
+   ],
+   "kb": [
+    10818,
+    5229
+   ],
+   "requests": [
+    439,
+    84
+   ],
+   "loadSec": [
+    48.7,
+    15.7
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      200,
+      44
+     ],
+     [
+      "iframe",
+      64,
+      64
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "havaianas.com.br": [
+     17,
+     18746
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux2gnuh0037br8cqgsz74zh/assets/home_section_1_1.png",
+    "https://havaianas.com.br/"
+   ],
+   "origErrors": 32,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Assistant:unloaded",
+    "Assistant:unloaded",
+    "Assistant:unloaded",
+    "havaianas-icons:unloaded"
+   ],
+   "fontOC": [
+    "Manrope, system-ui, sans-serif",
+    "Manrope, system-ui, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.918,
+   "extra": 0.0,
+   "missing": [
+    "padr\u00e3o",
+    "utilizamos",
+    "cookies",
+    "melhorar",
+    "experi\u00eancia",
+    "navega\u00e7\u00e3o",
+    "aceite",
+    "todos",
+    "clique",
+    "personalizar",
+    "configurar",
+    "suas",
+    "prefer\u00eancias",
+    "informa\u00e7\u00f5es",
+    "aceitar",
+    "deixar",
+    "aqui",
+    "embaixo",
+    "liberar"
+   ],
+   "heightRatio": 0.986,
+   "overflowX": false,
+   "tiles": [
+    94.7,
+    10.9,
+    22.8,
+    36.4,
+    35.1,
+    53.6,
+    43.3,
+    27.0
+   ],
+   "diffTop": 42.8,
+   "diffAll": 40.5,
+   "imgVis": [
+    58,
+    58
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    15,
+    0
+   ],
+   "links": [
+    377,
+    375
+   ],
+   "buttons": [
+    124,
+    119
+   ],
+   "inputs": [
+    32,
+    23
+   ],
+   "kb": [
+    8101,
+    4774
+   ],
+   "requests": [
+    418,
+    75
+   ],
+   "loadSec": [
+    48.7,
+    14.2
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      64,
+      64
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "havaianas.com.br": [
+     17,
+     19644
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux2gnuh0037br8cqgsz74zh/assets/home_section_1_1.png",
+    "https://havaianas.com.br/"
+   ],
+   "origErrors": 29,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Assistant:unloaded",
+    "Assistant:unloaded",
+    "Assistant:unloaded",
+    "havaianas-icons:unloaded"
+   ],
+   "fontOC": [
+    "Manrope, system-ui, sans-serif",
+    "Manrope, system-ui, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2gnuh0037br8cqgsz74zh/p/home"
+}

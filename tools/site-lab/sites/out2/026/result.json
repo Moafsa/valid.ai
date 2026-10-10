@@ -1,0 +1,213 @@
+{
+ "idx": 26,
+ "cat": "saas",
+ "url": "https://arc.net/",
+ "projectId": "cmux1ruhd0011br8czmidprho",
+ "slug": "home",
+ "scan": {
+  "seconds": 69,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 251,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "estamos",
+    "verificando",
+    "seu",
+    "navegador",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791313766",
+    "6c6p6fheetpcn860nt1cfla0jsis7g2q"
+   ],
+   "heightRatio": 7.776,
+   "overflowX": false,
+   "tiles": [
+    21.6
+   ],
+   "diffTop": 21.6,
+   "diffAll": 21.6,
+   "imgVis": [
+    0,
+    8
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    50
+   ],
+   "buttons": [
+    0,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    4650
+   ],
+   "requests": [
+    2,
+    28
+   ],
+   "loadSec": [
+    3.0,
+    8.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "div",
+      720,
+      835,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Marlin Soft Basic:unloaded",
+    "Marlin Soft Basic:unloaded",
+    "Inter:unloaded",
+    "Sohne Breit:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Marlin, -apple-system, BlinkMacSystemFon"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 252, 236)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "estamos",
+    "verificando",
+    "seu",
+    "navegador",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791313793",
+    "keybjvnkyjk1zbropwu8nsgclh6sraqt"
+   ],
+   "heightRatio": 6.72,
+   "overflowX": true,
+   "tiles": [
+    32.1
+   ],
+   "diffTop": 32.1,
+   "diffAll": 32.1,
+   "imgVis": [
+    0,
+    8
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    1
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    50
+   ],
+   "buttons": [
+    0,
+    7
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    4579
+   ],
+   "requests": [
+    2,
+    25
+   ],
+   "loadSec": [
+    1.1,
+    5.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "div",
+      234,
+      271,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Marlin Soft Basic:unloaded",
+    "Marlin Soft Basic:unloaded",
+    "Inter:unloaded",
+    "Sohne Breit:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Marlin, -apple-system, BlinkMacSystemFon"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 252, 236)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux1ruhd0011br8czmidprho/p/home"
+}

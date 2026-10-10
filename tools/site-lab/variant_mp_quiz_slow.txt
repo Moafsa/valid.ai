@@ -1,0 +1,12 @@
+original: 8 screens in 29.4s, 28KB | clone: 8 screens in 29.9s, 35KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Pergunta 1 de 8                     Pergunta 1 de 8                     OK     0.0    0.85   3.18
+  2  Pergunta 2 de 8                     Pergunta 2 de 8                     OK     0.0    3.61   5.96
+  3  Pergunta 3 de 8                     Pergunta 3 de 8                     OK     0.0    6.41    8.4
+  4  Pergunta 4 de 8                     Pergunta 4 de 8                     OK     0.0    9.39  10.98
+  5  Pergunta 5 de 8                     Pergunta 5 de 8                     OK     0.0   11.94   13.4
+  6  Pergunta 6 de 8                     Pergunta 6 de 8                     OK     0.0   14.57  15.71
+  7  Pergunta 7 de 8                     Pergunta 7 de 8                     OK     0.0   17.14  18.17
+  8  Pergunta 8 de 8                     Pergunta 8 de 8                     OK     0.0   19.64  20.77
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 8->8 same-title 8/8 | mean pixel diff 0.0% max 0.0% | weight 28KB -> 35KB | longtasks 5 -> 25

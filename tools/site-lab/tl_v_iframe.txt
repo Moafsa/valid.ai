@@ -1,0 +1,5 @@
+project cmuvj0nk60001eatipi922i8x slug home scan 104s pages=1
+ t(s)  diff%   original text | clone text
+  1.0    15.2  'Vídeo do YouTube © 2026 Lab Funnel · Termos' | 'Vídeo do YouTube © 2026 Lab Funnel · Termos'
+  5.0   20.46  'Vídeo do YouTube QUERO COMPRAR AGORA © 2026 Lab ' | 'Vídeo do YouTube QUERO COMPRAR AGORA © 2026 Lab '
+errors orig/clone: [] [] | worst diff 20.46

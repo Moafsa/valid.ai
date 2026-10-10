@@ -1,0 +1,328 @@
+{
+ "idx": 85,
+ "cat": "saas",
+ "url": "https://superhuman.com/",
+ "projectId": "cmuw60lyt006sn7r8ihl9oes8",
+ "slug": "home",
+ "scan": {
+  "seconds": 441,
+  "pages": 1,
+  "blocks": 5,
+  "cssKB": 144,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.399,
+   "extra": 0.567,
+   "missing": [
+    "superpowers",
+    "looks",
+    "like",
+    "chatting",
+    "antonio",
+    "laura",
+    "launch",
+    "project",
+    "need",
+    "book",
+    "meeting",
+    "would",
+    "good",
+    "yes",
+    "available",
+    "during",
+    "these",
+    "times",
+    "monday",
+    "tuesday",
+    "other",
+    "sarah",
+    "kim",
+    "design",
+    "review"
+   ],
+   "heightRatio": 1.262,
+   "overflowX": false,
+   "tiles": [
+    80.5,
+    31.3,
+    31.9,
+    6.2,
+    47.8,
+    92.4,
+    38.2
+   ],
+   "diffTop": 47.9,
+   "diffAll": 46.9,
+   "imgVis": [
+    9,
+    26
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    5,
+    3
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    86,
+    92
+   ],
+   "buttons": [
+    25,
+    40
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    7321,
+    2183
+   ],
+   "requests": [
+    108,
+    50
+   ],
+   "loadSec": [
+    12.1,
+    4.8
+   ],
+   "videoArea": 0.8,
+   "videoRect": [
+    [
+     0,
+     0,
+     1440,
+     900
+    ],
+    [
+     0,
+     7415,
+     1440,
+     720
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      1440,
+      900
+     ],
+     [
+      "video",
+      639,
+      320
+     ],
+     [
+      "video",
+      639,
+      320
+     ],
+     [
+      "video",
+      639,
+      320
+     ]
+    ],
+    [
+     [
+      "div",
+      640,
+      320,
+      true
+     ],
+     [
+      "video",
+      640,
+      320,
+      false
+     ],
+     [
+      "video",
+      1440,
+      720,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw60lyt006sn7r8ihl9oes8/videos/home.mp4",
+    "https://superhumanstatic.com/vwfkeyj6n9ac/2BUBLYCRraAlzAgtLO0UY5/f2efa057021310e9378a15600603b4ea/hero-docs-desktop-2x.m"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Super Sans VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Sans Mono VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Super Sans VF\", system-ui, -apple-syste",
+    "\"Super Sans VF\", system-ui, -apple-syste"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Superpowers, everywhere you work",
+    "Mail, Docs, and AI that works in every app and tab",
+    "Your Superhuman suite",
+    "Everyone\u2019s favorite AI writing partner"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.981,
+   "extra": 0.023,
+   "missing": [
+    "bring",
+    "inside",
+    "agent",
+    "works",
+    "everywhere"
+   ],
+   "heightRatio": 1.004,
+   "overflowX": false,
+   "tiles": [
+    40.9,
+    21.1,
+    32.3,
+    14.1,
+    14.0,
+    37.3,
+    34.1,
+    30.6
+   ],
+   "diffTop": 31.4,
+   "diffAll": 28.1,
+   "imgVis": [
+    26,
+    26
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    3
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    92,
+    92
+   ],
+   "buttons": [
+    40,
+    40
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    3985,
+    1918
+   ],
+   "requests": [
+    135,
+    49
+   ],
+   "loadSec": [
+    10.8,
+    4.6
+   ],
+   "videoArea": 1.19,
+   "videoRect": [
+    [
+     16,
+     382,
+     358,
+     179
+    ],
+    [
+     0,
+     10150,
+     390,
+     195
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      358,
+      179
+     ]
+    ],
+    [
+     [
+      "div",
+      358,
+      201,
+      true
+     ],
+     [
+      "video",
+      358,
+      201,
+      false
+     ],
+     [
+      "video",
+      390,
+      195,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmuw60lyt006sn7r8ihl9oes8/videos/home.mp4",
+    "https://superhumanstatic.com/vwfkeyj6n9ac/2BUBLYCRraAlzAgtLO0UY5/f2efa057021310e9378a15600603b4ea/hero-docs-desktop-2x.m"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Super Sans VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Sans Mono VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Super Sans VF\", system-ui, -apple-syste",
+    "\"Super Sans VF\", system-ui, -apple-syste"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Bring AI inside every app and tab with Superhuman Go"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw60lyt006sn7r8ihl9oes8/p/home"
+}

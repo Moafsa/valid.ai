@@ -1,0 +1,137 @@
+"""
+Every video of a captured page becomes the clone's own light player.
+
+The capture keeps whatever the original had: a plain <video>, an <iframe> of a
+video host (YouTube, Vimeo, Wistia, Panda...). Left as they are they bring the
+host's heavy player (and its rules) into the clone. This pass swaps each one for
+a <div data-vai-player="..."> box that keeps the proportion, position and
+responsiveness of the original, configured with what the original element says
+about itself (autoplay, controls, loop, poster). public/vai-player.js mounts it.
+
+Players the engine already replaced (custom elements like VTurb, marker present)
+are left alone, and so are decorative background loops (muted + loop + autoplay,
+no controls): those are not "the video" of the page.
+"""
+import html as _html
+import json
+import re
+from typing import Optional
+from urllib.parse import urlparse, parse_qs
+
+VIDEO_TAG = re.compile(r"<video\b([^>]*)>(.*?)</video>", re.I | re.S)
+IFRAME_TAG = re.compile(r"<iframe\b([^>]*)>(?:\s*</iframe>)?", re.I | re.S)
+ATTR = re.compile(r'([a-zA-Z_:][-\w:.]*)(?:\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s>]+)))?')
+SOURCE_SRC = re.compile(r"<source\b[^>]*\ssrc=[\"']([^\"']+)[\"']", re.I)
+
+VIDEO_HOSTS = re.compile(
+    r"(youtube\.com/embed|youtube-nocookie\.com/embed|player\.vimeo\.com|fast\.wistia\.(net|com)|"
+    r"pandavideo\.com|player-vz-|iframe\.mediadelivery\.net|scripts\.converteai\.net|vturb|loom\.com/embed|"
+    r"dailymotion\.com/embed|streamable\.com/e/|play\.gumlet|player\.cloudinary|videodelivery\.net)",
+    re.I,
+)
+
+
+def _attrs(raw: str) -> dict:
+    out = {}
+    for m in ATTR.finditer(raw or ""):
+        name = m.group(1).lower()
+        val = m.group(2) if m.group(2) is not None else (m.group(3) if m.group(3) is not None else (m.group(4) if m.group(4) is not None else ""))
+        out.setdefault(name, _html.unescape(val))
+    return out
+
+
+def _youtube_poster(url: str) -> Optional[str]:
+    m = re.search(r"(?:youtube(?:-nocookie)?\.com/embed/|youtu\.be/)([\w-]{6,})", url)
+    return f"https://i.ytimg.com/vi/{m.group(1)}/hqdefault.jpg" if m else None
+
+
+def _ratio(attrs: dict) -> float:
+    """height / width * 100: from the box the capture measured, else the element's own size, else 16:9."""
+    box = attrs.get("data-vai-box")
+    if box:
+        try:
+            w, h = [float(x) for x in box.split(",")[:2]]
+            if w > 0 and h > 0:
+                return round(h / w * 100, 3)
+        except Exception:
+            pass
+    try:
+        w, h = float(attrs.get("width", "")), float(attrs.get("height", ""))
+        if w > 0 and h > 0:
+            return round(h / w * 100, 3)
+    except Exception:
+        pass
+    return 56.25
+
+
+def _wrapper(cfg: dict, attrs: dict) -> str:
+    ratio = _ratio(attrs)
+    cfg = {**cfg, "ratio": ratio}
+    payload = _html.escape(json.dumps(cfg, ensure_ascii=False, separators=(",", ":")), quote=True)
+    klass = attrs.get("class", "")
+    style = (attrs.get("style") or "").strip().rstrip(";")
+    # the box keeps the element's own class/inline size; the proportion comes from padding
+    style = (style + ";" if style else "") + f"position:relative;display:block;height:0;padding-top:{ratio}%;overflow:hidden;background:#000"
+    cls = f' class="{_html.escape(klass, quote=True)}"' if klass else ""
+    return f'<div data-vai-player="{payload}"{cls} style="{_html.escape(style, quote=True)}"></div>'
+
+
+def _is_decorative(attrs: dict) -> bool:
+    return "loop" in attrs and "muted" in attrs and "autoplay" in attrs and "controls" not in attrs
+
+
+def convert_html(html: str, page_video: Optional[dict] = None) -> tuple[str, list]:
+    """Returns (new html, [config of every player created])."""
+    if not html or ("<video" not in html.lower() and "<iframe" not in html.lower()):
+        return html, []
+    made: list = []
+
+    def video(m):
+        attrs = _attrs(m.group(1))
+        if _is_decorative(attrs):
+            return m.group(0)
+        src = attrs.get("src") or ""
+        if not src:
+            s = SOURCE_SRC.search(m.group(2) or "")
+            src = _html.unescape(s.group(1)) if s else ""
+        if src.startswith("blob:") or not src:
+            src = (page_video or {}).get("url") or ""
+        if not src or src.startswith("blob:") or src.startswith("data:"):
+            return m.group(0)
+        controls = "controls" in attrs
+        cfg = {
+            "src": src,
+            "start": "auto" if "autoplay" in attrs else "click",
+            "bar": "full" if controls else "plain",
+            "pause": "free",
+            "seek": controls,
+            "fullscreen": controls and "nofullscreen" not in (attrs.get("controlslist") or "").lower(),
+            "resume": False,
+        }
+        if attrs.get("poster"):
+            cfg["poster"] = attrs["poster"]
+        elif attrs.get("data-vai-vid") is not None:
+            cfg["poster"] = "__VAI_VSHOT_" + attrs["data-vai-vid"] + "__"      # the first frame, uploaded by the orchestrator
+        if "loop" in attrs:
+            cfg["loop"] = True
+        made.append(cfg)
+        return _wrapper(cfg, attrs)
+
+    def iframe(m):
+        attrs = _attrs(m.group(1))
+        src = attrs.get("src") or attrs.get("data-src") or ""
+        if not src or not VIDEO_HOSTS.search(src):
+            return m.group(0)
+        if src.startswith("//"):
+            src = "https:" + src
+        auto = (parse_qs(urlparse(src).query).get("autoplay") or ["0"])[0] in ("1", "true")
+        cfg = {"embed": src, "start": "auto" if auto else "click", "bar": "none", "pause": "free", "resume": False}
+        poster = _youtube_poster(src)
+        if poster:
+            cfg["poster"] = poster
+        made.append(cfg)
+        return _wrapper(cfg, attrs)
+
+    out = VIDEO_TAG.sub(video, html)
+    out = IFRAME_TAG.sub(iframe, out)
+    return out, made

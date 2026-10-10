@@ -1,0 +1,244 @@
+{
+ "idx": 38,
+ "cat": "wix-cont",
+ "url": "https://racescritorioconta.wixsite.com/site",
+ "projectId": "cmuw2qsgw002vn7r85l992lt2",
+ "slug": "site",
+ "scan": {
+  "seconds": 327,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 178,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.996,
+   "extra": 0.0,
+   "missing": [
+    "conte\u00fado"
+   ],
+   "heightRatio": 1.028,
+   "overflowX": false,
+   "tiles": [
+    19.3,
+    46.9,
+    59.8,
+    74.3,
+    59.7,
+    16.9
+   ],
+   "diffTop": 42.0,
+   "diffAll": 46.1,
+   "imgVis": [
+    4,
+    4
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    10,
+    10
+   ],
+   "buttons": [
+    2,
+    1
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    1476,
+    252
+   ],
+   "requests": [
+    157,
+    14
+   ],
+   "loadSec": [
+    5.8,
+    3.3
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     1153,
+     814,
+     287,
+     86
+    ],
+    [
+     1153,
+     814,
+     287,
+     86
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      287,
+      86
+     ]
+    ],
+    [
+     [
+      "iframe",
+      287,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.996,
+   "extra": 0.014,
+   "missing": [
+    "conte\u00fado"
+   ],
+   "heightRatio": 0.796,
+   "overflowX": true,
+   "tiles": [
+    66.4,
+    32.2,
+    41.5,
+    54.0,
+    87.1
+   ],
+   "diffTop": 46.7,
+   "diffAll": 56.2,
+   "imgVis": [
+    4,
+    4
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    12,
+    10
+   ],
+   "buttons": [
+    4,
+    1
+   ],
+   "inputs": [
+    4,
+    4
+   ],
+   "kb": [
+    2000,
+    252
+   ],
+   "requests": [
+    174,
+    14
+   ],
+   "loadSec": [
+    5.4,
+    2.7
+   ],
+   "videoArea": 0.24,
+   "videoRect": [
+    [
+     0,
+     6587,
+     320,
+     320
+    ],
+    [
+     693,
+     2035,
+     287,
+     86
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      320,
+      320
+     ]
+    ],
+    [
+     [
+      "iframe",
+      287,
+      86,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw2qsgw002vn7r85l992lt2/p/site"
+}

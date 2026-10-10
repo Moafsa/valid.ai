@@ -1,0 +1,310 @@
+{
+ "idx": 28,
+ "cat": "gsite",
+ "url": "https://sites.google.com/view/elciogabriollimartinsjr/p%C3%A1gina-inicial/",
+ "projectId": "cmuw1wsps001sn7r8lx96eri8",
+ "slug": "view-elciogabriollimartinsjr-p-c3-a1gina-inicial",
+ "scan": {
+  "seconds": 187,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 1842,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.973,
+   "extra": 0.027,
+   "missing": [
+    "pular",
+    "conte\u00fado",
+    "principal",
+    "navega\u00e7\u00e3o",
+    "p\u00e1gina",
+    "atualizada",
+    "denunciar",
+    "abuso"
+   ],
+   "heightRatio": 1.053,
+   "overflowX": false,
+   "tiles": [
+    44.0,
+    69.5,
+    10.8,
+    20.7,
+    35.2
+   ],
+   "diffTop": 41.4,
+   "diffAll": 36.0,
+   "imgVis": [
+    10,
+    11
+   ],
+   "broken": [
+    1,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    19,
+    19
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    5671,
+    1338
+   ],
+   "requests": [
+    137,
+    71
+   ],
+   "loadSec": [
+    13.6,
+    7.6
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     439,
+     4856,
+     562,
+     465
+    ],
+    [
+     439,
+     5138,
+     562,
+     465
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      661,
+      342
+     ],
+     [
+      "iframe",
+      562,
+      465
+     ]
+    ],
+    [
+     [
+      "div",
+      661,
+      342,
+      true
+     ],
+     [
+      "iframe",
+      562,
+      465,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.google.com": [
+     10,
+     130442
+    ],
+    "maps-api-ssl.google.com": [
+     1,
+     1474
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72sxIsVIF-nR0WJsk7ftV-h_UhiOZuo8UZyuiHmtTizS7WH_rD2UqBky6Y4CU5QmDkRPuts-W7",
+    "https://sites.google.com/sitesv-images-rt/AMxu72uFxeXQWOqMXwao2AgJlnH2IK1OUZGexEcF-sveLG_LEBeak0JUnUWpLdjs9V3gOVkTLqsh3H",
+    "https://lh3.googleusercontent.com/docsubipk/AP9E6xVhDWDSJ_qnpWsHnfhKBGmDVxQV-dPTpQFdm8CRFND8bMCVTvKPD7E9J36zdlaxJAV9_Hv5"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 2,
+   "cloneNFailed": 3,
+   "facesClone": [
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.986,
+   "extra": 0.034,
+   "missing": [
+    "pular",
+    "conte\u00fado",
+    "principal",
+    "navega\u00e7\u00e3o"
+   ],
+   "heightRatio": 1.022,
+   "overflowX": false,
+   "tiles": [
+    6.9,
+    68.3,
+    18.9,
+    9.9,
+    19.7,
+    45.0,
+    34.9,
+    20.8
+   ],
+   "diffTop": 31.4,
+   "diffAll": 28.1,
+   "imgVis": [
+    10,
+    11
+   ],
+   "broken": [
+    1,
+    1
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    18,
+    19
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    5500,
+    1284
+   ],
+   "requests": [
+    112,
+    53
+   ],
+   "loadSec": [
+    13.7,
+    5.8
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     19,
+     7677,
+     352,
+     290
+    ],
+    [
+     19,
+     7859,
+     352,
+     290
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      352,
+      182
+     ],
+     [
+      "iframe",
+      352,
+      290
+     ]
+    ],
+    [
+     [
+      "div",
+      352,
+      182,
+      true
+     ],
+     [
+      "iframe",
+      352,
+      290,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {
+    "www.google.com": [
+     10,
+     128945
+    ],
+    "maps-api-ssl.google.com": [
+     1,
+     1476
+    ]
+   },
+   "cloneErrors": [
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite",
+    "console: Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameSite"
+   ],
+   "cloneFailed": [
+    "https://sites.google.com/sitesv-images-rt/AMxu72sxIsVIF-nR0WJsk7ftV-h_UhiOZuo8UZyuiHmtTizS7WH_rD2UqBky6Y4CU5QmDkRPuts-W7",
+    "https://sites.google.com/sitesv-images-rt/AMxu72uFxeXQWOqMXwao2AgJlnH2IK1OUZGexEcF-sveLG_LEBeak0JUnUWpLdjs9V3gOVkTLqsh3H",
+    "https://lh3.googleusercontent.com/docsubipk/AP9E6xVhDWDSJ_qnpWsHnfhKBGmDVxQV-dPTpQFdm8CRFND8bMCVTvKPD7E9J36zdlaxJAV9_Hv5"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 2,
+   "cloneNFailed": 3,
+   "facesClone": [
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded",
+    "Google Sans:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw1wsps001sn7r8lx96eri8/p/view-elciogabriollimartinsjr-p-c3-a1gina-inicial"
+}

@@ -15,6 +15,11 @@ class Settings(BaseSettings):
 
     PROXY_URL: str = ""
 
+    # Finished clones are handed to the web app server to server (see
+    # ScanOrchestrator._deliver), not through the visitor's browser.
+    SCANNER_SHARED_SECRET: str = ""
+    WEB_INTERNAL_URL: str = "http://web:3000"
+
     class Config:
         env_file = ".env"
         extra = "ignore"

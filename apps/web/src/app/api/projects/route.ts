@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@funnelai/db'
 import { getCurrentWorkspace } from '@/lib/auth-helper'
 import { z } from 'zod'
+import { gate, gateResponse } from '@/lib/plans'
 
 const schema = z.object({ sourceUrl: z.string().url(), name: z.string().min(1).max(80).optional() })
 
@@ -19,6 +20,12 @@ export async function POST(req: NextRequest) {
     if (!workspace) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { sourceUrl, name } = schema.parse(await req.json())
+
+    // the plan: clonagens por mês and armazenamento (a clone that would not fit never starts)
+    for (const key of ['clones', 'storageMb'] as const) {
+      const g = await gate(workspace, key)
+      if (!g.ok) return NextResponse.json(gateResponse(g), { status: 403 })
+    }
 
     // No slug/domain at creation time anymore — that's chosen later, when
     // the user explicitly publishes the project (see PATCH below). A

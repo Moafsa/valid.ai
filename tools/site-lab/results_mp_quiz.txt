@@ -1,0 +1,18 @@
+project cmuvilo7c0001qfz04f5hs6a3 slug home scan 147s pages 8
+http://172.18.0.1:8099/mp_quiz/: 8 screens, exits=['https://example.com/checkout'] errors=0 total=25.0s bytes=28755
+
+http://web:3000/projects/cmuvilo7c0001qfz04f5hs6a3/p/home: 8 screens, exits=['https://example.com/checkout'] errors=1 total=25.8s bytes=36124
+
+original: 8 screens in 25.0s, 28KB | clone: 8 screens in 25.8s, 35KB | exits ['https://example.com/checkout'] vs ['https://example.com/checkout']
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Pergunta 1 de 8                     Pergunta 1 de 8                     OK     0.0    0.24   1.68
+  2  Pergunta 2 de 8                     Pergunta 2 de 8                     OK     0.0    2.71   4.04
+  3  Pergunta 3 de 8                     Pergunta 3 de 8                     OK     0.0    4.92   6.35
+  4  Pergunta 4 de 8                     Pergunta 4 de 8                     OK     0.0    7.32   8.64
+  5  Pergunta 5 de 8                     Pergunta 5 de 8                     OK     0.0     9.7   10.9
+  6  Pergunta 6 de 8                     Pergunta 6 de 8                     OK     0.0   12.32   13.2
+  7  Pergunta 7 de 8                     Pergunta 7 de 8                     OK     0.0   14.62  15.34
+  8  Pergunta 8 de 8                     Pergunta 8 de 8                     OK     0.0    16.9  17.79
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 8->8 same-title 8/8 | mean pixel diff 0.0% max 0.0% | weight 28KB -> 35KB | longtasks 1 -> 3
+

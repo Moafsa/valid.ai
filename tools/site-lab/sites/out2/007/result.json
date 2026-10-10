@@ -1,0 +1,268 @@
+{
+ "idx": 7,
+ "cat": "wix-fit",
+ "url": "https://personalorsi.wixsite.com/treino",
+ "projectId": "cmux1m042000gbr8crkijki8g",
+ "slug": "treino",
+ "scan": {
+  "seconds": 251,
+  "pages": 2,
+  "blocks": 6,
+  "cssKB": 173,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.991,
+   "extra": 0.142,
+   "missing": [
+    "083224"
+   ],
+   "heightRatio": 1.493,
+   "overflowX": false,
+   "tiles": [
+    46.4
+   ],
+   "diffTop": 46.4,
+   "diffAll": 46.4,
+   "imgVis": [
+    21,
+    23
+   ],
+   "broken": [
+    2,
+    2
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    21,
+    21
+   ],
+   "buttons": [
+    6,
+    14
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    2421,
+    2052
+   ],
+   "requests": [
+    163,
+    78
+   ],
+   "loadSec": [
+    20.4,
+    22.0
+   ],
+   "videoArea": 17.67,
+   "videoRect": [
+    [
+     233,
+     1028,
+     300,
+     220
+    ],
+    [
+     0,
+     1492,
+     1440,
+     810
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      300,
+      220
+     ],
+     [
+      "iframe",
+      312,
+      86
+     ]
+    ],
+    [
+     [
+      "div",
+      300,
+      220,
+      true
+     ],
+     [
+      "iframe",
+      300,
+      220,
+      false
+     ],
+     [
+      "iframe",
+      1440,
+      810,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: the server responded with a status of 403 ()",
+    "console: Failed to load resource: the server responded with a status of 403 ()"
+   ],
+   "cloneFailed": [
+    "https://www.youtube.com/api/stats/qoe?cpn=Lj7fjmaM0jZS8BbP&el=embedded&ns=yt&fexp=v1%2C100673025%2C-76824814%2C156433%2C",
+    "https://www.youtube.com/api/stats/qoe?cpn=W25fQyiHePlVrWfo&el=embedded&ns=yt&fexp=v1%2C100673025%2C-76824814%2C156433%2C"
+   ],
+   "origErrors": 2,
+   "cloneNErrors": 2,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.019,
+   "missing": [],
+   "heightRatio": 1.057,
+   "overflowX": false,
+   "tiles": [
+    4.9,
+    23.7
+   ],
+   "diffTop": 14.3,
+   "diffAll": 14.3,
+   "imgVis": [
+    15,
+    16
+   ],
+   "broken": [
+    2,
+    2
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    22,
+    22
+   ],
+   "buttons": [
+    8,
+    8
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    2336,
+    1501
+   ],
+   "requests": [
+    169,
+    45
+   ],
+   "loadSec": [
+    16.5,
+    13.4
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     20,
+     934,
+     280,
+     259
+    ],
+    [
+     20,
+     934,
+     280,
+     259
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      280,
+      259
+     ]
+    ],
+    [
+     [
+      "div",
+      280,
+      259,
+      true
+     ],
+     [
+      "iframe",
+      320,
+      180,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Failed to load resource: the server responded with a status of 403 ()",
+    "console: Failed to load resource: the server responded with a status of 403 ()"
+   ],
+   "cloneFailed": [],
+   "origErrors": 4,
+   "cloneNErrors": 2,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "wixFreemiumFontW01-35Thin:unloaded",
+    "wixFreemiumFontW01-45Ligh:unloaded",
+    "wixFreemiumFontW01-55Roma:unloaded",
+    "wixFreemiumFontW01-65Medi:unloaded"
+   ],
+   "fontOC": [
+    "Arial, Helvetica, sans-serif",
+    "Arial, Helvetica, sans-serif"
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux1m042000gbr8crkijki8g/p/treino"
+}

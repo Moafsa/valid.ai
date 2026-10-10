@@ -1,0 +1,16 @@
+project cmuvjtgns0001l8aq26lcgvmk slug home scan 211s pages 6
+http://172.18.0.1:8099/x_popup_every_step/: 6 screens, exits=['https://example.com/checkout'] errors=0 total=13.6s bytes=18641
+
+http://web:3000/projects/cmuvjtgns0001l8aq26lcgvmk/p/home: 6 screens, exits=[] errors=0 total=30.7s bytes=33061
+
+original: 6 screens in 13.6s, 18KB | clone: 6 screens in 30.7s, 32KB | exits ['https://example.com/checkout'] vs []
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Descubra seu plano ideal            Descubra seu plano ideal            OK    5.82     0.3   1.61
+  2  Qual é o seu objetivo?              Qual é o seu objetivo?              OK    0.57    2.93   4.42
+  3  Como é sua rotina?                  Como é sua rotina?                  OK    0.57    5.05    6.6
+  4  Quanto tempo você tem?              Quanto tempo você tem?              OK    0.57    7.25   8.77
+  5  Você já treinou antes?              Você já treinou antes?              OK    0.57    9.36  10.92
+  6  Seu plano está pronto!              Seu plano está pronto!              OK     0.6   11.48  13.23
+LATENCY click->new screen in DOM (median ms): original None | clone 160   click->fully visible: original None | clone 373
+SUMMARY screens 6->6 same-title 6/6 | mean pixel diff 1.45% max 5.82% | weight 18KB -> 32KB | longtasks 2 -> 1
+

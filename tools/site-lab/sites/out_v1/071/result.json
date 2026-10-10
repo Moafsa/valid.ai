@@ -1,0 +1,214 @@
+{
+ "idx": 71,
+ "cat": "shopify",
+ "url": "https://milb-tri-cityvalleycats.myshopify.com/",
+ "projectId": "cmuw4tp6u005mn7r8bm9geftb",
+ "slug": "home",
+ "scan": {
+  "seconds": 260,
+  "pages": 1,
+  "blocks": 6,
+  "cssKB": 382,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.974,
+   "overflowX": false,
+   "tiles": [
+    50.6,
+    34.7,
+    12.6,
+    18.9
+   ],
+   "diffTop": 32.6,
+   "diffAll": 29.2,
+   "imgVis": [
+    24,
+    24
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    106,
+    106
+   ],
+   "buttons": [
+    10,
+    10
+   ],
+   "inputs": [
+    6,
+    6
+   ],
+   "kb": [
+    2383,
+    819
+   ],
+   "requests": [
+    165,
+    41
+   ],
+   "loadSec": [
+    10.4,
+    4.8
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "milb-tri-cityvalleycats.myshopify.com": [
+     2,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://milb-tri-cityvalleycats.myshopify.com/' because an ancestor violates the f",
+    "console: Refused to frame 'https://milb-tri-cityvalleycats.myshopify.com/' because an ancestor violates the f",
+    "console: Access to font at 'https://valleycats.milbstore.com/cdn/fonts/ibm_plex_sans/ibmplexsans_n4.4633946c9",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://milb-tri-cityvalleycats.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-cu",
+    "https://milb-tri-cityvalleycats.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-33783855@1",
+    "https://valleycats.milbstore.com/cdn/fonts/ibm_plex_sans/ibmplexsans_n4.4633946c9236bd5cc5d0394ad07b807eb7ca1b32.woff2",
+    "https://valleycats.milbstore.com/cdn/fonts/ibm_plex_sans/ibmplexsans_n7.a8d2465074d254d8c167d5599b02fc2f97912fc9.woff2"
+   ],
+   "origErrors": 29,
+   "cloneNErrors": 22,
+   "cloneNFailed": 12,
+   "facesClone": [
+    "Archivo Narrow:error",
+    "IBM Plex Sans:error",
+    "IBM Plex Sans:error",
+    "IBM Plex Sans:error"
+   ],
+   "fontOC": [
+    "Titillium-Regular, \"Helvetica Neue\", Hel",
+    "Titillium-Regular, \"Helvetica Neue\", Hel"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.072,
+   "overflowX": false,
+   "tiles": [
+    19.7,
+    41.9,
+    39.7,
+    25.6,
+    12.0,
+    62.2,
+    21.5
+   ],
+   "diffTop": 33.8,
+   "diffAll": 31.8,
+   "imgVis": [
+    24,
+    24
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    2
+   ],
+   "links": [
+    106,
+    106
+   ],
+   "buttons": [
+    10,
+    10
+   ],
+   "inputs": [
+    6,
+    6
+   ],
+   "kb": [
+    2091,
+    619
+   ],
+   "requests": [
+    212,
+    38
+   ],
+   "loadSec": [
+    8.5,
+    3.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "milb-tri-cityvalleycats.myshopify.com": [
+     2,
+     0
+    ]
+   },
+   "cloneErrors": [
+    "console: Refused to frame 'https://milb-tri-cityvalleycats.myshopify.com/' because an ancestor violates the f",
+    "console: Refused to frame 'https://milb-tri-cityvalleycats.myshopify.com/' because an ancestor violates the f",
+    "console: Access to font at 'https://valleycats.milbstore.com/cdn/shop/t/3/assets/TitilliumWeb-Bold.woff?v=789",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://milb-tri-cityvalleycats.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-shopify-cu",
+    "https://milb-tri-cityvalleycats.myshopify.com/web-pixels@5982071ew7ea472e3p69b68784m2150dfea/custom/web-pixel-33783855@1",
+    "https://valleycats.milbstore.com/cdn/shop/t/3/assets/TitilliumWeb-Bold.woff?v=78911557402805222351705520588",
+    "https://valleycats.milbstore.com/cdn/shop/t/3/assets/TitilliumWeb-Regular.woff?v=120483258290703268261705520586"
+   ],
+   "origErrors": 27,
+   "cloneNErrors": 22,
+   "cloneNFailed": 12,
+   "facesClone": [
+    "Archivo Narrow:error",
+    "IBM Plex Sans:error",
+    "IBM Plex Sans:error",
+    "IBM Plex Sans:error"
+   ],
+   "fontOC": [
+    "Titillium-Regular, \"Helvetica Neue\", Hel",
+    "Titillium-Regular, \"Helvetica Neue\", Hel"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw4tp6u005mn7r8bm9geftb/p/home"
+}

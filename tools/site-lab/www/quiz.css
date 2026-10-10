@@ -1,0 +1,17 @@
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#faf7f2;color:#1d1a16}
+#app{max-width:520px;margin:0 auto;padding:16px 18px 80px;min-height:100vh}
+.progress{height:8px;background:#e8e1d6;border-radius:99px;overflow:hidden;margin:6px 0 18px}.progress i{display:block;height:100%;background:#d0541f;transition:width .5s ease}
+.screen{padding-top:6px}.title{font-size:26px;line-height:1.2;margin:8px 0}.sub{color:#5b5348;margin:0 0 18px}
+.hero{width:100%;height:auto;border-radius:14px;margin:0 0 14px;display:block;background:#ddd}
+.opts{display:grid;gap:10px;margin:14px 0}.opt{display:flex;align-items:center;gap:12px;text-align:left;border:2px solid #e2d9cb;background:#fff;border-radius:14px;padding:14px 16px;font-size:17px;cursor:pointer;transition:all .15s}
+.opt .chk{width:22px;height:22px;border:2px solid #c9bfae;border-radius:6px;flex:none}.opt.sel{border-color:#d0541f;background:#fff1ea}.opt.sel .chk{background:#d0541f;border-color:#d0541f}
+.continue,.cta{display:block;width:100%;background:#d0541f;color:#fff;border:0;border-radius:99px;padding:16px;font-size:18px;font-weight:700;cursor:pointer;margin-top:12px}
+.continue[disabled]{background:#cfc6b8;cursor:not-allowed}
+.fld{display:block;margin:12px 0;font-weight:600}.fld input,select{display:block;width:100%;padding:14px;border:2px solid #e2d9cb;border-radius:12px;font-size:17px;margin-top:6px;background:#fff}
+.loader{margin:30px 0;text-align:center}.bar{height:14px;background:#e8e1d6;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#d0541f}
+.pct{display:block;font-size:34px;font-weight:800;margin:14px 0}.status{color:#5b5348}
+.vwrap{background:#000;border-radius:14px;overflow:hidden;margin:12px 0}.vwrap video,.vwrap iframe{display:block;width:100%;height:auto;max-width:100%}
+.late{margin-top:14px}.cdwrap{text-align:center;font-size:18px}.cd{font-size:30px;color:#d0541f}.bul{padding-left:20px;line-height:1.9}
+.foot{max-width:520px;margin:0 auto;padding:18px;color:#8a8070;font-size:13px;text-align:center}
+.t-fade{animation:labfade .6s ease both}@keyframes labfade{from{opacity:0}to{opacity:1}}
+.t-slide{animation:labslide .5s cubic-bezier(.22,.61,.36,1) both}@keyframes labslide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}

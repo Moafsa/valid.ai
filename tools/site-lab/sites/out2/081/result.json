@@ -1,0 +1,318 @@
+{
+ "idx": 81,
+ "cat": "edu",
+ "url": "https://www.stanford.edu/",
+ "projectId": "cmux2rglx003mbr8crrqwcfv9",
+ "slug": "home",
+ "scan": {
+  "seconds": 160,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 276,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.005,
+   "missing": [],
+   "heightRatio": 1.156,
+   "overflowX": false,
+   "tiles": [
+    0.4,
+    0.0,
+    11.4,
+    11.1,
+    0.0,
+    0.3,
+    21.0
+   ],
+   "diffTop": 3.9,
+   "diffAll": 6.3,
+   "imgVis": [
+    34,
+    40
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    11,
+    12
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    153,
+    156
+   ],
+   "buttons": [
+    73,
+    73
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    10332,
+    5902
+   ],
+   "requests": [
+    161,
+    59
+   ],
+   "loadSec": [
+    21.1,
+    8.7
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     0,
+     4418,
+     1425,
+     900
+    ],
+    [
+     0,
+     4418,
+     1425,
+     900
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      1425,
+      802
+     ],
+     [
+      "video",
+      1425,
+      900
+     ],
+     [
+      "video",
+      321,
+      571
+     ],
+     [
+      "video",
+      1425,
+      900
+     ]
+    ],
+    [
+     [
+      "div",
+      1425,
+      802,
+      true
+     ],
+     [
+      "div",
+      1425,
+      900,
+      true
+     ],
+     [
+      "div",
+      321,
+      571,
+      true
+     ],
+     [
+      "div",
+      663,
+      373,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://a2-us.storyblok.com/f/1023936/x/538874f3db/2026-nobel-loop.mp4",
+    "https://a2-us.storyblok.com/f/1023936/x/b1f3166fc7/home-compressed-25.mp4"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded"
+   ],
+   "fontOC": [
+    "\"Source Sans 3\", \"Source Sans 3 Fallback",
+    "\"Source Sans 3\", \"Source Sans 3 Fallback"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.987,
+   "overflowX": false,
+   "tiles": [
+    32.3,
+    49.3,
+    82.9,
+    83.6,
+    48.1,
+    5.9,
+    60.8,
+    80.3
+   ],
+   "diffTop": 54.8,
+   "diffAll": 55.4,
+   "imgVis": [
+    34,
+    40
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    4,
+    12
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    156,
+    156
+   ],
+   "buttons": [
+    66,
+    73
+   ],
+   "inputs": [
+    1,
+    1
+   ],
+   "kb": [
+    4614,
+    4283
+   ],
+   "requests": [
+    110,
+    62
+   ],
+   "loadSec": [
+    12.5,
+    6.0
+   ],
+   "videoArea": 0.62,
+   "videoRect": [
+    [
+     0,
+     4992,
+     390,
+     844
+    ],
+    [
+     16,
+     8272,
+     321,
+     637
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      390,
+      520
+     ],
+     [
+      "video",
+      390,
+      844
+     ],
+     [
+      "video",
+      358,
+      636
+     ],
+     [
+      "video",
+      390,
+      844
+     ]
+    ],
+    [
+     [
+      "div",
+      390,
+      219,
+      true
+     ],
+     [
+      "div",
+      390,
+      246,
+      true
+     ],
+     [
+      "div",
+      321,
+      637,
+      true
+     ],
+     [
+      "div",
+      358,
+      201,
+      true
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://s3.be-vallid.com/funnelai-assets/projects/cmux2rglx003mbr8crrqwcfv9/videos/home.mp4",
+    "https://a2-us.storyblok.com/f/1023936/x/0f4f317218/nav_admissionsaid_680.mp4",
+    "https://a2-us.storyblok.com/f/1023936/x/538874f3db/2026-nobel-loop.mp4",
+    "https://a2-us.storyblok.com/f/1023936/x/cb8efc2e08/stanford125-loop_v2.mp4"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 5,
+   "facesClone": [
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded",
+    "Source Sans 3:unloaded"
+   ],
+   "fontOC": [
+    "\"Source Sans 3\", \"Source Sans 3 Fallback",
+    "\"Source Sans 3\", \"Source Sans 3 Fallback"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2rglx003mbr8crrqwcfv9/p/home"
+}

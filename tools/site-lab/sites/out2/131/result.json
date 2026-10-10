@@ -1,0 +1,204 @@
+{
+ "idx": 131,
+ "cat": "shopify",
+ "url": "https://arcane-official.myshopify.com/collections",
+ "projectId": "cmux3myzp005pbr8cl68y8wdv",
+ "slug": "home",
+ "scan": {
+  "seconds": 107,
+  "pages": 1,
+  "blocks": 7,
+  "cssKB": 189,
+  "notes": [
+   "Etapa 1: 1 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Deixei o site mais leve: o estilo caiu de 234KB para 189KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.829,
+   "extra": 0.0,
+   "missing": [
+    "close",
+    "looks",
+    "like",
+    "france",
+    "would",
+    "visit",
+    "your",
+    "local",
+    "take",
+    "there",
+    "stay",
+    "here"
+   ],
+   "heightRatio": 1.024,
+   "overflowX": true,
+   "tiles": [
+    74.2
+   ],
+   "diffTop": 74.2,
+   "diffAll": 74.2,
+   "imgVis": [
+    4,
+    4
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    0
+   ],
+   "links": [
+    26,
+    21
+   ],
+   "buttons": [
+    10,
+    5
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    2011,
+    197
+   ],
+   "requests": [
+    157,
+    9
+   ],
+   "loadSec": [
+    20.2,
+    6.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Source Code Pro:unloaded"
+   ],
+   "fontOC": [
+    "Inter, sans-serif",
+    "Inter, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(49, 46, 127)",
+    "rgb(49, 46, 127)"
+   ],
+   "headsMissing": [
+    "LOOKS LIKE YOU ARE IN FRANCE."
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.8,
+   "extra": 0.0,
+   "missing": [
+    "account",
+    "cart",
+    "close",
+    "looks",
+    "like",
+    "france",
+    "would",
+    "visit",
+    "your",
+    "local",
+    "take",
+    "there",
+    "stay",
+    "here"
+   ],
+   "heightRatio": 0.969,
+   "overflowX": true,
+   "tiles": [
+    79.9
+   ],
+   "diffTop": 79.9,
+   "diffAll": 79.9,
+   "imgVis": [
+    4,
+    3
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    4,
+    0
+   ],
+   "links": [
+    26,
+    21
+   ],
+   "buttons": [
+    10,
+    5
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1993,
+    197
+   ],
+   "requests": [
+    136,
+    9
+   ],
+   "loadSec": [
+    22.1,
+    5.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Source Code Pro:unloaded"
+   ],
+   "fontOC": [
+    "Inter, sans-serif",
+    "Inter, sans-serif"
+   ],
+   "bgOC": [
+    "rgb(49, 46, 127)",
+    "rgb(49, 46, 127)"
+   ],
+   "headsMissing": [
+    "LOOKS LIKE YOU ARE IN FRANCE."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux3myzp005pbr8cl68y8wdv/p/home"
+}

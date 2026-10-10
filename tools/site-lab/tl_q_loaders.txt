@@ -1,0 +1,6 @@
+project cmuva67vo0001phl362d1znpu slug home scan 106s pages=7
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Vamos analisar seu perfil Analisar © 2026 Lab Fu' | 'Vamos analisar seu perfil Analisar © 2026 Lab Fu'
+  6.0     0.0  'Vamos analisar seu perfil Analisar © 2026 Lab Fu' | 'Vamos analisar seu perfil Analisar © 2026 Lab Fu'
+ 12.0     0.0  'Vamos analisar seu perfil Analisar © 2026 Lab Fu' | 'Vamos analisar seu perfil Analisar © 2026 Lab Fu'
+errors orig/clone: [] [] | worst diff 0

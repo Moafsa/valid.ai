@@ -1,0 +1,190 @@
+{
+ "idx": 115,
+ "cat": "carrd",
+ "url": "https://launchnow.carrd.co/",
+ "projectId": "cmuw8d73j009an7r8r7wxx4is",
+ "slug": "home",
+ "scan": {
+  "seconds": 421,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 35,
+  "notes": [
+   "Etapa 1: 24 elemento(s) aparecem com atraso (reproduzidos no clone).",
+   "Deixei o site mais leve: o estilo caiu de 68KB para 35KB, s\u00f3 com o que as telas usam."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.895,
+   "extra": 0.0,
+   "missing": [
+    "website",
+    "live",
+    "possible",
+    "customize",
+    "visually",
+    "without"
+   ],
+   "heightRatio": 0.958,
+   "overflowX": false,
+   "tiles": [
+    18.7
+   ],
+   "diffTop": 18.7,
+   "diffAll": 18.7,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    19,
+    8
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    500,
+    335
+   ],
+   "requests": [
+    15,
+    11
+   ],
+   "loadSec": [
+    2.3,
+    2.5
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(10, 10, 12)",
+    "rgb(10, 10, 12)"
+   ],
+   "headsMissing": [
+    "Your website. Live in under an hour."
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.895,
+   "extra": 0.0,
+   "missing": [
+    "website",
+    "live",
+    "possible",
+    "customize",
+    "visually",
+    "without"
+   ],
+   "heightRatio": 0.911,
+   "overflowX": false,
+   "tiles": [
+    25.8
+   ],
+   "diffTop": 25.8,
+   "diffAll": 25.8,
+   "imgVis": [
+    1,
+    1
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    19,
+    8
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    500,
+    335
+   ],
+   "requests": [
+    15,
+    11
+   ],
+   "loadSec": [
+    2.0,
+    2.6
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "\"Times New Roman\"",
+    "\"Times New Roman\""
+   ],
+   "bgOC": [
+    "rgb(10, 10, 12)",
+    "rgb(10, 10, 12)"
+   ],
+   "headsMissing": [
+    "Your website. Live in under an hour."
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw8d73j009an7r8r7wxx4is/p/home"
+}

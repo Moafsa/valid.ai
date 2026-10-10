@@ -1,0 +1,286 @@
+{
+ "idx": 85,
+ "cat": "saas",
+ "url": "https://superhuman.com/",
+ "projectId": "cmux2v90n003sbr8c4rj6466u",
+ "slug": "home",
+ "scan": {
+  "seconds": 83,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 144,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.996,
+   "extra": 0.022,
+   "missing": [
+    "each"
+   ],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    37.1,
+    0.0,
+    0.1,
+    0.0,
+    3.6,
+    12.2,
+    19.8
+   ],
+   "diffTop": 12.4,
+   "diffAll": 10.4,
+   "imgVis": [
+    26,
+    27
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    2,
+    2
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    92,
+    92
+   ],
+   "buttons": [
+    40,
+    40
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    4202,
+    3902
+   ],
+   "requests": [
+    159,
+    44
+   ],
+   "loadSec": [
+    20.6,
+    6.3
+   ],
+   "videoArea": 1.0,
+   "videoRect": [
+    [
+     720,
+     123,
+     640,
+     320
+    ],
+    [
+     720,
+     123,
+     640,
+     320
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      640,
+      320
+     ]
+    ],
+    [
+     [
+      "div",
+      640,
+      320,
+      true
+     ],
+     [
+      "video",
+      640,
+      320,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Super Sans VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Sans Mono VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Super Sans VF\", system-ui, -apple-syste",
+    "\"Super Sans VF\", system-ui, -apple-syste"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Save 4+ hours each week with Superhuman Mail"
+   ]
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.587,
+   "extra": 0.595,
+   "missing": [
+    "superpowers",
+    "companies",
+    "suite",
+    "fly",
+    "through",
+    "twice",
+    "fast",
+    "drop",
+    "ball",
+    "again",
+    "single",
+    "respond",
+    "faster",
+    "follow",
+    "sounds",
+    "like",
+    "everyone",
+    "favorite",
+    "partner",
+    "thoughts",
+    "credible",
+    "impossible",
+    "ignore",
+    "words",
+    "instantly"
+   ],
+   "heightRatio": 1.187,
+   "overflowX": false,
+   "tiles": [
+    76.5,
+    33.8,
+    61.6,
+    27.9,
+    12.2,
+    43.0,
+    71.0,
+    94.0
+   ],
+   "diffTop": 57.3,
+   "diffAll": 52.5,
+   "imgVis": [
+    13,
+    26
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    1,
+    2
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    86,
+    92
+   ],
+   "buttons": [
+    25,
+    40
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    5694,
+    3898
+   ],
+   "requests": [
+    107,
+    41
+   ],
+   "loadSec": [
+    19.6,
+    6.7
+   ],
+   "videoArea": 0.19,
+   "videoRect": [
+    [
+     0,
+     0,
+     390,
+     844
+    ],
+    [
+     16,
+     382,
+     358,
+     179
+    ]
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "video",
+      390,
+      844
+     ]
+    ],
+    [
+     [
+      "video",
+      358,
+      179,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Super Sans VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Serif VF:unloaded",
+    "Super Sans Mono VF:unloaded"
+   ],
+   "fontOC": [
+    "\"Super Sans VF\", system-ui, -apple-syste",
+    "\"Super Sans VF\", system-ui, -apple-syste"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": [
+    "Superpowers, everywhere you work",
+    "Mail, Docs, and AI that works in every app and tab",
+    "Your Superhuman suite",
+    "Everyone\u2019s favorite AI writing partner",
+    "The best place for teams and AI to work together"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux2v90n003sbr8c4rj6466u/p/home"
+}

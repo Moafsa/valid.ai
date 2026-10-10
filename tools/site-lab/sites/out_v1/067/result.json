@@ -1,0 +1,210 @@
+{
+ "idx": 67,
+ "cat": "saas",
+ "url": "https://neon.tech/",
+ "projectId": "cmuw4m9x9005an7r896imczpw",
+ "slug": "home",
+ "scan": {
+  "seconds": 318,
+  "pages": 1,
+  "blocks": 4,
+  "cssKB": 564,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "estamos",
+    "verificando",
+    "seu",
+    "navegador",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791258164",
+    "d68ue7nesvmwbmj2qrccjrhuf7sfgtqq"
+   ],
+   "heightRatio": 1.368,
+   "overflowX": false,
+   "tiles": [
+    99.0
+   ],
+   "diffTop": 99.0,
+   "diffAll": 99.0,
+   "imgVis": [
+    0,
+    4
+   ],
+   "broken": [
+    0,
+    2
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    68
+   ],
+   "buttons": [
+    0,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    244
+   ],
+   "requests": [
+    2,
+    16
+   ],
+   "loadSec": [
+    1.6,
+    2.9
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Access to image at 'https://neon.com/_next/static/immutable/media/noise.20qyfz0pxfv46.svg' from orig",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://neon.com/_next/image?url=%2F_next%2Fstatic%2Fimmutable%2Fmedia%2Fillustration.2x-88lmfkuf4b.png&w=1080&q=75",
+    "https://neon.com/_next/static/immutable/media/noise.20qyfz0pxfv46.svg",
+    "https://neon.com/_next/static/immutable/media/databricks-logo-dark.147gukn5u85gi.svg"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 2,
+   "cloneNFailed": 3,
+   "facesClone": [
+    "IBM Plex Sans:unloaded",
+    "IBM Plex Sans Fallback:unloaded",
+    "IBM Plex Sans:unloaded",
+    "IBM Plex Sans Fallback:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Inter, \"Inter Fallback\", ui-sans-serif, "
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.0,
+   "extra": 1.0,
+   "missing": [
+    "falha",
+    "verificar",
+    "seu",
+    "navegador",
+    "c\u00f3digo",
+    "ponto",
+    "verifica\u00e7\u00e3o",
+    "seguran\u00e7a",
+    "vercel",
+    "fra1",
+    "1791258170",
+    "sv3x3bnysglyc4almvtxwipcgu39bkd5"
+   ],
+   "heightRatio": 1.284,
+   "overflowX": false,
+   "tiles": [
+    98.4
+   ],
+   "diffTop": 98.4,
+   "diffAll": 98.4,
+   "imgVis": [
+    0,
+    2
+   ],
+   "broken": [
+    0,
+    2
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    1,
+    68
+   ],
+   "buttons": [
+    0,
+    4
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    31,
+    236
+   ],
+   "requests": [
+    2,
+    10
+   ],
+   "loadSec": [
+    1.6,
+    2.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [
+    "https://neon.com/_next/image?url=%2F_next%2Fstatic%2Fimmutable%2Fmedia%2Fillustration.2x-88lmfkuf4b.png&w=1080&q=75",
+    "https://neon.com/_next/static/immutable/media/databricks-logo-dark.147gukn5u85gi.svg"
+   ],
+   "origErrors": 1,
+   "cloneNErrors": 0,
+   "cloneNFailed": 2,
+   "facesClone": [
+    "IBM Plex Sans:unloaded",
+    "IBM Plex Sans Fallback:unloaded",
+    "IBM Plex Sans:unloaded",
+    "IBM Plex Sans Fallback:unloaded"
+   ],
+   "fontOC": [
+    "-apple-system, BlinkMacSystemFont, \"Sego",
+    "Inter, \"Inter Fallback\", ui-sans-serif, "
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw4m9x9005an7r896imczpw/p/home"
+}

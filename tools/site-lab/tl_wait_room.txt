@@ -1,0 +1,8 @@
+project cmuvj4wom00014nl7hpikq5br slug home scan 82s pages=2
+ t(s)  diff%   original text | clone text
+  1.0     0.0  'Você está na fila Sua vaga é liberada quando o t' | 'Você está na fila Sua vaga é liberada quando o t'
+  5.0    0.03  'Você está na fila Sua vaga é liberada quando o t' | 'Você está na fila Sua vaga é liberada quando o t'
+  8.0    0.04  'Você está na fila Sua vaga é liberada quando o t' | 'Você está na fila Sua vaga é liberada quando o t'
+ 10.0    0.14  'Sua vez chegou! Vaga liberada Oferta expira em 0' | 'Sua vez chegou! Vaga liberada Oferta expira em 1'
+ 12.0    0.06  'Sua vez chegou! Vaga liberada Oferta expira em 0' | 'Sua vez chegou! Vaga liberada Oferta expira em 0'
+errors orig/clone: [] [] | worst diff 0.14

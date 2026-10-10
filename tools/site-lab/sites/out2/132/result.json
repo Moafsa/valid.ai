@@ -1,0 +1,244 @@
+{
+ "idx": 132,
+ "cat": "plain",
+ "url": "https://neocities.org/",
+ "projectId": "cmux3mzuo005sbr8caevts4vk",
+ "slug": "home",
+ "scan": {
+  "seconds": 172,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 241,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 0.993,
+   "overflowX": false,
+   "tiles": [
+    12.0,
+    26.1,
+    15.7,
+    9.5
+   ],
+   "diffTop": 17.9,
+   "diffAll": 15.8,
+   "imgVis": [
+    14,
+    14
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    48,
+    48
+   ],
+   "buttons": [
+    1,
+    1
+   ],
+   "inputs": [
+    10,
+    8
+   ],
+   "kb": [
+    2779,
+    1809
+   ],
+   "requests": [
+    53,
+    41
+   ],
+   "loadSec": [
+    10.0,
+    7.6
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      212,
+      76
+     ],
+     [
+      "iframe",
+      300,
+      150
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "neocities.org": [
+     16,
+     568894
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to font at 'https://neocities.org/fontawesome/webfonts/fa-solid-900.woff2' from origin 'http:",
+    "console: Failed to load resource: net::ERR_FAILED",
+    "console: Access to font at 'https://neocities.org/fonts/Droid_Serif_700.woff' from origin 'http://web:3000' h",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://neocities.org/fontawesome/webfonts/fa-solid-900.woff2",
+    "https://neocities.org/fonts/Droid_Serif_700.woff",
+    "https://neocities.org/fonts/Droid_Serif_400.woff",
+    "https://neocities.org/fontawesome/webfonts/fa-regular-400.woff2"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 12,
+   "cloneNFailed": 6,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Lucida Grande\", verdana, \"Helvetica Neu",
+    "\"Lucida Grande\", verdana, \"Helvetica Neu"
+   ],
+   "bgOC": [
+    "rgb(206, 232, 135)",
+    "rgb(206, 232, 135)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.992,
+   "extra": 0.008,
+   "missing": [
+    "069",
+    "176"
+   ],
+   "heightRatio": 0.972,
+   "overflowX": false,
+   "tiles": [
+    4.8,
+    28.4,
+    73.3,
+    55.4,
+    27.3,
+    23.5,
+    33.5,
+    9.7
+   ],
+   "diffTop": 35.5,
+   "diffAll": 32.0,
+   "imgVis": [
+    15,
+    15
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    48,
+    48
+   ],
+   "buttons": [
+    1,
+    1
+   ],
+   "inputs": [
+    10,
+    8
+   ],
+   "kb": [
+    2685,
+    1808
+   ],
+   "requests": [
+    52,
+    40
+   ],
+   "loadSec": [
+    10.0,
+    6.5
+   ],
+   "videoMissing": true,
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [
+     [
+      "iframe",
+      255,
+      76
+     ],
+     [
+      "iframe",
+      300,
+      150
+     ]
+    ],
+    []
+   ],
+   "hotlinks": {
+    "neocities.org": [
+     16,
+     568880
+    ]
+   },
+   "cloneErrors": [
+    "console: Access to font at 'https://neocities.org/fontawesome/webfonts/fa-solid-900.woff2' from origin 'http:",
+    "console: Failed to load resource: net::ERR_FAILED",
+    "console: Access to font at 'https://neocities.org/fonts/Droid_Serif_400.woff' from origin 'http://web:3000' h",
+    "console: Failed to load resource: net::ERR_FAILED"
+   ],
+   "cloneFailed": [
+    "https://neocities.org/fontawesome/webfonts/fa-solid-900.woff2",
+    "https://neocities.org/fonts/Droid_Serif_400.woff",
+    "https://neocities.org/fonts/Droid_Serif_700.woff",
+    "https://neocities.org/fontawesome/webfonts/fa-regular-400.woff2"
+   ],
+   "origErrors": 0,
+   "cloneNErrors": 12,
+   "cloneNFailed": 6,
+   "facesClone": [
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Lato:unloaded",
+    "Open Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Lucida Grande\", verdana, \"Helvetica Neu",
+    "\"Lucida Grande\", verdana, \"Helvetica Neu"
+   ],
+   "bgOC": [
+    "rgb(206, 232, 135)",
+    "rgb(206, 232, 135)"
+   ],
+   "headsMissing": [
+    "364,069,176"
+   ]
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux3mzuo005sbr8caevts4vk/p/home"
+}

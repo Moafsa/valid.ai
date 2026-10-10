@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Carousel</title><style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#1a1a2e;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.top{background:#101828;color:#fff}header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:800;font-size:22px}
+h1{font-size:44px;line-height:1.1;margin:0 0 12px}h2{font-size:30px;margin:0 0 16px}p{margin:0 0 12px}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600}
+section.blk{padding:56px 0}section.alt{background:#f3f4f6}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px}
+img{max-width:100%;height:auto;display:block}
+footer.ft{background:#0b1220;color:#9ca3af;padding:32px 0;font-size:14px}
+.car{overflow:hidden;position:relative}.stage{display:flex;transition:none}.item{flex:none;padding:0 8px}.item .card{height:160px}</style></head><body><header class="top"><div class="wrap"><div class="logo">Brand</div></div></header><section class="blk"><div class="wrap"><h2>Testimonials</h2><div class="car" id="car"><div class="stage" id="stage"><div class="item"><div class="card"><h3>Ana</h3><p>Loved it.</p></div></div><div class="item"><div class="card"><h3>Bruno</h3><p>Great support.</p></div></div><div class="item"><div class="card"><h3>Carla</h3><p>Changed my work.</p></div></div><div class="item"><div class="card"><h3>Davi</h3><p>Worth every cent.</p></div></div><div class="item"><div class="card"><h3>Eva</h3><p>Five stars.</p></div></div></div></div></div></section><script>function car(){var c=document.getElementById('car'),s=document.getElementById('stage');var per=innerWidth>=1000?3:innerWidth>=640?2:1;var iw=c.clientWidth/per;var items=[].slice.call(s.children);items.forEach(function(i){i.style.width=iw+'px'});s.style.width=(iw*items.length)+'px'}car();addEventListener('resize',car)</script></body></html>

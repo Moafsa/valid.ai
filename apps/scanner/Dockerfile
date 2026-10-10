@@ -5,7 +5,7 @@ WORKDIR /app
 # System deps for Playwright
 RUN apt-get update && apt-get install -y \
     wget curl gnupg ca-certificates \
-    fonts-liberation libglib2.0-0 libnss3 \
+    fonts-liberation libglib2.0-0 libnss3 ffmpeg \
     libxss1 libasound2 libatk-bridge2.0-0 \
     libgtk-3-0 libgbm1 xvfb \
     && rm -rf /var/lib/apt/lists/*
@@ -19,4 +19,4 @@ COPY . .
 
 EXPOSE 8001
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload", "--timeout-graceful-shutdown", "15"]

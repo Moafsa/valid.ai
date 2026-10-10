@@ -1,0 +1,189 @@
+{
+ "idx": 154,
+ "cat": "framer",
+ "url": "https://radiant-template.framer.website/",
+ "projectId": "cmux469ji006mbr8ctw362j1l",
+ "slug": "home",
+ "scan": {
+  "seconds": 134,
+  "pages": 2,
+  "blocks": 5,
+  "cssKB": 150,
+  "notes": [
+   "Esse site mostra uma p\u00e1gina diferente no celular. Clonei as duas: quem abre no celular v\u00ea a vers\u00e3o de celular, e d\u00e1 pra editar cada uma."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    22.4,
+    7.0,
+    12.6,
+    4.5,
+    6.1
+   ],
+   "diffTop": 9.8,
+   "diffAll": 8.8,
+   "imgVis": [
+    23,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    11,
+    11
+   ],
+   "buttons": [
+    5,
+    5
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1388,
+    1175
+   ],
+   "requests": [
+    53,
+    26
+   ],
+   "loadSec": [
+    6.0,
+    5.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Figtree:unloaded",
+    "Figtree:unloaded",
+    "Figtree:unloaded",
+    "Figtree:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    3.7,
+    32.3,
+    36.4,
+    25.3,
+    24.2,
+    7.7,
+    6.4,
+    1.9
+   ],
+   "diffTop": 24.1,
+   "diffAll": 17.2,
+   "imgVis": [
+    20,
+    20
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    11,
+    11
+   ],
+   "buttons": [
+    5,
+    5
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    880,
+    545
+   ],
+   "requests": [
+    53,
+    23
+   ],
+   "loadSec": [
+    3.4,
+    4.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Figtree:unloaded",
+    "Figtree:unloaded",
+    "Figtree:unloaded",
+    "Figtree:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux469ji006mbr8ctw362j1l/p/home"
+}

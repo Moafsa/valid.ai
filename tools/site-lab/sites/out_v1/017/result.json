@@ -1,0 +1,187 @@
+{
+ "idx": 17,
+ "cat": "hotmart",
+ "url": "https://hotmart.com/pt-br/marketplace/produtos/como-se-tornar-um-campeao-de-vendas-curso-intensivo-presencial/P102873297F",
+ "projectId": "cmuw18qna000vn7r84a5gztqq",
+ "slug": "pt-br-marketplace-produtos-como-se-tornar-um-campeao-de-vendas-curso-intensivo-presencial-p102873297f",
+ "scan": {
+  "seconds": 448,
+  "pages": 2,
+  "blocks": 4,
+  "cssKB": 427,
+  "notes": [
+   "1 bot\u00e3o(\u00f5es) de /pt-br/marketplace/produtos/como-se-tornar-um-campeao-de-vendas-curso-intensivo-presencial/P102873297F tinham o destino escondido no c\u00f3digo da p\u00e1gina original; liguei cada um no lugar certo."
+  ]
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.054,
+   "missing": [],
+   "heightRatio": 1.369,
+   "overflowX": false,
+   "tiles": [
+    6.3,
+    8.5,
+    8.1,
+    2.0,
+    3.0
+   ],
+   "diffTop": 7.6,
+   "diffAll": 5.6,
+   "imgVis": [
+    16,
+    28
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    98,
+    101
+   ],
+   "buttons": [
+    22,
+    21
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    4058,
+    584
+   ],
+   "requests": [
+    148,
+    28
+   ],
+   "loadSec": [
+    14.6,
+    4.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 12,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Robot Crush:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Nunito Sans\", sans-serif",
+    "\"Nunito Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.984,
+   "extra": 0.258,
+   "missing": [
+    "acessar",
+    "criar",
+    "formato",
+    "ingressos"
+   ],
+   "heightRatio": 3.773,
+   "overflowX": true,
+   "tiles": [
+    26.6,
+    22.4
+   ],
+   "diffTop": 24.5,
+   "diffAll": 24.5,
+   "imgVis": [
+    19,
+    26
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    0
+   ],
+   "links": [
+    46,
+    101
+   ],
+   "buttons": [
+    27,
+    21
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    4040,
+    584
+   ],
+   "requests": [
+    150,
+    28
+   ],
+   "loadSec": [
+    14.3,
+    4.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 12,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Robot Crush:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded",
+    "Nunito Sans:unloaded"
+   ],
+   "fontOC": [
+    "\"Nunito Sans\", sans-serif",
+    "\"Nunito Sans\", sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 255, 255)",
+    "rgb(255, 255, 255)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw18qna000vn7r84a5gztqq/p/pt-br-marketplace-produtos-como-se-tornar-um-campeao-de-vendas-curso-intensivo-presencial-p102873297f"
+}

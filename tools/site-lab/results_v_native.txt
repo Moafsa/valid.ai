@@ -1,0 +1,11 @@
+project cmv1kmkk900017z4oq2904g9m slug home scan 80s pages 1
+http://172.18.0.1:8099/v_native/: 1 screens, exits=['https://example.com/comprar'] errors=0 total=6.6s bytes=572048
+
+http://web:3000/projects/cmv1kmkk900017z4oq2904g9m/p/home: 1 screens, exits=[] errors=0 total=76.1s bytes=47787
+
+original: 1 screens in 6.6s, 558KB | clone: 1 screens in 76.1s, 46KB | exits ['https://example.com/comprar'] vs []
+  #  original                            clone                               same  diff%  t_orig t_clone
+  1  Assista ao vídeo até o final        Assista ao vídeo até o final        OK    2.07    0.19   1.09
+LATENCY click->new screen in DOM (median ms): original None | clone None   click->fully visible: original None | clone None
+SUMMARY screens 1->1 same-title 1/1 | mean pixel diff 2.07% max 2.07% | weight 558KB -> 46KB | longtasks 0 -> 0
+

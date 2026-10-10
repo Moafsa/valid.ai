@@ -1,0 +1,251 @@
+{
+ "idx": 58,
+ "cat": "saas",
+ "url": "https://railway.app/",
+ "projectId": "cmux261df002gbr8c79cdzs5k",
+ "slug": "home",
+ "scan": {
+  "seconds": 207,
+  "pages": 1,
+  "blocks": 2,
+  "cssKB": 399,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 0.663,
+   "extra": 0.809,
+   "missing": [
+    "para",
+    "melhorar",
+    "sua",
+    "experi\u00eancia",
+    "n\u00f3s",
+    "nossos",
+    "parceiros",
+    "armazenamos",
+    "acessamos",
+    "informa\u00e7\u00f5es",
+    "seu",
+    "terminal",
+    "equivalente",
+    "consentimento",
+    "todos",
+    "sites",
+    "aplicativos",
+    "seus",
+    "terminais",
+    "conectados",
+    "nosso",
+    "site",
+    "pode",
+    "usar",
+    "esses"
+   ],
+   "heightRatio": 4.715,
+   "overflowX": false,
+   "tiles": [
+    10.0,
+    0.5
+   ],
+   "diffTop": 5.2,
+   "diffAll": 5.2,
+   "imgVis": [
+    13,
+    58
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    1
+   ],
+   "links": [
+    48,
+    55
+   ],
+   "buttons": [
+    12,
+    12
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    4813,
+    2639
+   ],
+   "requests": [
+    357,
+    65
+   ],
+   "loadSec": [
+    22.6,
+    22.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Refused to apply style from 'http://web:3000/assets/split-board-C_KX9iBm.css' because its MIME type "
+   ],
+   "cloneFailed": [
+    "http://web:3000/assets/split-board-C_KX9iBm.css"
+   ],
+   "origErrors": 5,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded"
+   ],
+   "fontOC": [
+    "Inter, -apple-system, BlinkMacSystemFont",
+    "Inter, -apple-system, BlinkMacSystemFont"
+   ],
+   "bgOC": [
+    "rgb(19, 17, 28)",
+    "rgb(19, 17, 28)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 0.547,
+   "extra": 0.878,
+   "missing": [
+    "para",
+    "melhorar",
+    "sua",
+    "experi\u00eancia",
+    "n\u00f3s",
+    "nossos",
+    "parceiros",
+    "armazenamos",
+    "acessamos",
+    "informa\u00e7\u00f5es",
+    "seu",
+    "terminal",
+    "equivalente",
+    "consentimento",
+    "todos",
+    "sites",
+    "aplicativos",
+    "seus",
+    "terminais",
+    "conectados",
+    "nosso",
+    "site",
+    "pode",
+    "usar",
+    "esses"
+   ],
+   "heightRatio": 7.208,
+   "overflowX": false,
+   "tiles": [
+    35.1,
+    8.3
+   ],
+   "diffTop": 21.7,
+   "diffAll": 21.7,
+   "imgVis": [
+    7,
+    47
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    2,
+    1
+   ],
+   "links": [
+    48,
+    55
+   ],
+   "buttons": [
+    12,
+    12
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    3762,
+    2596
+   ],
+   "requests": [
+    354,
+    51
+   ],
+   "loadSec": [
+    28.9,
+    22.7
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    [
+     [
+      "iframe",
+      300,
+      150,
+      false
+     ]
+    ]
+   ],
+   "hotlinks": {},
+   "cloneErrors": [
+    "console: Refused to apply style from 'http://web:3000/assets/split-board-C_KX9iBm.css' because its MIME type "
+   ],
+   "cloneFailed": [
+    "http://web:3000/assets/split-board-C_KX9iBm.css"
+   ],
+   "origErrors": 3,
+   "cloneNErrors": 1,
+   "cloneNFailed": 1,
+   "facesClone": [
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded",
+    "Inter Tight:unloaded"
+   ],
+   "fontOC": [
+    "Inter, -apple-system, BlinkMacSystemFont",
+    "Inter, -apple-system, BlinkMacSystemFont"
+   ],
+   "bgOC": [
+    "rgb(19, 17, 28)",
+    "rgb(19, 17, 28)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmux261df002gbr8c79cdzs5k/p/home"
+}

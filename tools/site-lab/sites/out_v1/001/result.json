@@ -1,0 +1,188 @@
+{
+ "idx": 1,
+ "cat": "framer",
+ "url": "https://applanpage.framer.website/",
+ "projectId": "cmuw0ecp80001yin52anrb0og",
+ "slug": "home",
+ "scan": {
+  "seconds": 149,
+  "pages": 1,
+  "blocks": 10,
+  "cssKB": 161,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    2.0,
+    25.1,
+    84.5,
+    10.8,
+    5.1,
+    5.4,
+    0.0
+   ],
+   "diffTop": 37.2,
+   "diffAll": 19.0,
+   "imgVis": [
+    12,
+    12
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    0,
+    0
+   ],
+   "links": [
+    15,
+    15
+   ],
+   "buttons": [
+    0,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    616,
+    516
+   ],
+   "requests": [
+    39,
+    24
+   ],
+   "loadSec": [
+    3.1,
+    4.1
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Plus Jakarta Sans:unloaded",
+    "Plus Jakarta Sans:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 253, 244)",
+    "rgb(255, 253, 244)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.219,
+   "missing": [],
+   "heightRatio": 1.172,
+   "overflowX": false,
+   "tiles": [
+    9.8,
+    54.1,
+    99.1,
+    31.0,
+    26.8,
+    29.6,
+    23.0,
+    43.6
+   ],
+   "diffTop": 54.3,
+   "diffAll": 39.6,
+   "imgVis": [
+    10,
+    12
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    11,
+    15
+   ],
+   "buttons": [
+    1,
+    0
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    644,
+    516
+   ],
+   "requests": [
+    51,
+    24
+   ],
+   "loadSec": [
+    2.4,
+    3.4
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {},
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Plus Jakarta Sans:unloaded",
+    "Plus Jakarta Sans:unloaded",
+    "Inter:unloaded",
+    "Inter:unloaded"
+   ],
+   "fontOC": [
+    "sans-serif",
+    "sans-serif"
+   ],
+   "bgOC": [
+    "rgb(255, 253, 244)",
+    "rgb(255, 253, 244)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw0ecp80001yin52anrb0og/p/home"
+}

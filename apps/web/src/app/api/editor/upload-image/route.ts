@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const scannerUrl = process.env.SCANNER_SERVICE_URL ?? 'http://scanner:8001'
     const res = await fetch(`${scannerUrl}/api/scanner/upload-asset`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-scanner-secret': process.env.SCANNER_SHARED_SECRET || '' },
       body: JSON.stringify({
         data_b64: buffer.toString('base64'),
         filename: file.name,

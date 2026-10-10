@@ -1,0 +1,48 @@
+import asyncio, json, sys
+sys.path.insert(0, "/ui/tests")
+from uilab import serve, mock_api
+from playwright.async_api import async_playwright
+OUT = "/ui/shots"
+async def main():
+    srv = serve()
+    async with async_playwright() as p:
+        b = await p.chromium.launch()
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        logs = []
+        pg.on("console", lambda m: logs.append(f"{m.type}: {m.text[:200]}") if m.type in ("error", "warning") else None)
+        pg.on("pageerror", lambda e: logs.append("PAGEERROR " + str(e)[:300]))
+        await pg.route("**/api/**", mock_api)
+        await pg.goto("http://127.0.0.1:8123/editor.html")
+        await pg.wait_for_selector(".gjs-frame", timeout=30000)
+        await pg.wait_for_timeout(3000)
+        await pg.screenshot(path=f"{OUT}/01_initial.png")
+        fr = pg.frame_locator(".gjs-frame")
+        await fr.locator("h1").first.click()
+        await pg.wait_for_timeout(600)
+        await pg.get_by_role("button", name="Estilo", exact=True).click()
+        await pg.wait_for_timeout(400)
+        await pg.screenshot(path=f"{OUT}/03_estilo.png")
+        await pg.get_by_role("button", name="Avançado", exact=True).click()
+        await pg.wait_for_timeout(300)
+        await pg.screenshot(path=f"{OUT}/04_avancado.png")
+        await pg.get_by_role("button", name="Camadas").click()
+        await pg.wait_for_timeout(500)
+        await pg.screenshot(path=f"{OUT}/05_camadas.png")
+        await pg.get_by_role("button", name="Mídia").click()
+        await pg.wait_for_timeout(700)
+        await pg.screenshot(path=f"{OUT}/06_midia.png")
+        await pg.get_by_role("button", name="Ajustes").click()
+        await pg.wait_for_timeout(400)
+        await pg.screenshot(path=f"{OUT}/07_ajustes.png")
+        # AI
+        await pg.get_by_role("button", name="Abrir o assistente de IA").click()
+        await pg.wait_for_timeout(700)
+        await pg.screenshot(path=f"{OUT}/08_ai_open.png")
+        await pg.locator(".ed-ai-composer textarea").fill("troque o fundo para preto")
+        await pg.keyboard.press("Enter")
+        await pg.wait_for_timeout(2500)
+        await pg.screenshot(path=f"{OUT}/09_ai_done.png")
+        print("\n".join(logs[:15]))
+        await b.close()
+    srv.terminate()
+asyncio.run(main())

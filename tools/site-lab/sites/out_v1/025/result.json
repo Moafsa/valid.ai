@@ -1,0 +1,198 @@
+{
+ "idx": 25,
+ "cat": "br-saas",
+ "url": "https://kiwify.com.br/",
+ "projectId": "cmuw1uo0b001jn7r8je4qu15p",
+ "slug": "home",
+ "scan": {
+  "seconds": 99,
+  "pages": 1,
+  "blocks": 3,
+  "cssKB": 41,
+  "notes": []
+ },
+ "widths": {
+  "1440": {
+   "w": 1440,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.0,
+   "overflowX": false,
+   "tiles": [
+    0.0,
+    0.0,
+    0.0,
+    1.7,
+    7.2,
+    0.6,
+    2.4
+   ],
+   "diffTop": 0.0,
+   "diffAll": 1.7,
+   "imgVis": [
+    23,
+    23
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    57,
+    57
+   ],
+   "buttons": [
+    30,
+    30
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1316,
+    1001
+   ],
+   "requests": [
+    42,
+    33
+   ],
+   "loadSec": [
+    4.8,
+    4.2
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "kiwify.com.br": [
+     1,
+     5316
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Mukta:unloaded",
+    "Mukta:unloaded",
+    "Mukta:unloaded",
+    "Mukta:unloaded"
+   ],
+   "fontOC": [
+    "\"Open Sans\", \"sans-serif\"",
+    "\"Open Sans\", \"sans-serif\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  },
+  "390": {
+   "w": 390,
+   "recall": 1.0,
+   "extra": 0.0,
+   "missing": [],
+   "heightRatio": 1.001,
+   "overflowX": false,
+   "tiles": [
+    20.4,
+    19.9,
+    16.5,
+    21.1,
+    25.5,
+    28.4,
+    16.4,
+    20.4
+   ],
+   "diffTop": 18.9,
+   "diffAll": 21.1,
+   "imgVis": [
+    24,
+    24
+   ],
+   "broken": [
+    0,
+    0
+   ],
+   "videos": [
+    0,
+    0
+   ],
+   "iframes": [
+    1,
+    0
+   ],
+   "links": [
+    57,
+    57
+   ],
+   "buttons": [
+    30,
+    30
+   ],
+   "inputs": [
+    0,
+    0
+   ],
+   "kb": [
+    1282,
+    967
+   ],
+   "requests": [
+    42,
+    33
+   ],
+   "loadSec": [
+    4.9,
+    3.3
+   ],
+   "fixedMedia": [],
+   "mediaOrigClone": [
+    [],
+    []
+   ],
+   "hotlinks": {
+    "kiwify.com.br": [
+     1,
+     5318
+    ]
+   },
+   "cloneErrors": [],
+   "cloneFailed": [],
+   "origErrors": 0,
+   "cloneNErrors": 0,
+   "cloneNFailed": 0,
+   "facesClone": [
+    "Mukta:unloaded",
+    "Mukta:unloaded",
+    "Mukta:unloaded",
+    "Mukta:unloaded"
+   ],
+   "fontOC": [
+    "\"Open Sans\", \"sans-serif\"",
+    "\"Open Sans\", \"sans-serif\""
+   ],
+   "bgOC": [
+    "rgba(0, 0, 0, 0)",
+    "rgba(0, 0, 0, 0)"
+   ],
+   "headsMissing": []
+  }
+ },
+ "cloneUrl": "http://web:3000/projects/cmuw1uo0b001jn7r8je4qu15p/p/home"
+}

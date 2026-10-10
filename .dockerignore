@@ -1,0 +1,8 @@
+# the web image is built from the repo root: leave out the lab tooling and secrets (its Dockerfile only uses apps/web, packages/* and the lockfile)
+.git
+.env
+.env.*
+tools
+services
+infra
+**/.next

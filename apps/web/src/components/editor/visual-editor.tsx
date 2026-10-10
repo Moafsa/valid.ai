@@ -437,11 +437,14 @@ export function VisualEditor({ projectId, pageId, blocks, pageCss, pages, shell,
       guard.install()
       ;(editor as any).__guard = guard
     } else {
-      editor.setComponents(
-        sorted
-          .map(b => (b.generatedHtml ? `<section data-vai-block-id="${b.id}">${b.generatedHtml}</section>` : ''))
-          .join('\n'),
-      )
+      const legacyHtml = sorted
+        .map(b => (b.generatedHtml ? `<section data-vai-block-id="${b.id}">${b.generatedHtml}</section>` : ''))
+        .join('\n')
+      editor.setComponents(legacyHtml)
+      // pages cloned in the old format need the same protection: a Desktop edit must not undo the original's phone / tablet design
+      guard = new ResponsiveGuard(editor, { documentHtml: legacyHtml, pageCss: pageCss || '', htmlAttrs: '', bodyAttrs: '', bp })
+      guard.install()
+      ;(editor as any).__guard = guard
     }
 
     // names need the canvas to be rendered

@@ -16,6 +16,7 @@ import {
 } from './ai-engine'
 import { TOOL_NAMES, type AgentMsg, type Block } from './agent-tools'
 import { pickSkills, skillText } from './design-skills'
+import type { ResponsiveGuard, LayoutDrift } from './responsive-guard'
 import { buildSiteProfile, checkMotion, detectWidgets, cssDrift, identityIssues, makeCarousel, profileText, themeDrift, widgetsText, type SiteProfile } from './site-context'
 
 type Comp = any
@@ -714,6 +715,15 @@ export class AgentSession {
     return { html: j.html, blockId: String(j.id || attr || '') }
   }
 
+  private guard(): ResponsiveGuard | undefined { return (this.ctx.editor as any).__guard }
+
+  private driftLines(d: LayoutDrift): string[] {
+    const out: string[] = []
+    if (d.overflow) out.push(`- A página rola para o lado: ${d.overflow.now}px de conteúdo numa tela de ${d.width}px (o original tem ${d.overflow.original}px).`)
+    for (const e of d.elements) out.push(`- ${e.label}${e.id ? ` (id ${e.id})` : ''}: ${e.prop === 'display' ? 'no original fica' : 'no original está'} ${e.original}, agora ${e.prop === 'display' ? 'fica' : 'está'} ${e.now}.`)
+    return out
+  }
+
   /**
    * Which sections of the page no longer look like the ORIGINAL: measured by how many of the original section's CSS classes still exist
    * in it. A section rebuilt by an earlier edit keeps almost none of them, and has lost the site's look with them. The model is told up
@@ -893,6 +903,14 @@ export class AgentSession {
     let issues: any[]
     let width = 0
     try { issues = this.collectIssues(); width = this.doc.documentElement.clientWidth } finally { if (switched) { ed.setDevice(prev); await sleep(200) } }
+    // the phone screen compared with the page as it was when the task started: whatever differs is the agent's doing
+    if (this.guard() && this.changes.length) {
+      try {
+        const d = await this.guard()!.layoutDrift('mobile')
+        const lines = d ? this.driftLines(d) : []
+        if (lines.length) issues.push({ type: 'mobile_drift', ours: true, message: `Depois das suas mudanças o celular (${d!.width}px) ficou diferente de como a página estava antes:\n${lines.join('\n')}\nDesfaça o que causou isso (undo_last_change) ou escreva a regra só para a tela grande. Uma regra de layout sem @media vale também no celular e sobrepõe o responsivo da página.` })
+      } catch { /* optional */ }
+    }
     for (const [id, c] of this.carousels) {
       if (!c.comp?.getEl?.()?.isConnected) continue
       const mot = await checkMotion(this.ctx, c.comp, Math.min(10, c.interval + 1.5))
@@ -984,10 +1002,13 @@ export async function runAgent(o: AgentRunOptions): Promise<AgentRunResult> {
     patch('read', { status: 'ok' })
     let drift = ''
     try { drift = await session.originalDiff() } catch { /* the original may not be stored */ }
+    const legacyNote = o.ctx.legacy
+      ? 'FORMATO ANTIGO DA CLONAGEM: esta página foi clonada num formato anterior, que fixou em cada elemento os estilos do desktop (menu aberto, hambúrguer escondido, larguras). O original clonado NÃO é responsivo aqui: no celular o menu aparece como no desktop e a página pode ficar larga demais, mesmo sem nenhuma edição. Edições não recuperam o responsivo do original. Se o pedido for "responsivo", "celular" ou "mobile como o original", NÃO tente consertar com CSS nem com restore_original_page (restaurar não traz o responsivo de volta). Explique ao usuário, em poucas palavras, que o jeito de ter o responsivo igual ao do site original é clonar a página de novo (o clone atual preserva o responsivo e as versões de celular), e só faça ajustes pequenos e seguros se ele pedir mesmo assim.'
+      : ''
     const first: Block[] = []
     const img = o.image ? parseDataUrl(o.image) : null
     if (img) first.push({ type: 'image', media_type: img.media_type, data: img.data })
-    first.push({ type: 'text', text: `PEDIDO: ${o.instruction}\n\nESCOPO: ${scopeLine}\n\n${session.siteBrief()}${drift ? `\n\nSEÇÕES QUE JÁ NÃO PARECEM COM O ORIGINAL (edições anteriores as reconstruíram):\n${drift}` : ''}\n\nSKILLS DE FRONTEND PARA ESTE PEDIDO (boas práticas; o visual do SITE e do original sempre vale mais que estas regras gerais):\n${pickSkills(o.instruction).map(k => `## ${k.title}\n${k.body}`).join('\n\n')}\n\nRESUMO DA PÁGINA (ids estáveis, valem em todas as ferramentas):\n${summary}` })
+    first.push({ type: 'text', text: `PEDIDO: ${o.instruction}\n\nESCOPO: ${scopeLine}\n\n${session.siteBrief()}${drift ? `\n\nSEÇÕES QUE JÁ NÃO PARECEM COM O ORIGINAL (edições anteriores as reconstruíram):\n${drift}` : ''}${legacyNote ? `\n\n${legacyNote}` : ''}\n\nSKILLS DE FRONTEND PARA ESTE PEDIDO (boas práticas; o visual do SITE e do original sempre vale mais que estas regras gerais):\n${pickSkills(o.instruction).map(k => `## ${k.title}\n${k.body}`).join('\n\n')}\n\nRESUMO DA PÁGINA (ids estáveis, valem em todas as ferramentas):\n${summary}` })
     const messages: AgentMsg[] = [...o.history, { role: 'user', content: first }]
 
     // Free plans of AI providers accept only a few requests per minute and every step of the agent is one request. So: when the

@@ -34,6 +34,13 @@ const SHORTHANDS: Record<string, string[]> = {
   margin: ['margin-top', 'margin-right', 'margin-bottom', 'margin-left'],
 }
 
+export interface LayoutDrift {
+  width: number
+  /** the page scrolls sideways now and the original did not */
+  overflow: { original: number; now: number } | null
+  elements: { id?: string; label: string; prop: 'display' | 'position'; original: string; now: string }[]
+}
+
 export interface GuardOptions {
   /** the document exactly as it was loaded into the editor: wrapper chain + blocks with their ids */
   documentHtml: string
@@ -226,6 +233,66 @@ export class ResponsiveGuard {
         if (!there || there === desk) continue                         // the original did not change it: the Desktop edit carries over
         css.setIdRule(id, { [prop]: there }, { mediaText: t.media })
       }
+    }
+  }
+
+  /**
+   * How the page as it is NOW differs from the original on a phone (or tablet) screen. The page is rendered in a hidden frame of that
+   * width with the editor's current HTML and CSS, and compared element by element with the untouched page. What counts is what
+   * appears, disappears or is pulled out of the flow (a menu that should be hidden showing, a hamburger button that vanished, a block
+   * gone from the layout) and whether the page now scrolls sideways when the original did not. Colors and sizes are the owner's call.
+   */
+  async layoutDrift(kind: 'mobile' | 'tablet' = 'mobile'): Promise<LayoutDrift | null> {
+    if (this.disposed) return null
+    const width = this.widths()[kind]
+    const orig = await this.frame(width)
+    if (!orig) return null
+    const { pageCss, htmlAttrs, bodyAttrs } = this.opts
+    const ed: any = this.editor
+    const css = `${pageCss}\n${String(ed.getCss?.() || '')}`
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('aria-hidden', 'true')
+    iframe.tabIndex = -1
+    iframe.style.cssText = `position:fixed;left:-99999px;top:0;width:${width}px;height:900px;border:0;visibility:hidden;pointer-events:none`
+    iframe.setAttribute('sandbox', 'allow-same-origin')
+    iframe.srcdoc = `<!doctype html><html${htmlAttrs}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>${css.replace(/<\/style/gi, '<\\/style')}</style></head><body${bodyAttrs}>${ed.getHtml?.() || ''}</body></html>`
+    const cur = await new Promise<Frame | null>(resolve => {
+      const timer = setTimeout(() => resolve(null), 20000)
+      iframe.onload = () => { clearTimeout(timer); const win = iframe.contentWindow; resolve(win && win.document ? { win, doc: win.document } : null) }
+      document.body.appendChild(iframe)
+    })
+    try {
+      if (!cur) return null
+      const elements: LayoutDrift['elements'] = []
+      const kinds = (cs: CSSStyleDeclaration) => ({
+        display: cs.display === 'none' ? 'escondido' : 'visível',
+        position: cs.position === 'fixed' || cs.position === 'absolute' ? 'fora do fluxo (fixo/absoluto)' : 'no fluxo',
+      })
+      let visited = 0
+      const walk = (a: Element, b: Element) => {
+        if (visited++ > 2500 || elements.length >= 10 || a.tagName !== b.tagName) return
+        const ca = cur.win.getComputedStyle(a), cb = orig.win.getComputedStyle(b)
+        const ka = kinds(ca), kb = kinds(cb)
+        for (const prop of ['display', 'position'] as const) {
+          if (ka[prop] !== kb[prop]) {
+            const cls = String((a as HTMLElement).className || '').split(/\s+/).filter(Boolean)[0]
+            elements.push({ id: (a as HTMLElement).id || undefined, label: `<${a.tagName.toLowerCase()}${cls ? ` class="${cls}"` : ''}>${(a.textContent || '').trim().slice(0, 24) ? ` "${(a.textContent || '').trim().slice(0, 24)}"` : ''}`, prop, original: kb[prop], now: ka[prop] })
+            return                                                     // what is inside a changed element follows it
+          }
+        }
+        if (ca.display === 'none') return
+        if (a.children.length !== b.children.length) return            // the structure was changed here on purpose: nothing to compare
+        for (let i = 0; i < a.children.length; i++) walk(a.children[i], b.children[i])
+      }
+      cur.doc.querySelectorAll('[data-vai-block-id]').forEach(block => {
+        const bid = block.getAttribute('data-vai-block-id') || ''
+        const ob = orig.doc.querySelector(`[data-vai-block-id="${CSS.escape(bid)}"]`)
+        if (ob) walk(block, ob)
+      })
+      const now = cur.doc.documentElement.scrollWidth, was = orig.doc.documentElement.scrollWidth
+      return { width, overflow: now > was + 8 ? { original: was, now } : null, elements }
+    } finally {
+      iframe.remove()
     }
   }
 }

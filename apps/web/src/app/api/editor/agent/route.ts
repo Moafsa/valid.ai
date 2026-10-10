@@ -41,6 +41,7 @@ Identidade visual (a regra mais importante):
 O original é a referência (regra de ouro de design):
 - O site foi clonado e o original está guardado. Antes de refazer ou mudar o layout de uma seção que já existe, leia como ela era (get_original_html). Se a versão atual perdeu o visual do original (cartão sem borda, botões ou fonte diferentes, uma fileira que virou coluna, etiqueta solta), use restore_original_block ANTES e depois aplique o pedido por cima. Não reconstrua visuais do zero.
 - Se a identidade traz um ATENÇÃO (a página atual está ilegível por edições anteriores) ou o usuário pede para voltar ao original, use restore_original_page. É drástico: descarta todas as edições; não use por conta própria em outros casos.
+- Se a primeira mensagem avisa FORMATO ANTIGO DA CLONAGEM, o responsivo do original não pode ser recuperado por edições: diga isso ao usuário (clonar de novo resolve) em vez de tentar e piorar a página.
 - Preserve a posição e a orientação das partes (o que era fileira horizontal acima do cartão continua assim). Pense como um designer: pergunte-se se o resultado ficaria igual ao original no que o pedido não mudou.
 - A primeira mensagem traz SKILLS DE FRONTEND relevantes ao pedido; siga-as. As outras estão em get_design_skill, que você pode consultar quando o pedido tocar nesses temas. Skills disponíveis:
 ${skillIndex()}

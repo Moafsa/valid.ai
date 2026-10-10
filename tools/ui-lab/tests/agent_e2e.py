@@ -922,7 +922,75 @@ async def sc_PAGE(p):
     except Exception: pass
     await b.close()
 
-SC = {"PAGE": sc_PAGE, "RESTORE": sc_RESTORE, "REPAIR": sc_REPAIR, "CAROUSEL": sc_CAROUSEL, "IDENT": sc_IDENT, "A": sc_A, "B": sc_B, "C": sc_C, "D": sc_D, "E1": sc_E1, "E2": sc_E2, "UNDO": sc_UNDO, "SCOPE": sc_SCOPE, "BAD": sc_BAD, "LOOP": sc_LOOP, "ABORT": sc_ABORT, "SAVE": sc_SAVE, "CONTRAST": sc_CONTRAST, "QUICK": sc_QUICK, "RATE": sc_RATE, "PACE": sc_PACE}
+
+def scen_LEGACY(m):
+    return turn(text="Esta página foi clonada no formato antigo e o responsivo do original não pode ser recuperado por edições. O jeito é clonar a página de novo.")
+
+async def sc_LEGACY(p):
+    if FIX != "gpy3": print("\n[FORMATO ANTIGO] (pulado: usa o fixture gpy3)"); return
+    print("\n[FORMATO ANTIGO] página clonada no formato antigo: a IA é avisada de que o responsivo do original não existe e deve dizer isso, não piorar a página")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_LEGACY
+    await ask(pg, "Deixe o site responsivo como o original", 1)
+    ft = first_text(CUR["log"])
+    check("FORMATO ANTIGO: a primeira mensagem avisa que o responsivo do original não existe nesta página", "FORMATO ANTIGO DA CLONAGEM" in ft and "clonar a página de novo" in ft and "restore_original_page" in ft, ft[ft.find("FORMATO"):][:300])
+    pan = await panel_info(pg)
+    check("FORMATO ANTIGO: a resposta ao usuário explica e a página não foi alterada", pan["changes"] == 0 and "clonar" in pan["reply"], json.dumps(pan)[:200])
+    await b.close()
+
+def scen_REGRESS(m):
+    n = run_index(m)
+    rs = results(m)
+    if n == 0: return turn(tu("add_css", css=".nav-links{display:flex!important;position:static!important}", label="Ajustar o menu"))
+    if n == 1: return turn(tu("check_page", viewport="mobile"))
+    if n == 2:
+        CUR["reg_before"] = rs[0] if rs else None
+        return turn(tu("undo_last_change"))
+    if n == 3: return turn(tu("check_page", viewport="mobile"))
+    CUR["reg_after"] = rs[0] if rs else None
+    return turn(text="Desfiz o ajuste do menu porque ele quebrava o celular.")
+
+JS_DRIFT = """async () => { const g = window.__vaiEditor.__guard; if (!g) return {err: 'sem guarda'}; const d = await g.layoutDrift('mobile'); return d }"""
+
+async def sc_REGRESS(p):
+    if FIX != "gpy": print("\n[REGRESSÃO NO CELULAR] (pulado: usa o fixture gpy)"); return
+    print("\n[REGRESSÃO NO CELULAR] uma regra da IA sem @media que quebra o menu do celular é apontada pelo check_page e desfeita")
+    b, pg, errs = await open_editor(p)
+    CUR["fn"] = scen_REGRESS; CUR["reg_before"] = None; CUR["reg_after"] = None
+    d0 = await pg.evaluate(JS_DRIFT)
+    check("CELULAR: o clone novo começa igual ao original no celular (sem diferenças)", isinstance(d0, dict) and not d0.get("elements") and not d0.get("overflow"), json.dumps(d0)[:300])
+    await ask(pg, "Ajuste o menu", 1)
+    rb = CUR["reg_before"] if isinstance(CUR["reg_before"], dict) else {}
+    drift = [i for i in rb.get("issues", []) if i.get("type") == "mobile_drift"]
+    check("CELULAR: check_page aponta que a regra sem @media deixou o celular diferente (menu aparece)", bool(drift) and "nav" in drift[0].get("message", ""), json.dumps(rb)[:400])
+    ra = CUR["reg_after"] if isinstance(CUR["reg_after"], dict) else {}
+    check("CELULAR: depois de desfazer, o celular volta ao que era", not any(i.get("type") == "mobile_drift" for i in ra.get("issues", [])), json.dumps(ra)[:300])
+    d1 = await pg.evaluate(JS_DRIFT)
+    check("CELULAR: medido por fora, nada difere do original depois do undo", isinstance(d1, dict) and not d1.get("elements"), json.dumps(d1)[:300])
+    await b.close()
+
+def scen_GUARD(m):
+    n = run_index(m)
+    if n == 0: return turn(tu("set_styles", ids=[CUR["navid"]], css={"display": "flex", "justify-content": "flex-start"}, label="Ajustar o menu"))
+    if n == 1: return turn(tu("check_page", viewport="mobile"))
+    return turn(text="Ajustei o menu.")
+
+async def sc_GUARD(p):
+    if FIX != "gpy2": print("\n[PROTEÇÃO] (pulado: usa o fixture gpy2)"); return
+    print("\n[PROTEÇÃO] página do formato antigo: uma mudança de layout no Desktop não pode desfazer o desenho do celular")
+    b, pg, errs = await open_editor(p)
+    nid = await pg.evaluate("() => { const d = window.__vaiEditor.Canvas.getDocument(); const n = d.querySelector('.nav-links'); return n ? n.id : null }")
+    CUR["navid"] = nid
+    check("PROTEÇÃO: achei o menu da página para o teste", bool(nid), str(nid))
+    CUR["fn"] = scen_GUARD
+    await ask(pg, "Ajuste o menu no desktop", 1)
+    await pg.wait_for_timeout(4500)
+    d = await pg.evaluate(JS_DRIFT)
+    navdiff = [e for e in (d or {}).get("elements", []) if "nav-links" in (e.get("label") or "") and e.get("prop") == "display"]
+    check("PROTEÇÃO: depois da mudança no Desktop o menu continua escondido no celular, como no original", isinstance(d, dict) and not navdiff, json.dumps(d)[:400])
+    await b.close()
+
+SC = {"LEGACY": sc_LEGACY, "REGRESS": sc_REGRESS, "GUARD": sc_GUARD, "PAGE": sc_PAGE, "RESTORE": sc_RESTORE, "REPAIR": sc_REPAIR, "CAROUSEL": sc_CAROUSEL, "IDENT": sc_IDENT, "A": sc_A, "B": sc_B, "C": sc_C, "D": sc_D, "E1": sc_E1, "E2": sc_E2, "UNDO": sc_UNDO, "SCOPE": sc_SCOPE, "BAD": sc_BAD, "LOOP": sc_LOOP, "ABORT": sc_ABORT, "SAVE": sc_SAVE, "CONTRAST": sc_CONTRAST, "QUICK": sc_QUICK, "RATE": sc_RATE, "PACE": sc_PACE}
 
 async def main():
     srv = serve()

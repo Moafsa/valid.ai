@@ -94,7 +94,10 @@ export const DESIGN_SKILLS: DesignSkill[] = [
 - Grades com repeat(auto-fit,minmax(240px,1fr)); filhos de flex e grid com min-width:0 para o texto quebrar.
 - Tamanhos de fonte com clamp() (ex.: clamp(28px,5vw,48px) para títulos).
 - No celular: uma coluna, padding lateral de 16 a 20px, áreas de toque de 44px, ordem natural de leitura.
-- Depois de mexer em layout, chame check_page com viewport mobile e corrija o que passar da largura.`,
+- Depois de mexer em layout, chame check_page com viewport mobile e corrija o que passar da largura.
+- Páginas de FORMATO ANTIGO (a primeira mensagem avisa): o responsivo do original não existe nelas e nenhuma edição o recupera. Diga isso ao usuário e recomende clonar de novo; não prometa nem simule.
+- Regras de layout (display, position, largura, colunas) escritas sem @media valem TAMBÉM no celular e sobrepõem o responsivo que a página já tem. check_page avisa quando uma mudança sua deixou o celular diferente do que era: desfaça (undo_last_change) ou limite a regra à tela grande (@media (min-width: 1025px)).
+- Mudar uma propriedade de layout na tela Desktop pode quebrar o celular: antes de mudar display, position, largura ou colunas, pergunte-se o que a página faz no celular.`,
   },
   {
     id: 'tipografia-e-hierarquia',
